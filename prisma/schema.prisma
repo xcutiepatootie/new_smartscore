@@ -1,0 +1,73 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+model Student {
+  id             String  @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  username       String  @unique
+  email          String  @unique
+  hashedPassword String
+  role           String // You can store the role as a string field
+  scores         Score[] @relation("studentScores")
+}
+
+model Faculty {
+  id             String     @id @default(auto()) @map("_id") @db.ObjectId
+  name           String
+  username       String     @unique
+  email          String     @unique
+  hashedPassword String
+  role           String // You can store the role as a string field
+  questions      Question[] @relation("facultyQuestions")
+  Quiz           Quiz[]
+}
+
+model Score {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  student       Student  @relation("studentScores", fields: [studentId], references: [id])
+  studentName   String   @map("student->name")
+  studentId     String   @db.ObjectId
+  quiz          Quiz     @relation(fields: [quizId], references: [id])
+  score         Int
+  userAnswers   String[]
+  timeSeconds   Int
+  timeStr       String
+  answerClicked Int
+  // Other fields related to the score if needed
+  // ...
+  quizId        String   @db.ObjectId
+  quizName      String   @map("quiz->name")
+}
+
+model Quiz {
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  subject     String
+  faculty     Faculty    @relation(fields: [facultyId], references: [id])
+  facultyId   String     @db.ObjectId
+  facultyName String     @map("faculty->name")
+  questions   Question[]
+  scores      Score[] // Renamed Score field to scores
+}
+
+model Question {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  questionIndex  String
+  questionText   String
+  options        String[] // Added options field as an array of strings
+  correctAnswers String[] // Renamed answers field to answers and changed type to String[]
+  quiz           Quiz     @relation(fields: [quizId], references: [id])
+  quizId         String   @db.ObjectId
+  faculty        Faculty  @relation("facultyQuestions", fields: [facultyId], references: [id])
+  facultyName    String   @map("faculty->name")
+  facultyId      String   @db.ObjectId
+}
