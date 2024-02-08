@@ -1,12 +1,9 @@
 
-import Navbar from '@/components/Navbar'
-import './globals.css'
-import { Inter } from 'next/font/google'
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import Navbar from '@/components/Navbar';
+import { Inter } from 'next/font/google';
+
+import './globals.css';
 import { NextAuthProvider } from './providers';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
 
 
 
@@ -38,17 +35,7 @@ export default function RootLayout({
           </div>
 
         </NextAuthProvider>
-        <ToastContainer
-          position="top-center"
-          autoClose={5000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="colored" />
+
       </body>
 
 
