@@ -26,7 +26,7 @@ export const config: NextAuthOptions = {
             credentials: {
                 email: { label: "Email", type: "text", placeholder: "Enter your Email" },
                 password: { label: "Password", type: "password", placeholder: "Enter your Password" },
-                userRole: { label: "Role", type: "radio", options: [{ value: "faculty", label: "Faculty" }, { value: "student", label: "Student" }] }
+               // role: { label: "Role", type: "radio", options: [{ value: "faculty", label: "Faculty" }, { value: "student", label: "Student" }] }
             },
             async authorize(credentials, req) {
                 // Add logic here to look up the user from the credentials supplied
@@ -38,7 +38,7 @@ export const config: NextAuthOptions = {
                     const response = await axios.post("http://localhost:3000/api/signin-user", {
                         email: credentials?.email,
                         password: credentials?.password,
-                        userRole: credentials?.userRole,
+                        //role: credentials?.role,
                     }, {
                         headers: {
                             "Content-Type": "application/json"
@@ -74,9 +74,9 @@ export const config: NextAuthOptions = {
         async jwt({ token, user }: { token: JWT, user: User }): Promise<JWT> {
 
             if (user) {
-                console.log("token: ", user, token)
                 token.role = user.role
                 token.username = user.username
+                console.log("token: ", user, token)
 
             }
 
