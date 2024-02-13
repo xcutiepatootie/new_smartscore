@@ -1,0 +1,54 @@
+import { z } from "zod";
+
+// Auth || Create User Schema
+
+export const FormSchema = z.object({
+  email: z.string().email(),
+  password: z
+    .string()
+    .min(8)
+    .regex(/[A-Z]/)
+    .regex(/[!@#$%^&*(),.?":{}|<>]/),
+  // Define role as an enum with possible values 'faculty' and 'student'
+});
+
+export const SignUpFormSchema = FormSchema.merge(
+  z.object({
+    name: z.string().min(1, "Name should not be Empty"),
+    username: z.string().min(1, "Username should not be Empty"),
+    role: z.enum(["faculty", "student"]),
+  })
+);
+
+export type FormFields = z.infer<typeof FormSchema>;
+export type SignUpFormFields = z.infer<typeof SignUpFormSchema>;
+
+// Create Quiz Schema
+
+export const QuizSchema = z.object({
+  quizName: z.string().min(1),
+  numberOfItems: z.number().min(1).max(100),
+  subject: z.string().min(1),
+  questions: z.array(
+    z.object({
+      questionText: z.string().min(1),
+      correctAnswer: z.string().min(1),
+      options: z.array(z.string().min(1)),
+    })
+  ),
+});
+
+export type QuizFields = z.infer<typeof QuizSchema>;
+
+export const QuizAnswersSchema = z.object({
+  studentAnswers: z.array(z.object({ answer: z.string().min(1) })),
+});
+export type QuizAnswerFields = z.infer<typeof QuizAnswersSchema>;
+
+export type Student_Quiz_Result = {
+  studentScore: number;
+  focusCount: number;
+  numberOfAnswerClicks: number;
+  finalTime: number;
+  finalTime_str: string;
+};
