@@ -6,9 +6,9 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
+import { Session } from "next-auth"
 
-import { getServerSession } from "next-auth"
-import { revalidatePath } from "next/cache"
+
 
 async function getData() {
     const responseData = await fetch('http://localhost:3000/api/getlistquiz', { method: 'POST', next: { revalidate: 10 } })
@@ -19,43 +19,45 @@ async function getData() {
     const data = await responseData.json()
 
     console.log("Test DATA:", data)
-  
+
     return data
 }
 
 
-export async function DashboardCards() {
+export async function ProfileCards({ user }: any) {
     const data = await getData()
     return (
         <div>
-            <Card>
+            <Card className="w-[83vw]">
                 <CardHeader>
-                    <CardTitle>Total Number of Quiz</CardTitle>
+                    <CardTitle>User Profile</CardTitle>
                     <CardDescription>Card Description</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p>Quiz Count: {data.quizCount}</p>
+                    <p>Name: {user.name}</p>
                 </CardContent>
+                <CardContent>
+                    <p>Email: {user.email}</p>
+                </CardContent>
+                <CardContent>
+                    <p>Username: {user.username}</p>
+                </CardContent>
+                <CardContent>
+                    <p>TBA: </p>
+                </CardContent>
+                <CardContent>
+                    <p>TBA: </p>
+                </CardContent>
+
                 <CardFooter>
-                    <p>Card Footer</p>
+                    <p></p>
                 </CardFooter>
             </Card>
 
-            <Card>
-                <CardHeader>
-                    <CardTitle>Total Number of Quiz</CardTitle>
-                    <CardDescription>Card Description</CardDescription>
-                </CardHeader>
-                <CardContent>
-                    <p>Quiz Count: {data.quizCount}</p>
-                </CardContent>
-                <CardFooter>
-                    <p>Card Footer</p>
-                </CardFooter>
-            </Card>
+
 
         </div>
     )
 }
 
-export default DashboardCards
+export default ProfileCards
