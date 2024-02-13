@@ -3,7 +3,7 @@ import { DashboardCards } from "@/components/Cards/DashboardCards"
 import { config } from "@/lib/auth";
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
-
+import { revalidatePath } from 'next/cache'
 
 
 export default async function Dashboard() {
@@ -14,6 +14,8 @@ export default async function Dashboard() {
    } */
   const session = await getServerSession(config);
   console.log(session)
+
+
   return (
     <>
       <div className="">

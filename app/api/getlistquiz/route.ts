@@ -1,4 +1,5 @@
 import prisma from '@/lib/prisma'
+import { revalidatePath } from 'next/cache';
 
 export async function POST(req: Request) {
 
@@ -10,7 +11,7 @@ export async function POST(req: Request) {
         const formattedResponse = {
             quizzes: quizzes.map((quiz) => ({
                 id: quiz.id,
-                name: quiz.name,
+                name: quiz.quizName,
                 subject: quiz.subject,
                 facultyId: quiz.facultyId
             })),
@@ -19,6 +20,7 @@ export async function POST(req: Request) {
 
         if (formattedResponse) {
             console.log(formattedResponse)
+            revalidatePath('/dashboard')
             return new Response(JSON.stringify(formattedResponse), { status: 200, statusText: "Test" })
         } else {
             return new Response('Failed To Fetch', { status: 401 })

@@ -10,7 +10,7 @@ export default function QuizzesLayout({
     return (
         <section className={inter.className}>
             {/* Include shared UI here e.g. a header or sidebar */}
-         
+
 
             {children}
         </section>

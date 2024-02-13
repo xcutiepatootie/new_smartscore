@@ -1,9 +1,7 @@
-import prisma from '@/lib/prisma'
-
+import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-
-    try {
+  /*   try {
         const quizzesCount: number = await prisma.quiz.count()
         const answeredQuizzes = await prisma.quiz.findMany({
             select:{
@@ -36,8 +34,5 @@ export async function POST(req: Request) {
     } catch (error) {
         return new Response('Internal Error', { status: 500 })
     }
-
-
-
-
+ */
 }

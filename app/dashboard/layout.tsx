@@ -1,4 +1,4 @@
-import Sidebar from "@/components/Sidebar"
+import Sidebar from "@/components/Sidebar/Sidebar"
 import { Inter } from 'next/font/google'
 
 const inter = Inter({ subsets: ['latin'] })
