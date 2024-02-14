@@ -7,54 +7,17 @@ import { useState } from "react";
 import { deleteQuiz } from "@/lib/server_actions/actions";
 import { Quiz } from "@prisma/client";
 
-const ListQuiz = ({ quizList }: any) => {
-  const [quizzes, setQuizzes] = useState<Quiz[]>([]);
+const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  /* useEffect(() => {
-        const fetchQuizzes = async () => {
-            try {
-                const response = await axios.post<QuizzesResponse>('/api/getlistquiz');
-                setQuizzes(response.data.quizzes);
-                console.log(quizzes)
-            } catch (error) {
-                console.error('Failed to fetch quizzes', error);
-            }
-        };
+  console.log(quizCount_Taken)
 
-        fetchQuizzes();
-    }, []); */
-
-  const handleTakeQuiz = (quizId: string) => {
-    console.log("Quiz ID:", quizId);
-    // Perform any additional actions with the quiz ID here
-    // router.push(`/quizzes/${quizId}`)
-  };
+  if(quizCount_Taken.getQuizzesCount === quizCount_Taken.getQuizzesTakenCountByUser){
+    return <div>No Quiz Available</div>
+  } 
 
   return (
-    /*       <>
-                  <Table>
-                      <TableCaption>A list of your recent invoices.</TableCaption>
-                      <TableHeader>
-                          <TableRow>
-                              <TableHead className="w-[100px]">Invoice</TableHead>
-                              <TableHead>Status</TableHead>
-                              <TableHead>Method</TableHead>
-                              <TableHead className="text-right">Amount</TableHead>
-                          </TableRow>
-                      </TableHeader>
-                      <TableBody>
-                          <TableRow>
-                              <TableCell className="font-medium">INV001</TableCell>
-                              <TableCell>Paid</TableCell>
-                              <TableCell>Credit Card</TableCell>
-                              <TableCell className="text-right">$250.00</TableCell>
-                          </TableRow>
-                      </TableBody>
-                  </Table>
-              </> */
-
     <div className="w-full">
       <table className="w-full bg-white border border-gray-200">
         <thead className="">
@@ -65,52 +28,102 @@ const ListQuiz = ({ quizList }: any) => {
           </tr>
         </thead>
         <tbody>
-          {quizList.map((quiz: Quiz) => (
-            <tr key={quiz.id} className="border-b border-gray-200">
-              <td className="px-6 py-4">{quiz.quizName}</td>
-              <td className="px-6 py-4">{quiz.subject}</td>
-              {session?.user.role === "student" ? (
-                <td className="px-6 py-4 text-center">
-                  <button
-                    className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
-                      )
-                    }
-                  >
-                    Take Quiz
-                  </button>
-                  <span className="mx-8">Number of Retries Left: </span>
-                </td>
-              ) : (
-                <td className="px-6 py-4">
-                  <button
-                    onClick={() =>
-                      router.push(
-                        `/dashboard/quizzes/update-quiz?quizId=${quiz.id}`
-                      )
-                    }
-                    className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold mx-4 py-2 px-4 rounded transition-all duration-200"
-                  >
-                    Edit Quiz
-                  </button>
-                  <button
-                    onClick={async () => {
-                      await deleteQuiz(quiz.id);
-                    }}
-                    className="bg-red-400 text-black hover:bg-violet-500 hover:text-white font-bold mx-4 py-2 px-4 rounded transition-all duration-200"
-                  >
-                    Delete Quiz
-                  </button>
-                </td>
-              )}
-            </tr>
-          ))}
+          {quizList.map((quiz: Quiz) => {
+            const quizTakenForCurrentQuiz = quizTaken.find(
+              (qt: any) => qt.quizId === quiz.id
+            );
+
+            const retriesLeft = quizTakenForCurrentQuiz
+              ? quizTakenForCurrentQuiz.retriesLeft
+              : 0;
+
+            // Check if the user is a student and if retries are left
+            const showRetryButton =
+              session?.user.role === "student" && retriesLeft > 0;
+
+            // Check if isPerfect is true
+            const isPerfect =
+              quizTakenForCurrentQuiz &&
+              quizTakenForCurrentQuiz.isPerfect === true;
+
+            // Render the row conditionally based on retries left
+            console.log(
+              quizTakenForCurrentQuiz,
+              retriesLeft,
+              showRetryButton,
+              isPerfect
+            );
+            return (
+              retriesLeft >= 0 &&
+              isPerfect && (
+                <tr key={quiz.id} className="border-b border-gray-200">
+                  <td className="px-6 py-4">{quiz.quizName}</td>
+                  <td className="px-6 py-4">{quiz.subject}</td>
+                  {/* Render either retry button or take quiz button */}
+                  {session?.user.role === "student" ? (
+                    <td className="px-6 py-4 text-center">
+                      {showRetryButton ? (
+                        <>
+                          <span>Number of Retries Left: {retriesLeft}</span>
+                          <button
+                            className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
+                            onClick={() =>
+                              router.push(
+                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
+                              )
+                            }
+                          >
+                            Retry Quiz
+                          </button>
+                        </>
+                      ) : (
+                        <button
+                          className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
+                            )
+                          }
+                        >
+                          Take Quiz
+                        </button>
+                      )}
+                    </td>
+                  ) : (
+                    <td className="flex items-center justify-center px-6 py-4 text-center">
+                      <div className="mx-2">
+                        <button
+                          className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                          onClick={() =>
+                            router.push(
+                              `/dashboard/quizzes/update-quiz?quizId=${quiz.id}`
+                            )
+                          }
+                        >
+                          Update Quiz
+                        </button>
+                      </div>
+                      <div className="mx-2">
+                        <button
+                          className="bg-red-400 text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
+                          onClick={async () => {
+                            const delQuiz = await deleteQuiz(quizList.id);
+                          }}
+                        >
+                          Delete Quiz
+                        </button>
+                      </div>
+                    </td>
+                  )}
+                </tr>
+              )
+            );
+          })}
         </tbody>
       </table>
     </div>
   );
 };
 
+// Export the component
 export default ListQuiz;
