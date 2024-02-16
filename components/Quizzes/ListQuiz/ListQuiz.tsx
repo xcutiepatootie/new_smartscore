@@ -119,7 +119,7 @@ const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
                         <button
                           className="bg-red-400 text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
                           onClick={async () => {
-                            const delQuiz = await deleteQuiz(quizList.id);
+                            const delQuiz = await deleteQuiz(quiz.id);
                           }}
                         >
                           Delete Quiz
