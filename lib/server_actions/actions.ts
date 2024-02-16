@@ -4,7 +4,7 @@ import {
   SignUpFormFields,
   Student_Quiz_Result,
 } from "@/types/types";
-import { Faculty, Student, User } from "@prisma/client";
+import { Faculty, Question, Quiz, Student, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -131,28 +131,49 @@ export async function createQuiz(createQuizData: QuizFields) {
 }
 
 // Update Quiz
-export async function updateQuiz(updateQuizData: QuizFields) {
+export async function updateQuiz(
+  updateQuizData: QuizFields,
+  quizIdLocal: string,
+  questionsLocal: any
+) {
   const session = await getUserSession();
 
-  const updQuiz = await prisma.quiz.update({
-    where: { quizName: updateQuizData.quizName },
+  console.log(questionsLocal);
+
+  const updatedQuizResult = await prisma.quiz.update({
+    where: { id: quizIdLocal },
     data: {
-      facultyName: session?.user.name,
-      quizName: updateQuizData.quizName,
-      numberOfItems: updateQuizData.numberOfItems,
-      subject: updateQuizData.subject,
+      facultyName: session?.user.name, // Update faculty name if needed
+      quizName: updateQuizData.quizName, // Update quiz name if needed
+      numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
+      subject: updateQuizData.subject, // Update subject if needed
       questions: {
-        // Associate questions with the quiz
-        create: updateQuizData.questions.map((question) => ({
-          questionText: question.questionText,
-          options: question.options,
-          correctAnswer: question.correctAnswer,
+        // Associate updated questions with the quiz
+        upsert: questionsLocal.questions.map((question: any) => ({
+          where: { id: question.id }, // Provide the ID of the question you want to update
+          update: {
+            questionText: question.questionText, // Update question text if needed
+            options: question.options, // Update options if needed
+            correctAnswer: question.correctAnswer, // Update correct answer if needed
+          },
+          create: {
+            questionText: question.questionText, // Create a new question if not found
+            options: question.options,
+            correctAnswer: question.correctAnswer,
+          },
         })),
       },
-      Faculty: { connect: { facultyId: session?.user.id } },
+      Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
     },
-    include: { questions: true },
+    include: { questions: true }, // Include questions in the updated quiz result
   });
+
+  // Associate questions with the quiz
+  /*   create: updateQuizData.questions.map((question) => ({
+          questionText: question.questionText,
+          options: question.options,
+        correctAnswer: question.correctAnswer,
+        })) */
 }
 
 // Delete Quiz

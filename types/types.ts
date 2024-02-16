@@ -26,11 +26,13 @@ export type SignUpFormFields = z.infer<typeof SignUpFormSchema>;
 // Create Quiz Schema
 
 export const QuizSchema = z.object({
+  id: z.string().optional(),
   quizName: z.string().min(1),
   numberOfItems: z.number().min(1).max(100),
   subject: z.string().min(1),
   questions: z.array(
     z.object({
+      id: z.string().optional(),
       questionText: z.string().min(1),
       correctAnswer: z.string().min(1),
       options: z.array(z.string().min(1)),
