@@ -22,7 +22,7 @@ export default async function Dashboard() {
 
         <h1>Dashboard</h1>
 
-        <div className="flex flex-row">
+        <div className="flex flex-row max-sm:flex=col">
           <DashboardCards />
         </div>
 

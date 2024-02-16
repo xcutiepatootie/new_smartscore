@@ -130,6 +130,31 @@ export async function createQuiz(createQuizData: QuizFields) {
       ]) */
 }
 
+// Update Quiz
+export async function updateQuiz(updateQuizData: QuizFields) {
+  const session = await getUserSession();
+
+  const updQuiz = await prisma.quiz.update({
+    where: { quizName: updateQuizData.quizName },
+    data: {
+      facultyName: session?.user.name,
+      quizName: updateQuizData.quizName,
+      numberOfItems: updateQuizData.numberOfItems,
+      subject: updateQuizData.subject,
+      questions: {
+        // Associate questions with the quiz
+        create: updateQuizData.questions.map((question) => ({
+          questionText: question.questionText,
+          options: question.options,
+          correctAnswer: question.correctAnswer,
+        })),
+      },
+      Faculty: { connect: { facultyId: session?.user.id } },
+    },
+    include: { questions: true },
+  });
+}
+
 // Delete Quiz
 export async function deleteQuiz(quizIdLocal: string) {
   const [delQuestions, delQuiz] = await prisma.$transaction([
@@ -205,7 +230,7 @@ export async function submitStudentAnswers(
     });
 
     if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect) {
-      console.log('pasok HAHAHA')
+      console.log("pasok HAHAHA");
       const updateStudentDone = await prisma.quizTaken.update({
         where: {
           id: existingQuiz?.id,

@@ -89,7 +89,7 @@ model Retry {
 
 model Quiz {
   id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  quizName      String
+  quizName      String      @unique
   numberOfItems Int
   subject       String
   facultyId     String?     @db.ObjectId

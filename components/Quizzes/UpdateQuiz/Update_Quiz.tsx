@@ -1,12 +1,9 @@
 "use client"
 import { useToast } from '@/components/ui/use-toast';
-import { createQuiz } from '@/lib/server_actions/actions';
+import { updateQuiz } from '@/lib/server_actions/actions';
 import { QuizFields, QuizSchema } from '@/types/types';
-import { DevTool } from '@hookform/devtools';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Question, Quiz } from '@prisma/client';
-import React from 'react'
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { fromZodError } from 'zod-validation-error';
 
 
@@ -41,7 +38,7 @@ export const Update_Quiz = ({ selectedQuiz }: { selectedQuiz: QuizFields }) => {
         console.log("heloo")
         // Handle form submission logic here
         console.log(data);
-        const createQuizData = await createQuiz(data);
+        const updateQuizData = await updateQuiz(data);
 
         const res = QuizSchema.safeParse(data);
         if (!res.success) {
