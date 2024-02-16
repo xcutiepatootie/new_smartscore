@@ -10,6 +10,7 @@ import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
 import { config } from "../auth";
 import prisma from "../prisma";
+import { redirect } from "next/navigation";
 
 async function getUserSession() {
   const getSession = await getServerSession(config);
@@ -100,7 +101,7 @@ export async function createQuiz(createQuizData: QuizFields) {
         include: { questions: true },
       });
 
-      console.log(createQuizResult);
+      console.log(createQuizResult, createQuizInput);
       revalidatePath("/dashboard");
       revalidatePath("/dashboard/quizzes");
       return { createQuiz: createQuizResult };
@@ -109,7 +110,7 @@ export async function createQuiz(createQuizData: QuizFields) {
   } catch (error) {
     console.log(error);
   }
-
+  redirect("/dashboard/quizzes");
   /*   const [addQuestionToDB, _createQuiz, addQuizToFaculty]: [Question: Quiz, Faculty] = await prisma.$transaction([
   
           
@@ -170,26 +171,99 @@ export async function submitStudentAnswers(
   const currentDate = new Date(currentTimestamp);
   const dateString = currentDate.toISOString();
 
-  const saveToStudentTakenQuiz = await prisma.quizTaken.create({
+  /* const saveToStudentTakenQuiz = await prisma.quizTaken.create({
     data: {
       quiz: { connect: { id: quizId } },
-      Student: { connect: { studentId: userSession?.user.id } },
+      student: { connect: { studentId: userSession?.user.id } },
       dateTaken: dateString,
-      retriesLeft: 4,
+      retriesLeft: 5,
+      
     },
-    include: { quiz: true, Student: true },
+    include: { quiz: true, student: true },
   });
+ */
 
-  const saveResult = await prisma.quiz_Result.create({
-    data: {
-      score: studentResult.studentScore,
-      time: studentResult.finalTime,
-      timeStr: studentResult.finalTime_str,
-      out_of_focus: studentResult.focusCount,
-      answers_clicked: studentResult.numberOfAnswerClicks,
-      dateTaken: dateString,
+  const existingQuiz = await prisma.quizTaken.findFirst({
+    where: {
+      AND: [{ quizId: quizId }, { studentId: userSession?.user.id as string }],
     },
   });
 
-  console.log(saveToStudentTakenQuiz, saveResult);
+  console.log("Existing", existingQuiz);
+
+  if (existingQuiz) {
+    const updateStudentTakenQuiz = await prisma.quizTaken.update({
+      where: {
+        id: existingQuiz?.id,
+      },
+      data: {
+        isPerfect: studentResult.isPerfect,
+        retriesLeft: {
+          decrement: 1,
+        },
+      },
+    });
+
+    if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect) {
+      console.log('pasok HAHAHA')
+      const updateStudentDone = await prisma.quizTaken.update({
+        where: {
+          id: existingQuiz?.id,
+        },
+        data: {
+          isDone: true,
+        },
+      });
+    }
+
+    const saveResult = await prisma.quiz_Result.create({
+      data: {
+        score: studentResult.studentScore,
+        time: studentResult.finalTime,
+        timeStr: studentResult.finalTime_str,
+        out_of_focus: studentResult.focusCount,
+        answers_clicked: studentResult.numberOfAnswerClicks,
+        dateTaken: dateString,
+        quizTaken: { connect: { id: updateStudentTakenQuiz.id } },
+        student: { connect: { studentId: userSession?.user.id as string } },
+      },
+      include: { quizTaken: true },
+    });
+
+    console.log(updateStudentTakenQuiz, saveResult);
+    revalidatePath("/dashboard/quizzes");
+    redirect("/dashboard/quizzes");
+  } else {
+    const saveToStudentTakenQuiz = await prisma.quizTaken.create({
+      data: {
+        quiz: { connect: { id: quizId } },
+        student: { connect: { studentId: userSession?.user.id } },
+        dateTaken: dateString,
+        isPerfect: studentResult.isPerfect,
+        retriesLeft: 5,
+      },
+      include: {
+        quiz: true,
+        student: true,
+      },
+    });
+
+    const saveResult = await prisma.quiz_Result.create({
+      data: {
+        score: studentResult.studentScore,
+        time: studentResult.finalTime,
+        timeStr: studentResult.finalTime_str,
+        out_of_focus: studentResult.focusCount,
+        answers_clicked: studentResult.numberOfAnswerClicks,
+        dateTaken: dateString,
+        quizTaken: { connect: { id: saveToStudentTakenQuiz.id } },
+        student: { connect: { studentId: userSession?.user.id as string } },
+      },
+      include: { quizTaken: true },
+    });
+
+    console.log(saveToStudentTakenQuiz, saveResult);
+    revalidatePath("/dashboard/quizzes");
+    redirect("/dashboard/quizzes");
+  }
 }

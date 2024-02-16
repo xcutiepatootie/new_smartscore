@@ -11,11 +11,34 @@ const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 
-  console.log(quizCount_Taken)
+  console.log("List", quizList);
+  console.log("Taken", quizTaken);
 
-  if(quizCount_Taken.getQuizzesCount === quizCount_Taken.getQuizzesTakenCountByUser){
-    return <div>No Quiz Available</div>
-  } 
+  const isQuizTaken = (quizId: any, studentId: any) => {
+    // Find if quizId exists in quizTaken array
+    return quizTaken.some(
+      (takenQuiz: any) =>
+        takenQuiz.quizId === quizId && takenQuiz.studentId === studentId
+    );
+  };
+
+  // Filter out quizTaken data with isDone === true
+  const filteredQuizTaken = quizTaken.filter(
+    (takenQuiz: any) =>
+      takenQuiz.isDone && session?.user.id === takenQuiz.studentId
+  );
+
+  // Filter out quizTaken data with isDone === false
+  const filteredQuizTaken_NotDone = quizTaken.filter(
+    (takenQuiz: any) =>
+      !takenQuiz.isDone && session?.user.id === takenQuiz.studentId
+  );
+
+  console.log("Completed: ", filteredQuizTaken);
+
+  const checkAllQuizinQuizTakenByUser = quizList.map((quiz: Quiz) => {
+    return isQuizTaken(quiz.id, session?.user.id);
+  });
 
   return (
     <div className="w-full">
@@ -28,43 +51,30 @@ const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
           </tr>
         </thead>
         <tbody>
-          {quizList.map((quiz: Quiz) => {
-            const quizTakenForCurrentQuiz = quizTaken.find(
-              (qt: any) => qt.quizId === quiz.id
-            );
-
-            const retriesLeft = quizTakenForCurrentQuiz
-              ? quizTakenForCurrentQuiz.retriesLeft
-              : 0;
-
-            // Check if the user is a student and if retries are left
-            const showRetryButton =
-              session?.user.role === "student" && retriesLeft > 0;
-
-            // Check if isPerfect is true
-            const isPerfect =
-              quizTakenForCurrentQuiz &&
-              quizTakenForCurrentQuiz.isPerfect === true;
-
-            // Render the row conditionally based on retries left
-            console.log(
-              quizTakenForCurrentQuiz,
-              retriesLeft,
-              showRetryButton,
-              isPerfect
-            );
-            return (
-              retriesLeft >= 0 &&
-              isPerfect && (
+          {quizList.map((quiz: Quiz, index: number) => {
+            const isNotTakenOrNotDone =
+              !isQuizTaken(quiz.id, session?.user.id) ||
+              (isQuizTaken(quiz.id, session?.user.id) &&
+                !filteredQuizTaken.find(
+                  (takenQuiz: any) => takenQuiz.quizId === quiz.id
+                )?.isDone);
+            if (isNotTakenOrNotDone) {
+              return (
                 <tr key={quiz.id} className="border-b border-gray-200">
                   <td className="px-6 py-4">{quiz.quizName}</td>
                   <td className="px-6 py-4">{quiz.subject}</td>
-                  {/* Render either retry button or take quiz button */}
                   {session?.user.role === "student" ? (
                     <td className="px-6 py-4 text-center">
-                      {showRetryButton ? (
+                      {" "}
+                      {checkAllQuizinQuizTakenByUser[index] ? (
                         <>
-                          <span>Number of Retries Left: {retriesLeft}</span>
+                          <span>
+                            Number of Retries Left:{" "}
+                            {checkAllQuizinQuizTakenByUser[index] &&
+                              filteredQuizTaken_NotDone.find(
+                                (takenQuiz: any) => takenQuiz.quizId === quiz.id
+                              )?.retriesLeft }
+                          </span>
                           <button
                             className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
                             onClick={() =>
@@ -77,16 +87,18 @@ const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
                           </button>
                         </>
                       ) : (
-                        <button
-                          className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
-                          onClick={() =>
-                            router.push(
-                              `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
-                            )
-                          }
-                        >
-                          Take Quiz
-                        </button>
+                        <>
+                          <button
+                            className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                            onClick={() =>
+                              router.push(
+                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
+                              )
+                            }
+                          >
+                            Take Quiz
+                          </button>
+                        </>
                       )}
                     </td>
                   ) : (
@@ -116,8 +128,8 @@ const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
                     </td>
                   )}
                 </tr>
-              )
-            );
+              );
+            }
           })}
         </tbody>
       </table>

@@ -4,6 +4,7 @@ import {
   QuizAnswerFields,
   QuizAnswersSchema,
   QuizFields,
+  ScoreResult,
   Student_Quiz_Result,
 } from "@/types/types";
 import { DevTool } from "@hookform/devtools";
@@ -108,8 +109,12 @@ export const Take_Quiz = ({
     console.log(answerChanges);
   };
 
-  function calculateScore(quiz: QuizFields, answers: QuizAnswerFields): number {
+  function calculateScore(
+    quiz: QuizFields,
+    answers: QuizAnswerFields
+  ): ScoreResult {
     let score = 0;
+    let perfect = false;
 
     for (let i = 0; i < quiz.numberOfItems; i++) {
       const studentAnswer = answers.studentAnswers[i].answer;
@@ -118,9 +123,13 @@ export const Take_Quiz = ({
       if (studentAnswer === correctAnswer) {
         score++;
       }
+
+      if (score === quiz.numberOfItems) {
+        perfect = true;
+      }
     }
 
-    return score;
+    return { score, perfect };
   }
 
   const onSubmit: SubmitHandler<QuizAnswerFields> = async (data) => {
@@ -142,7 +151,8 @@ export const Take_Quiz = ({
     console.log("score:", studentScore); */
 
     const formattedValues: Student_Quiz_Result = {
-      studentScore: studentScore,
+      studentScore: studentScore.score,
+      isPerfect: studentScore.perfect,
       focusCount: focusCount,
       numberOfAnswerClicks: answerChanges,
       finalTime: time,

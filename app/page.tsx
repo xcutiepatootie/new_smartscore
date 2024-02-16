@@ -12,11 +12,11 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="flex flex-row">
+      <div className="flex flex-row max-sm:flex-col"> 
         <div>
           <Image src={'/1.png'} alt="HAHA" width={500} height={250}/>
         </div>
-        <div>
+        <div className="">
           <h1>Landing page</h1>
 
         </div>

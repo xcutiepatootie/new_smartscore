@@ -25,19 +25,20 @@ enum Role {
 }
 
 model Student {
-  id           String      @id @default(auto()) @map("_id") @db.ObjectId
-  studentId    String?     @db.ObjectId @unique
+  id           String        @id @default(auto()) @map("_id") @db.ObjectId
+  studentId    String?       @unique @db.ObjectId
   name         String
   username     String
   email        String
   quizzesTaken QuizTaken[]
-  user         User?       @relation(fields: [studentId], references: [id])
+  user         User?         @relation(fields: [studentId], references: [id])
   Quiz         Quiz[]
+  Quiz_Result  Quiz_Result[]
 }
 
 model Faculty {
   id        String  @id @default(auto()) @map("_id") @db.ObjectId
-  facultyId String? @db.ObjectId @unique
+  facultyId String? @unique @db.ObjectId
   name      String
   username  String
   email     String
@@ -47,29 +48,34 @@ model Faculty {
 }
 
 model Quiz_Result {
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  id              String     @id @default(auto()) @map("_id") @db.ObjectId
   score           Int
   time            Int
   out_of_focus    Int
   answers_clicked Int
   timeStr         String
   dateTaken       DateTime
-  QuizTaken       QuizTaken[]
-  Retry           Retry[]
+  quizTaken       QuizTaken? @relation(fields: [quizTakenId], references: [id])
+  quizTakenId     String?    @db.ObjectId
+  student         Student?   @relation(fields: [studentId], references: [studentId])
+  studentId       String?    @db.ObjectId
+
+  Retry Retry[]
 }
 
 model QuizTaken {
-  id     String       @id @default(auto()) @map("_id") @db.ObjectId
-  quiz   Quiz         @relation(fields: [quizId], references: [id])
-  quizId String       @db.ObjectId
-  result Quiz_Result? @relation(fields: [quiz_ResultId], references: [id])
+  id      String        @id @default(auto()) @map("_id") @db.ObjectId
+  quiz    Quiz          @relation(fields: [quizId], references: [id])
+  quizId  String        @db.ObjectId
+  results Quiz_Result[]
 
-  dateTaken     DateTime @default(now())
-  Student       Student? @relation(fields: [studentId], references: [studentId])
-  studentId     String?  @db.ObjectId
-  retriesLeft   Int      @default(5)
-  Retry         Retry[]
-  quiz_ResultId String?  @db.ObjectId
+  dateTaken   DateTime @default(now())
+  student     Student? @relation(fields: [studentId], references: [studentId])
+  studentId   String   @db.ObjectId
+  retriesLeft Int      @default(5)
+  isPerfect   Boolean? @default(false)
+  isDone      Boolean? @default(false)
+  Retry       Retry[]
 }
 
 model Retry {
@@ -86,9 +92,9 @@ model Quiz {
   quizName      String
   numberOfItems Int
   subject       String
-  facultyId     String?   @db.ObjectId
-  facultyName   String? 
-  studentId     String?     @db.ObjectId 
+  facultyId     String?     @db.ObjectId
+  facultyName   String?
+  studentId     String?     @db.ObjectId
   questions     Question[]
   QuizTaken     QuizTaken[]
   Faculty       Faculty?    @relation(fields: [facultyId], references: [facultyId])

@@ -47,8 +47,14 @@ export type QuizAnswerFields = z.infer<typeof QuizAnswersSchema>;
 
 export type Student_Quiz_Result = {
   studentScore: number;
+  isPerfect: boolean;
   focusCount: number;
   numberOfAnswerClicks: number;
   finalTime: number;
   finalTime_str: string;
 };
+
+export interface ScoreResult {
+  score: number;
+  perfect: boolean;
+}
