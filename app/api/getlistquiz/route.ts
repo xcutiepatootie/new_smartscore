@@ -19,7 +19,7 @@ export async function POST(req: Request) {
         };
 
         if (formattedResponse) {
-            console.log(formattedResponse)
+           // console.log(formattedResponse)
             revalidatePath('/dashboard')
             return new Response(JSON.stringify(formattedResponse), { status: 200, statusText: "Test" })
         } else {

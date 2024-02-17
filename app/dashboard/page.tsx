@@ -1,10 +1,10 @@
 //"use client"
-import { DashboardCards } from "@/components/Cards/DashboardCards"
+import TnumberOfQuiz from "@/components/Cards/Dashboard/TnumberOfQuiz";
+import TnumberOfQuizCreatedByUser from "@/components/Cards/Dashboard/TnumberOfQuizCreatedByUser";
 import { config } from "@/lib/auth";
-import { getServerSession } from "next-auth"
-import { useSession } from "next-auth/react"
-import { revalidatePath } from 'next/cache'
-
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { revalidatePath } from "next/cache";
 
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
@@ -13,22 +13,22 @@ export default async function Dashboard() {
      console.log(session)
    } */
   const session = await getServerSession(config);
-  console.log(session)
-
+  //console.log(session);
 
   return (
     <>
       <div className="">
-
         <h1>Dashboard</h1>
 
         <div className="flex flex-row max-sm:flex=col">
-          <DashboardCards />
+          <div className="mx-2">
+            <TnumberOfQuiz />
+          </div>
+          <div className="mx-2">
+            <TnumberOfQuizCreatedByUser userSession={session?.user} />
+          </div>
         </div>
-
       </div>
-
     </>
-  )
+  );
 }
-
