@@ -31,6 +31,7 @@ export const QuizSchema = z.object({
   quizName: z.string().min(1),
   numberOfItems: z.number().min(1).max(100),
   subject: z.string().min(1),
+  selectedSections: z.array(z.string()),
   questions: z.array(
     z.object({
       id: z.string().optional(),

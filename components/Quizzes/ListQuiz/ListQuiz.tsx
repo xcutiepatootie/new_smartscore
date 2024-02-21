@@ -7,7 +7,7 @@ import { useState } from "react";
 import { deleteQuiz } from "@/lib/server_actions/actions";
 import { Quiz } from "@prisma/client";
 
-const ListQuiz = ({ quizList, quizTaken, quizCount_Taken }: any) => {
+const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
   const router = useRouter();
 

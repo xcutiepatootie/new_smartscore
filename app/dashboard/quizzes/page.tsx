@@ -3,6 +3,7 @@ import prisma from "@/lib/prisma";
 
 import { getServerSession } from "next-auth";
 import { config } from "@/lib/auth";
+import { getSections } from "@/lib/server_actions/actions";
 
 const Quizzes = async () => {
   const getSession = await getServerSession(config);
@@ -30,6 +31,8 @@ const Quizzes = async () => {
   }
 
   const allQuiz = await getQuizzes();
+  const allSection = await getSections();
+  //console.log(allSection)
 
   // console.log(JSON.stringify(allQuiz.getAllQuizzes, null, 2));
 
@@ -38,7 +41,7 @@ const Quizzes = async () => {
       <Add_List_Quiz
         quizList={allQuiz.getAllQuizzes}
         quizTaken={allQuiz.getAllTakenQuiz}
-        quizCount_Taken={allQuiz.formatCount}
+        studentSection={allSection}
       />
     </>
   );

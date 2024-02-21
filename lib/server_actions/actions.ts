@@ -17,6 +17,19 @@ async function getUserSession() {
   return getSession;
 }
 
+export async function getSections() {
+  const getSection = await prisma.student.findMany({
+    distinct: ["section"],
+    select: {
+      section: true,
+    },
+  });
+
+  console.log(getSection);
+
+  return getSection;
+}
+
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
   console.log(userData);
@@ -109,6 +122,7 @@ export async function createQuiz(createQuizData: QuizFields) {
           numberOfItems: createQuizData.numberOfItems,
           quizCode: generateRandomCode(),
           subject: createQuizData.subject,
+          sectionAssigned: createQuizData.selectedSections,
           questions: {
             // Associate questions with the quiz
             create: createQuizData.questions.map((question) => ({
@@ -342,8 +356,8 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
     where: { quizCode: quizCodeLocal },
   });
 
-  if(!findQuiz){
-    return "No Quiz Found"
+  if (!findQuiz) {
+    return "No Quiz Found";
   }
 
   const checkQuizisDone = await prisma.quizTaken.findFirst({

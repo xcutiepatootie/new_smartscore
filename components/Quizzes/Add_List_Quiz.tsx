@@ -7,11 +7,7 @@ import { useState } from "react";
 import TakeQuiz_UseCode from "./Take_Quiz/TakeQuiz_UseCode";
 import { Button } from "../ui/button";
 
-export const Add_List_Quiz = ({
-  quizList,
-  quizTaken,
-  quizCount_Taken,
-}: any) => {
+export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
   const [showViewQuiz, setShowViewQuiz] = useState(true);
   const { data: session, status } = useSession();
 
@@ -65,13 +61,9 @@ export const Add_List_Quiz = ({
 
             <div className="container w-screen h-[80vh] mx-auto mt-4 bg-white p-4 rounded-lg shadow-lg overflow-y-auto">
               {showViewQuiz ? (
-                <ListQuiz
-                  quizList={quizList}
-                  quizTaken={quizTaken}
-                  quizCount_Taken={quizCount_Taken}
-                />
+                <ListQuiz quizList={quizList} quizTaken={quizTaken} />
               ) : (
-                <AddQuiz />
+                <AddQuiz studentSection={studentSection}/>
               )}
             </div>
           </div>

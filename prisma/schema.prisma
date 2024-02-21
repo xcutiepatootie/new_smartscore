@@ -28,7 +28,7 @@ model Student {
   id           String        @id @default(auto()) @map("_id") @db.ObjectId
   studentId    String?       @unique @db.ObjectId
   name         String
-  section      String?       
+  section      String?
   username     String
   email        String
   quizzesTaken QuizTaken[]
@@ -89,18 +89,19 @@ model Retry {
 }
 
 model Quiz {
-  id            String      @id @default(auto()) @map("_id") @db.ObjectId
-  quizName      String      @unique
-  quizCode      String      @unique
-  numberOfItems Int
-  subject       String
-  facultyId     String?     @db.ObjectId
-  facultyName   String?
-  studentId     String?     @db.ObjectId
-  questions     Question[]
-  QuizTaken     QuizTaken[]
-  Faculty       Faculty?    @relation(fields: [facultyId], references: [facultyId])
-  Student       Student?    @relation(fields: [studentId], references: [studentId])
+  id              String      @id @default(auto()) @map("_id") @db.ObjectId
+  quizName        String      @unique
+  quizCode        String      @unique
+  numberOfItems   Int
+  subject         String
+  sectionAssigned String[]
+  facultyId       String?     @db.ObjectId
+  facultyName     String?
+  studentId       String?     @db.ObjectId
+  questions       Question[]
+  QuizTaken       QuizTaken[]
+  Faculty         Faculty?    @relation(fields: [facultyId], references: [facultyId])
+  Student         Student?    @relation(fields: [studentId], references: [studentId])
 }
 
 model Question {
