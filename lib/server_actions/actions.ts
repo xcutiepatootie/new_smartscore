@@ -40,6 +40,7 @@ export async function createUser(userData: SignUpFormFields) {
               name: userData.name,
               username: userData.username,
               email: userData.email,
+              section: userData.classSection,
               user: { connect: { email: userData.email } },
             },
             include: { user: true },
@@ -57,6 +58,25 @@ export async function createUser(userData: SignUpFormFields) {
 
   console.log(res_CreateUser, res_Faculty_Student);
   return res_CreateUser;
+}
+
+// Generate a random code
+function generateRandomCode(): string {
+  let code = "";
+  for (let i = 0; i < 6; i++) {
+    const randomIndex = Math.floor(Math.random() * 62); // 26 letters (uppercase and lowercase) + 10 digits
+    if (randomIndex < 26) {
+      // Uppercase letter
+      code += String.fromCharCode(65 + randomIndex);
+    } else if (randomIndex < 52) {
+      // Lowercase letter
+      code += String.fromCharCode(97 + randomIndex - 26);
+    } else {
+      // Digit
+      code += String.fromCharCode(48 + randomIndex - 52);
+    }
+  }
+  return code;
 }
 
 // Create Quiz
@@ -87,6 +107,7 @@ export async function createQuiz(createQuizData: QuizFields) {
           facultyName: getSession?.user.name,
           quizName: createQuizData.quizName,
           numberOfItems: createQuizData.numberOfItems,
+          quizCode: generateRandomCode(),
           subject: createQuizData.subject,
           questions: {
             // Associate questions with the quiz
@@ -312,4 +333,35 @@ export async function submitStudentAnswers(
     revalidatePath("/dashboard/quizzes");
     redirect("/dashboard/quizzes");
   }
+}
+
+export async function takeQuizUseCode(quizCodeLocal: string) {
+  const userSession = await getUserSession();
+
+  const findQuiz = await prisma.quiz.findUnique({
+    where: { quizCode: quizCodeLocal },
+  });
+
+  if(!findQuiz){
+    return "No Quiz Found"
+  }
+
+  const checkQuizisDone = await prisma.quizTaken.findFirst({
+    where: {
+      AND: [
+        { quizId: findQuiz?.id },
+        { isDone: true },
+        { studentId: userSession?.user.id },
+      ],
+    },
+  });
+
+  console.log(checkQuizisDone);
+
+  if (checkQuizisDone) {
+    return "Quiz is already done";
+  }
+
+  console.log(findQuiz);
+  redirect(`/dashboard/quizzes/take-quiz?quizId=${findQuiz?.id}`);
 }

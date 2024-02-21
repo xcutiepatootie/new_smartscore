@@ -24,9 +24,11 @@ export default async function Dashboard() {
           <div className="mx-2">
             <TnumberOfQuiz />
           </div>
-          <div className="mx-2">
-            <TnumberOfQuizCreatedByUser userSession={session?.user} />
-          </div>
+          {session?.user.role === "faculty" && (
+            <div className="mx-2">
+              <TnumberOfQuizCreatedByUser userSession={session?.user} />
+            </div>
+          )}
         </div>
       </div>
     </>

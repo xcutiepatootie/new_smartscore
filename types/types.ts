@@ -16,6 +16,7 @@ export const SignUpFormSchema = FormSchema.merge(
   z.object({
     name: z.string().min(1, "Name should not be Empty"),
     username: z.string().min(1, "Username should not be Empty"),
+    classSection: z.string().min(1, "Section should not be Empty").optional(),
     role: z.enum(["faculty", "student"]),
   })
 );
@@ -60,3 +61,13 @@ export interface ScoreResult {
   score: number;
   perfect: boolean;
 }
+
+// Define a regular expression pattern for the code
+const codePattern = /^[a-zA-Z0-9]{6}$/;
+
+export const codeSchema = z.string().regex(codePattern);
+
+export const quizCodeSchema = z.object({
+  quizCode: z.string().min(1).max(6),
+});
+export type quizCodeField = z.infer<typeof quizCodeSchema>;
