@@ -62,7 +62,6 @@ export async function createUser(userData: SignUpFormFields) {
             data: {
               name: userData.name,
               username: userData.username,
-              section: "faculty",
               email: userData.email,
               user: { connect: { email: userData.email } },
             },
