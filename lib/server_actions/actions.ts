@@ -212,7 +212,7 @@ export async function updateQuiz(
     },
     include: { questions: true }, // Include questions in the updated quiz result
   });
-
+  revalidatePath("/dashboard/quizzes");
   return updatedQuizResult;
 
   // Associate questions with the quiz
