@@ -351,6 +351,7 @@ export async function submitStudentAnswers(
 
 export async function takeQuizUseCode(quizCodeLocal: string) {
   const userSession = await getUserSession();
+  const { section }: any = userSession?.user.userSection;
 
   const findQuiz = await prisma.quiz.findUnique({
     where: { quizCode: quizCodeLocal },
@@ -358,6 +359,13 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
 
   if (!findQuiz) {
     return "No Quiz Found";
+  }
+
+  const checkQuizIsAssigned = findQuiz.sectionAssigned.includes(section);
+
+  console.log(checkQuizIsAssigned);
+  if(checkQuizIsAssigned === false){
+    return "Quiz is not assigned in your section"
   }
 
   const checkQuizisDone = await prisma.quizTaken.findFirst({

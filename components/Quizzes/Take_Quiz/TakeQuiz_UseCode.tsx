@@ -38,6 +38,10 @@ const TakeQuiz_UseCode = () => {
     if (find === "Quiz is already done") {
       setError("quizCode", { type: "custom", message: "Quiz is already done" });
     }
+    if(find === "Quiz is not assigned in your section"){
+      setError("quizCode", { type: "custom", message: "Quiz is not assigned in your section" });
+
+    }
   };
 
   return (

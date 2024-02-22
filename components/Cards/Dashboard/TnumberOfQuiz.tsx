@@ -6,24 +6,20 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import prisma from "@/lib/prisma";
 
-async function getData() {
-  const responseData = await fetch("http://localhost:3000/api/getlistquiz", {
-    method: "POST",
-    next: { revalidate: 10 },
-  });
+const TnumberOfQuiz = async ({ userSession }: any) => {
+  const user = userSession;
+  const { section } = userSession?.userSection;
 
-  if (!responseData.ok) {
-    throw new Error("Failed to fetch data");
+  async function getData() {
+    const quizzesCreatedByUser = await prisma.quiz.count({
+      where: { sectionAssigned: { has: section } },
+    });
+
+    console.log(quizzesCreatedByUser);
+    return quizzesCreatedByUser;
   }
-  const data = await responseData.json();
-
-  console.log("Test DATA:", data);
-
-  return data;
-}
-
-const TnumberOfQuiz = async () => {
   const data = await getData();
 
   return (
@@ -31,17 +27,15 @@ const TnumberOfQuiz = async () => {
       <Card className="">
         <CardHeader>
           <CardTitle>Total Number of Quiz</CardTitle>
-          <CardDescription>Card Description</CardDescription>
+          <CardDescription>shows the number of available quiz for you!</CardDescription>
         </CardHeader>
         <CardContent>
-          <p>Quiz Count: {data.quizCount}</p>
+          <p>Quiz Count: {data}</p>
         </CardContent>
         <CardFooter>
           <p>Card Footer</p>
         </CardFooter>
       </Card>
-
-    
     </>
   );
 };

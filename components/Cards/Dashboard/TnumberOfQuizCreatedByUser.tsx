@@ -8,24 +8,11 @@ import {
 } from "@/components/ui/card";
 import prisma from "@/lib/prisma";
 
-async function getData() {
-  const responseData = await fetch("http://localhost:3000/api/getlistquiz", {
-    method: "POST",
-    next: { revalidate: 10 },
-  });
 
-  if (!responseData.ok) {
-    throw new Error("Failed to fetch data");
-  }
-  const data = await responseData.json();
-
-  console.log("Test DATA:", data);
-
-  return data;
-}
 
 const TnumberOfQuizCreatedByUser = async (userSession: any) => {
   const user = userSession;
+  
 
   async function getData1() {
     const quizzesCreatedByUser = await prisma.quiz.findMany({

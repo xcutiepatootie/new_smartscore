@@ -22,7 +22,7 @@ export default async function Dashboard() {
 
         <div className="flex flex-row max-sm:flex=col">
           <div className="mx-2">
-            <TnumberOfQuiz />
+            <TnumberOfQuiz userSession={session?.user} />
           </div>
           {session?.user.role === "faculty" && (
             <div className="mx-2">
