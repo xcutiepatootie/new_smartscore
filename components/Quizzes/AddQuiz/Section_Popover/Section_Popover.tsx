@@ -5,40 +5,24 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-interface SectionPopoverProps {
-  control: any;
-  studentSection: any;
-  defaultValue?: any;
-}
-
-const Section_Popover: React.FC<SectionPopoverProps> = ({
-  control,
-  studentSection,
-  defaultValue,
-}: any) => {
-  console.log(defaultValue);
+const Section_Popover = ({ control, studentSection }: any) => {
   return (
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline">Select Sections</Button>
+          <Button variant="outline">Open popover</Button>
         </PopoverTrigger>
         <PopoverContent>
-          {studentSection.map((section: any, index: number) => {
-            const isChecked =
-              defaultValue && defaultValue.includes(section.section);
-            return (
-              <div key={index}>
-                <input
-                  type="checkbox"
-                  {...control.register(`selectedSections`)}
-                  value={section.section}
-                  defaultChecked={isChecked}
-                />
-                <label>{section.section}</label>
-              </div>
-            );
-          })}
+          {studentSection.map((section: any, index: number) => (
+            <div key={index}>
+              <input
+                type="checkbox"
+                {...control.register(`sectionAssigned`)}
+                value={section.section}
+              />
+              <label>{section.section}</label>
+            </div>
+          ))}
         </PopoverContent>
       </Popover>
     </>

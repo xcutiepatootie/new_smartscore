@@ -130,7 +130,7 @@ export const Update_Quiz = ({
               <Section_Popover
                 control={control}
                 studentSection={studentSection}
-                defaultValue={selectedQuiz.sectionAssigned}
+               
               />
             </div>
           </div>
@@ -216,7 +216,7 @@ export const Update_Quiz = ({
           {errors.root && (
             <div className="text-red-500">{errors.root.message}</div>
           )}
-          {/*    <DevTool control={control} /> */}
+             <DevTool control={control} />
         </form>
       </div>
     </div>
