@@ -24,19 +24,21 @@ const Section_Popover: React.FC<SectionPopoverProps> = ({
           <Button variant="outline">Select Sections</Button>
         </PopoverTrigger>
         <PopoverContent>
-          {studentSection.map((section: any, index: number) => (
-            <div key={index}>
-              <input
-                type="checkbox"
-                {...control.register(`sectionAssigned`)}
-                value={defaultValue === null ? section.section : defaultValue}
-                defaultChecked={
-                  defaultValue && defaultValue.includes(section.section)
-                }
-              />
-              <label>{section.section}</label>
-            </div>
-          ))}
+          {studentSection.map((section: any, index: number) => {
+            const isChecked =
+              defaultValue && defaultValue.includes(section.section);
+            return (
+              <div key={index}>
+                <input
+                  type="checkbox"
+                  {...control.register(`selectedSections`)}
+                  value={section.section}
+                  defaultChecked={isChecked}
+                />
+                <label>{section.section}</label>
+              </div>
+            );
+          })}
         </PopoverContent>
       </Popover>
     </>
