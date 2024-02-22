@@ -10,11 +10,15 @@ import prisma from "@/lib/prisma";
 
 const TnumberOfQuiz = async ({ userSession }: any) => {
   const user = userSession;
-  const { section } = userSession?.userSection;
+  let user_section: any = null;
+  if (user.role === "student") {
+    const { section } = userSession?.userSection;
+    user_section = section;
+  }
 
   async function getData() {
     const quizzesCreatedByUser = await prisma.quiz.count({
-      where: { sectionAssigned: { has: section } },
+      where: { sectionAssigned: { has: user_section } },
     });
 
     console.log(quizzesCreatedByUser);
@@ -27,7 +31,9 @@ const TnumberOfQuiz = async ({ userSession }: any) => {
       <Card className="">
         <CardHeader>
           <CardTitle>Total Number of Quiz</CardTitle>
-          <CardDescription>shows the number of available quiz for you!</CardDescription>
+          <CardDescription>
+            shows the number of available quiz for you!
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <p>Quiz Count: {data}</p>

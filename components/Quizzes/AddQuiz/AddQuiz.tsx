@@ -29,6 +29,13 @@ const AddQuiz = ({ studentSection }: any) => {
     // Handle form submission logic here
     console.log(data);
     const createQuizData = await createQuiz(data);
+    if(createQuizData){
+      toast({
+        className: "bg-green-600 text-neutral-100",
+        title: "SmartScore",
+        description: "Successfully Created a Quiz.",
+      });
+    }
 
     const res = QuizSchema.safeParse(data);
     if (!res.success) {

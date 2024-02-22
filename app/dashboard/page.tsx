@@ -21,12 +21,13 @@ export default async function Dashboard() {
         <h1>Dashboard</h1>
 
         <div className="flex flex-row max-sm:flex=col">
-          <div className="mx-2">
-            <TnumberOfQuiz userSession={session?.user} />
-          </div>
-          {session?.user.role === "faculty" && (
+          {session?.user.role === "faculty" ? (
             <div className="mx-2">
               <TnumberOfQuizCreatedByUser userSession={session?.user} />
+            </div>
+          ) : (
+            <div className="mx-2">
+              <TnumberOfQuiz userSession={session?.user} />
             </div>
           )}
         </div>

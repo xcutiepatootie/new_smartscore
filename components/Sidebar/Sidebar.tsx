@@ -12,7 +12,11 @@ import Signout_Button from "./Signout_Button";
 
 const Sidebar = async () => {
   const userSession = await getServerSession(config);
-  const { section }: any = userSession?.user.userSection;
+  let user_section = null;
+  if (userSession?.user.role === "student") {
+    const { section }: any = userSession?.user.userSection;
+    user_section = section;
+  }
   return (
     <div className="p-4 w-full h-screen bg-white left-80 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200 flex">
       <div className="flex flex-col justify-start item-center">
@@ -25,7 +29,10 @@ const Sidebar = async () => {
                   Name: {userSession.user.name}
                 </p>
                 <p>Email: {userSession.user.email}</p>
-                <p>Section: {section}</p>
+                {userSession.user.role === "student" && (
+                  <p>Section: {user_section}</p>
+                )}
+
                 <p>Role: {userSession.user.role}</p>
               </>
             )}

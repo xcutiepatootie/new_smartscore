@@ -98,8 +98,8 @@ export async function createQuiz(createQuizData: QuizFields) {
   console.log(createQuizData, getSession);
 
   let transaction;
-  try {
-    transaction = await prisma.$transaction(async (prisma) => {
+
+  /*  transaction = await prisma.$transaction(async (prisma) => {
       const createQuizInput = {
         facultyName: getSession?.user.name,
         quizName: createQuizData.quizName,
@@ -113,56 +113,34 @@ export async function createQuiz(createQuizData: QuizFields) {
             correctAnswer: question.correctAnswer,
           })),
         },
-      };
+      }; */
 
-      const createQuizResult = await prisma.quiz.create({
-        data: {
-          facultyName: getSession?.user.name,
-          quizName: createQuizData.quizName,
-          numberOfItems: createQuizData.numberOfItems,
-          quizCode: generateRandomCode(),
-          subject: createQuizData.subject,
-          sectionAssigned: createQuizData.selectedSections,
-          questions: {
-            // Associate questions with the quiz
-            create: createQuizData.questions.map((question) => ({
-              questionText: question.questionText,
-              options: question.options,
-              correctAnswer: question.correctAnswer,
-            })),
-          },
-          Faculty: { connect: { facultyId: getSession?.user.id } },
-        },
-        include: { questions: true },
-      });
+  const createQuizResult = await prisma.quiz.create({
+    data: {
+      facultyName: getSession?.user.name,
+      quizName: createQuizData.quizName,
+      numberOfItems: createQuizData.numberOfItems,
+      quizCode: generateRandomCode(),
+      subject: createQuizData.subject,
+      sectionAssigned: createQuizData.selectedSections,
+      questions: {
+        // Associate questions with the quiz
+        create: createQuizData.questions.map((question) => ({
+          questionText: question.questionText,
+          options: question.options,
+          correctAnswer: question.correctAnswer,
+        })),
+      },
+      Faculty: { connect: { facultyId: getSession?.user.id } },
+    },
+    include: { questions: true },
+  });
 
-      console.log(createQuizResult, createQuizInput);
-      revalidatePath("/dashboard");
-      revalidatePath("/dashboard/quizzes");
-      return { createQuiz: createQuizResult };
-    });
-    console.log(transaction);
-  } catch (error) {
-    console.log(error);
-  }
-  redirect("/dashboard/quizzes");
-  /*   const [addQuestionToDB, _createQuiz, addQuizToFaculty]: [Question: Quiz, Faculty] = await prisma.$transaction([
+  console.log(createQuizResult);
+  revalidatePath("/dashboard");
+  revalidatePath("/dashboard/quizzes");
+  return createQuizResult;
   
-          
-           prisma.question.create({
-  
-          }),
-          prisma.quiz.create({
-              data: {
-                  quizName: createQuizData.quizName,
-                  numberOfItems: createQuizData.numberOfItems,
-  
-              }
-          }),
-          prisma.faculty.upsert({
-  
-          }) 
-      ]) */
 }
 
 // Update Quiz
@@ -364,8 +342,8 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
   const checkQuizIsAssigned = findQuiz.sectionAssigned.includes(section);
 
   console.log(checkQuizIsAssigned);
-  if(checkQuizIsAssigned === false){
-    return "Quiz is not assigned in your section"
+  if (checkQuizIsAssigned === false) {
+    return "Quiz is not assigned in your section";
   }
 
   const checkQuizisDone = await prisma.quizTaken.findFirst({
