@@ -6,6 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { fromZodError } from "zod-validation-error";
 import Section_Popover from "../AddQuiz/Section_Popover/Section_Popover";
+import { DevTool } from "@hookform/devtools";
 
 export const Update_Quiz = ({
   selectedQuiz,
@@ -215,7 +216,7 @@ export const Update_Quiz = ({
           {errors.root && (
             <div className="text-red-500">{errors.root.message}</div>
           )}
-          {/*  <DevTool control={control} /> */}
+          {/*    <DevTool control={control} /> */}
         </form>
       </div>
     </div>
