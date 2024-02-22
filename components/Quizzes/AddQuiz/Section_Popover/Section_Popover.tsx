@@ -16,7 +16,7 @@ const Section_Popover: React.FC<SectionPopoverProps> = ({
   studentSection,
   defaultValue,
 }: any) => {
-  console.log(defaultValue)
+  console.log(defaultValue);
   return (
     <>
       <Popover>
@@ -30,6 +30,9 @@ const Section_Popover: React.FC<SectionPopoverProps> = ({
                 type="checkbox"
                 {...control.register(`sectionAssigned`)}
                 value={defaultValue === null ? section.section : defaultValue}
+                defaultChecked={
+                  defaultValue && defaultValue.includes(section.section)
+                }
               />
               <label>{section.section}</label>
             </div>
