@@ -9,7 +9,12 @@ import {
 import { Session } from "next-auth";
 
 export async function ProfileCards({ user }: any) {
-  const { section } = user.userSection;
+  let user_section = null;
+  if (user.role === "student") {
+    const { section } = user.userSection;
+    user_section = section;
+  }
+
   return (
     <div>
       <Card className="w-[83vw]">
@@ -26,9 +31,12 @@ export async function ProfileCards({ user }: any) {
         <CardContent>
           <p>Username: {user.username}</p>
         </CardContent>
-        <CardContent>
-          <p>Section: {section}</p>
-        </CardContent>
+        {user.role === "student" && (
+          <CardContent>
+            <p>Section: {user_section}</p>
+          </CardContent>
+        )}
+
         <CardContent>
           <p>TBA: </p>
         </CardContent>

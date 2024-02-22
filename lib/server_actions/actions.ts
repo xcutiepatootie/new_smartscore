@@ -73,6 +73,7 @@ export async function createUser(userData: SignUpFormFields) {
   return res_CreateUser;
 }
 
+//--------------------- Faculty Actions
 // Generate a random code
 function generateRandomCode(): string {
   let code = "";
@@ -91,7 +92,6 @@ function generateRandomCode(): string {
   }
   return code;
 }
-
 // Create Quiz
 export async function createQuiz(createQuizData: QuizFields) {
   const getSession = await getServerSession(config);
@@ -140,6 +140,39 @@ export async function createQuiz(createQuizData: QuizFields) {
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/quizzes");
   return createQuizResult;
+}
+// Get Quiz using Faculty
+export async function getQuizzesList_faculty() {
+  const userSession = await getUserSession();
+
+  const getAllQuizzes = await prisma.quiz.findMany({
+    include: { questions: true },
+  });
+
+  console.log(getAllQuizzes);
+  /*  const { section }: any = userSession?.user.userSection;
+  console.log("HAHA", section);
+
+  //Filter Quiz Data base from Current Section
+  const quizzesBasedOnSection = getAllQuizzes.filter((quiz) =>
+    quiz.sectionAssigned.includes(section)
+  );
+  console.log("Filtered:", quizzesBasedOnSection); */
+
+  const getQuizzesCount = await prisma.quiz.count();
+  const getQuizzesTakenCountByUser = await prisma.quizTaken.count({
+    where: {
+      studentId: userSession?.user.id,
+      isDone: true,
+    },
+  });
+
+  const formatCount = { getQuizzesCount, getQuizzesTakenCountByUser };
+
+  console.log(getQuizzesCount, getQuizzesTakenCountByUser);
+
+  const getAllTakenQuiz = await prisma.quizTaken.findMany({});
+  return { getAllQuizzes, getAllTakenQuiz, formatCount };
 }
 
 // Update Quiz
@@ -207,6 +240,41 @@ export async function deleteQuiz(quizIdLocal: string) {
   return { delQuiz, delQuestions };
 }
 
+//--------------------- Student Actions
+
+// Get Quiz using student
+export async function getQuizzesList_student() {
+  const userSession = await getUserSession();
+
+  const getAllQuizzes = await prisma.quiz.findMany({
+    include: { questions: true },
+  });
+
+  console.log(getAllQuizzes);
+  const { section }: any = userSession?.user.userSection;
+  console.log("HAHA", section);
+
+  //Filter Quiz Data base from Current Section
+  const quizzesBasedOnSection = getAllQuizzes.filter((quiz) =>
+    quiz.sectionAssigned.includes(section)
+  );
+  console.log("Filtered:", quizzesBasedOnSection);
+
+  const getQuizzesCount = await prisma.quiz.count();
+  const getQuizzesTakenCountByUser = await prisma.quizTaken.count({
+    where: {
+      studentId: userSession?.user.id,
+      isDone: true,
+    },
+  });
+
+  const formatCount = { getQuizzesCount, getQuizzesTakenCountByUser };
+
+  console.log(getQuizzesCount, getQuizzesTakenCountByUser);
+
+  const getAllTakenQuiz = await prisma.quizTaken.findMany({});
+  return { getAllQuizzes, getAllTakenQuiz, formatCount, quizzesBasedOnSection };
+}
 // Get Selected Quiz by quizId
 export async function getSelectedQuiz(quizID: string) {
   const selectedQuiz = await prisma.quiz.findUnique({
