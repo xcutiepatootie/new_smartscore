@@ -191,6 +191,7 @@ export async function updateQuiz(
       facultyName: session?.user.name, // Update faculty name if needed
       quizName: updateQuizData.quizName, // Update quiz name if needed
       numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
+      sectionAssigned: updateQuizData.sectionAssigned,
       subject: updateQuizData.subject, // Update subject if needed
       questions: {
         // Associate updated questions with the quiz
