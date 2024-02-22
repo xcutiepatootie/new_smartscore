@@ -10,7 +10,7 @@ const Section_Popover = ({ control, studentSection }: any) => {
     <>
       <Popover>
         <PopoverTrigger asChild>
-          <Button variant="outline">Open popover</Button>
+          <Button variant="outline">Select Sections</Button>
         </PopoverTrigger>
         <PopoverContent>
           {studentSection.map((section: any, index: number) => (

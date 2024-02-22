@@ -1,22 +1,25 @@
-import { Update_Quiz } from '@/components/Quizzes/UpdateQuiz/Update_Quiz'
-import { getSelectedQuiz } from '@/lib/server_actions/actions'
-import React from 'react'
+import { Update_Quiz } from "@/components/Quizzes/UpdateQuiz/Update_Quiz";
+import { getSections, getSelectedQuiz } from "@/lib/server_actions/actions";
+import React from "react";
 
 interface SearchParams {
-    quizId?: { [key: string]: string | string[] | null | undefined }
+  quizId?: { [key: string]: string | string[] | null | undefined };
 }
 
+export default async function page({
+  searchParams,
+}: {
+  searchParams: SearchParams;
+}) {
+  const selectedQuiz: any = searchParams?.quizId;
 
-export default async function page({ searchParams }: { searchParams: SearchParams }) {
+  const fetchedQuiz: any = await getSelectedQuiz(selectedQuiz);
+  const allSection = await getSections();
 
-    const selectedQuiz: any = searchParams?.quizId;
-
-    const fetchedQuiz: any = await getSelectedQuiz(selectedQuiz);
-
-    console.log(fetchedQuiz)
-    return (
-        <div className=''>
-            <Update_Quiz selectedQuiz={fetchedQuiz} />
-        </div>
-    )
+  console.log(fetchedQuiz);
+  return (
+    <div className="">
+      <Update_Quiz selectedQuiz={fetchedQuiz} studentSection={allSection} />
+    </div>
+  );
 }

@@ -5,17 +5,24 @@ import { QuizFields, QuizSchema } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { fromZodError } from "zod-validation-error";
+import Section_Popover from "../AddQuiz/Section_Popover/Section_Popover";
 
-export const Update_Quiz = ({ selectedQuiz }: { selectedQuiz: QuizFields }) => {
+export const Update_Quiz = ({
+  selectedQuiz,
+  studentSection,
+}: {
+  selectedQuiz: QuizFields;
+  studentSection: any;
+}) => {
   const { questions } = selectedQuiz;
 
   console.log(selectedQuiz.questions[0].id);
 
   const questionIds = {
-    questions : selectedQuiz.questions
-  }
+    questions: selectedQuiz.questions,
+  };
 
-  console.log(questionIds)
+  console.log(questionIds);
 
   console.log(questions);
   const { toast } = useToast();
@@ -32,6 +39,7 @@ export const Update_Quiz = ({ selectedQuiz }: { selectedQuiz: QuizFields }) => {
       quizName: selectedQuiz.quizName,
       numberOfItems: selectedQuiz.numberOfItems,
       subject: selectedQuiz.subject,
+      selectedSections: selectedQuiz.selectedSections,
       questions: questions.map((question) => ({
         questionText: question.questionText,
         correctAnswer: question.correctAnswer,
@@ -47,7 +55,11 @@ export const Update_Quiz = ({ selectedQuiz }: { selectedQuiz: QuizFields }) => {
     console.log("heloo");
     // Handle form submission logic here
     console.log(data);
-    const updateQuizData = await updateQuiz(data, selectedQuiz.id as string, questionIds as unknown as []);
+    const updateQuizData = await updateQuiz(
+      data,
+      selectedQuiz.id as string,
+      questionIds as unknown as []
+    );
 
     const res = QuizSchema.safeParse(data);
     if (!res.success) {
@@ -94,6 +106,21 @@ export const Update_Quiz = ({ selectedQuiz }: { selectedQuiz: QuizFields }) => {
                 className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
                 type="text"
                 id="subject"
+              />
+            </div>
+            <div>
+              <label className="px-2" htmlFor="subject">
+                Sections:
+              </label>
+              {/* <input
+                {...register("subject", { required: true })}
+                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                type="text"
+                id="subject"
+              /> */}
+              <Section_Popover
+                control={control}
+                studentSection={studentSection}
               />
             </div>
           </div>
