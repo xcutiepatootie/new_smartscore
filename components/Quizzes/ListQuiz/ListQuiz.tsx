@@ -6,6 +6,7 @@ import { useState } from "react";
 
 import { deleteQuiz } from "@/lib/server_actions/actions";
 import { Quiz } from "@prisma/client";
+import Delete_Quiz from "../Delete_Quiz/Delete_Quiz";
 
 const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
@@ -122,14 +123,15 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                         </button>
                       </div>
                       <div className="mx-2">
-                        <button
+                      {/*   <button
                           className="bg-red-400 text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
                           onClick={async () => {
                             const delQuiz = await deleteQuiz(quiz.id);
                           }}
                         >
                           Delete Quiz
-                        </button>
+                        </button> */}
+                        <Delete_Quiz quizId={quiz.id} />
                       </div>
                     </td>
                   )}
