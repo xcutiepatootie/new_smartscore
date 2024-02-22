@@ -5,7 +5,18 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 
-const Section_Popover = ({ control, studentSection }: any) => {
+interface SectionPopoverProps {
+  control: any;
+  studentSection: any;
+  defaultValue?: any;
+}
+
+const Section_Popover: React.FC<SectionPopoverProps> = ({
+  control,
+  studentSection,
+  defaultValue,
+}: any) => {
+  console.log(defaultValue)
   return (
     <>
       <Popover>
@@ -17,8 +28,8 @@ const Section_Popover = ({ control, studentSection }: any) => {
             <div key={index}>
               <input
                 type="checkbox"
-                {...control.register(`selectedSections`)}
-                value={section.section}
+                {...control.register(`sectionAssigned`)}
+                value={defaultValue === null ? section.section : defaultValue}
               />
               <label>{section.section}</label>
             </div>

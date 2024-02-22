@@ -122,7 +122,7 @@ export async function createQuiz(createQuizData: QuizFields) {
       numberOfItems: createQuizData.numberOfItems,
       quizCode: generateRandomCode(),
       subject: createQuizData.subject,
-      sectionAssigned: createQuizData.selectedSections,
+      sectionAssigned: createQuizData.sectionAssigned,
       questions: {
         // Associate questions with the quiz
         create: createQuizData.questions.map((question) => ({

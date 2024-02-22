@@ -39,7 +39,7 @@ export const Update_Quiz = ({
       quizName: selectedQuiz.quizName,
       numberOfItems: selectedQuiz.numberOfItems,
       subject: selectedQuiz.subject,
-      selectedSections: selectedQuiz.selectedSections,
+      sectionAssigned: selectedQuiz.sectionAssigned,
       questions: questions.map((question) => ({
         questionText: question.questionText,
         correctAnswer: question.correctAnswer,
@@ -61,7 +61,7 @@ export const Update_Quiz = ({
       questionIds as unknown as []
     );
 
-    if(updateQuizData){
+    if (updateQuizData) {
       toast({
         className: "bg-green-600 text-neutral-100",
         title: "SmartScore",
@@ -129,6 +129,7 @@ export const Update_Quiz = ({
               <Section_Popover
                 control={control}
                 studentSection={studentSection}
+                defaultValue={selectedQuiz.sectionAssigned}
               />
             </div>
           </div>
