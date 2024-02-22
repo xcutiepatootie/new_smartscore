@@ -9,9 +9,11 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
 import { deleteQuiz } from "@/lib/server_actions/actions";
 
 const Delete_Quiz = ({ quizId }: any) => {
+  const { toast } = useToast();
   return (
     <div>
       <AlertDialog>
@@ -31,7 +33,16 @@ const Delete_Quiz = ({ quizId }: any) => {
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
               className="bg-red-400"
-              onClick={async () => await deleteQuiz(quizId)}
+              onClick={async () => {
+                const delQuiz = await deleteQuiz(quizId);
+                if(delQuiz){
+                    toast({
+                        className: "bg-green-600 text-neutral-100",
+                        title: "SmartScore",
+                        description: "Successfully Deleted a Quiz.",
+                      });
+                }
+              }}
             >
               Delete Quiz
             </AlertDialogAction>
