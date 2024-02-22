@@ -213,6 +213,8 @@ export async function updateQuiz(
     include: { questions: true }, // Include questions in the updated quiz result
   });
 
+  return updatedQuizResult;
+
   // Associate questions with the quiz
   /*   create: updateQuizData.questions.map((question) => ({
           questionText: question.questionText,

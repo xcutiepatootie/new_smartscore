@@ -61,6 +61,14 @@ export const Update_Quiz = ({
       questionIds as unknown as []
     );
 
+    if(updateQuizData){
+      toast({
+        className: "bg-green-600 text-neutral-100",
+        title: "SmartScore",
+        description: "Successfully Updated a Quiz.",
+      });
+    }
+
     const res = QuizSchema.safeParse(data);
     if (!res.success) {
       console.log(fromZodError(res.error));
