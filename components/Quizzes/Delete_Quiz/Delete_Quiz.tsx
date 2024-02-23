@@ -17,8 +17,8 @@ const Delete_Quiz = ({ quizId }: any) => {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="bg-red-400 text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4">
-          Delete Quiz
+        <AlertDialogTrigger className="bg-pink-300 text-black hover:bg-pink-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4">
+          Delete Quiz 
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -32,7 +32,7 @@ const Delete_Quiz = ({ quizId }: any) => {
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              className="bg-red-400"
+              className="bg-pink-400"
               onClick={async () => {
                 const delQuiz = await deleteQuiz(quizId);
                 if(delQuiz){
