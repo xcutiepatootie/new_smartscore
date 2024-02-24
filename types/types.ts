@@ -72,3 +72,9 @@ export const quizCodeSchema = z.object({
   quizCode: z.string().min(1).max(6),
 });
 export type quizCodeField = z.infer<typeof quizCodeSchema>;
+
+export interface QuizData_Cards {
+  id: string;
+  quizName: string;
+  sectionAssigned: string[];
+}
