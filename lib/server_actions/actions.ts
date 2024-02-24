@@ -141,11 +141,59 @@ export async function createQuiz(createQuizData: QuizFields) {
   revalidatePath("/dashboard/quizzes");
   return createQuizResult;
 }
+
+export async function quizSection_Card() {
+  const userSession = await getUserSession();
+
+  const getAllQuizzes = await prisma.quiz.findMany({
+    where: { facultyId: userSession?.user.id },
+    select: { id: true, quizName: true, sectionAssigned: true },
+  });
+
+  console.log(getAllQuizzes);
+
+  return getAllQuizzes;
+}
+
+// Get students for Quiz_Section Card
+export async function student_sectionList(
+  sectionLocal: string,
+  quizId: string
+) {
+  const getStudents = await prisma.student.findMany({
+    where: { section: sectionLocal },
+  });
+
+  const getQuizTaken = await prisma.quizTaken.findMany({
+    where: { quizId: quizId },
+  });
+
+  console.log(getStudents, getQuizTaken);
+  // Iterate over each student
+  const studentsWithStatus = getStudents.map((student) => {
+    // Check if there is a corresponding entry in getQuizTaken for this student
+    const quizTakenByStudent = getQuizTaken.find(
+      (quiz) => quiz.studentId === student.studentId && quiz.isDone === true
+    );
+
+    // If quizTakenByStudent is undefined, it means the student hasn't taken the quiz
+    // Set the status accordingly
+    const status = quizTakenByStudent ? "Done" : "Not Done";
+    console.log(quizTakenByStudent);
+    // Return the student object with the status added
+    return { ...student, status };
+  });
+
+  console.log(studentsWithStatus);
+  return studentsWithStatus;
+}
+
 // Get Quiz using Faculty
 export async function getQuizzesList_faculty() {
   const userSession = await getUserSession();
 
   const getAllQuizzes = await prisma.quiz.findMany({
+    where: { facultyId: userSession?.user.id },
     include: { questions: true },
   });
 
@@ -360,6 +408,7 @@ export async function submitStudentAnswers(
     });
 
     console.log(updateStudentTakenQuiz, saveResult);
+    revalidatePath("/dashboard/");
     revalidatePath("/dashboard/quizzes");
     redirect("/dashboard/quizzes");
   } else {
@@ -392,6 +441,7 @@ export async function submitStudentAnswers(
     });
 
     console.log(saveToStudentTakenQuiz, saveResult);
+    revalidatePath("/dashboard/");
     revalidatePath("/dashboard/quizzes");
     redirect("/dashboard/quizzes");
   }

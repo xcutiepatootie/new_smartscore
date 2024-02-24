@@ -7,6 +7,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { fromZodError } from "zod-validation-error";
 import Section_Popover from "../AddQuiz/Section_Popover/Section_Popover";
 import { DevTool } from "@hookform/devtools";
+import { useRouter } from "next/navigation";
 
 export const Update_Quiz = ({
   selectedQuiz,
@@ -16,6 +17,7 @@ export const Update_Quiz = ({
   studentSection: any;
 }) => {
   const { questions } = selectedQuiz;
+  const router = useRouter();
 
   console.log(selectedQuiz.questions[0].id);
 
@@ -68,6 +70,7 @@ export const Update_Quiz = ({
         title: "SmartScore",
         description: "Successfully Updated a Quiz.",
       });
+      router.push("/dashboard/quizzes");
     }
 
     const res = QuizSchema.safeParse(data);
@@ -130,7 +133,6 @@ export const Update_Quiz = ({
               <Section_Popover
                 control={control}
                 studentSection={studentSection}
-               
               />
             </div>
           </div>
@@ -216,7 +218,7 @@ export const Update_Quiz = ({
           {errors.root && (
             <div className="text-red-500">{errors.root.message}</div>
           )}
-             <DevTool control={control} />
+          <DevTool control={control} />
         </form>
       </div>
     </div>

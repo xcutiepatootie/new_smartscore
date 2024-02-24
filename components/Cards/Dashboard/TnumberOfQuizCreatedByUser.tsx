@@ -32,12 +32,11 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
 
   return (
     <>
-      <Card className="w-[375px] h-[250px]">
+      <Card className="w-[375px] h-[180]">
         <CardHeader>
-          <CardTitle className="line-clamp-2">
-            Total Number of Quiz Posted By {user.userSession.name}
+          <CardTitle className="line-clamp-2 text-lg">
+             Quizzes Posted By {user.userSession.name}
           </CardTitle>
-          <CardDescription>Card Description </CardDescription>
         </CardHeader>
         <CardContent>
           {data ? (
