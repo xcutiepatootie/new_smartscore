@@ -3,19 +3,7 @@ import Image from "next/image";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  async function getFromSB() {
-    "use server";
-    const res = await fetch("http://localhost:8080/api/assignments");
-    if (!res.ok) {
-      throw new Error("Failed to fetch data");
-    }
-    const fetchedData = await res.json();
-    console.log(fetchedData);
-    return fetchedData;
-  }
 
-  const data = await getFromSB();
-  console.log(data);
   const session = await getServerSession();
   if (session) {
     console.log(session.user.id);
