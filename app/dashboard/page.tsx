@@ -26,7 +26,7 @@ export default async function Dashboard() {
   return (
     <>
       <div className="">
-        <h1>Dashboard</h1>
+       
 
         <div className="flex flex-row h-auto max-sm:flex=col">
           {session?.user.role === "faculty" ? (
@@ -38,7 +38,7 @@ export default async function Dashboard() {
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
               </div>
 
-              <div className="flex flex-row space-x-2 h-auto">
+              <div className="flex flex-row space-x-2 h-[750px]">
                 <Quiz_Section quizzes={quizzes}/>
                 <Quiz_DateAdded />
               </div>

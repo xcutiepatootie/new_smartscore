@@ -14,17 +14,15 @@ const Quiz_DateAdded = () => {
     <>
       <Card className="w-1/3">
         <CardHeader>
-          <CardTitle>Total Number of Quiz</CardTitle>
+          <CardTitle>Submission History</CardTitle>
           <CardDescription>
-            shows the number of available quiz for you!
+            shows the students of who submitted the quiz
           </CardDescription>
         </CardHeader>
         <CardContent>
           <p>Quiz Count: {}</p>
         </CardContent>
-        <CardFooter>
-          <p>Card Footer</p>
-        </CardFooter>
+     
       </Card>
     </>
   );

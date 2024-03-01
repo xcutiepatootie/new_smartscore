@@ -37,9 +37,9 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
     <>
       <Card className="w-2/3">
         <CardHeader>
-          <CardTitle>Total Number of Quiz</CardTitle>
+          <CardTitle>Quiz Status</CardTitle>
           <CardDescription>
-            shows the number of available quiz for you!
+            shows the list of students which is assigned per section!
           </CardDescription>
         </CardHeader>
         <CardContent>

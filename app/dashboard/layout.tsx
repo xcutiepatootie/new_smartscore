@@ -11,9 +11,10 @@ export default function DashboardLayout({
     return (
         <div className={inter.className}>
             {/* Include shared UI here e.g. a header or sidebar */}
-            <div className="flex ">
+            <div className="flex">
 
                 <div className="max-md:hidden">
+                    
                     <Sidebar />
                 </div>
                 <div className="p-6 w-full">

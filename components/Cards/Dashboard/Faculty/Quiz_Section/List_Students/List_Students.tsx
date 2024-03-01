@@ -46,7 +46,7 @@ const List_Students = ({
             <TableRow>
               <TableHead>Name</TableHead>
               <TableHead>Email</TableHead>
-              <TableHead className="text-center" colSpan={2}>Status</TableHead>
+              <TableHead className="text-right">Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -54,8 +54,7 @@ const List_Students = ({
               <TableRow key={student.id}>
                 <TableCell>{student.name}</TableCell>
                 <TableCell>{student.email}</TableCell>
-                <TableCell className="text-center">{student.status}</TableCell>
-                <TableCell className="text-center">{student.status}</TableCell>
+                <TableCell className="text-right">{student.status}</TableCell>
               </TableRow>
             ))}
           </TableBody>
