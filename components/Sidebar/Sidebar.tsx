@@ -18,7 +18,7 @@ const Sidebar = async () => {
     user_section = section;
   }
   return (
-    <div className="p-4 w-full h-screen bg-white left-80 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200 flex">
+    <div className="p-4 w-full h-screen bg-white left-80 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200">
       <div className="flex flex-col justify-start item-center">
         <nav>
           <div className="pt-4">
