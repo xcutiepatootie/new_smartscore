@@ -30,6 +30,40 @@ export async function getSections() {
   return getSection;
 }
 
+export async function getSectionHandled() {
+  const userSession = await getUserSession();
+  const findSectionHandled = await prisma.quiz.findMany({
+    where: {
+      facultyId: userSession?.user.id,
+    },
+    distinct: ["sectionAssigned"],
+    select: { sectionAssigned: true },
+  });
+
+  const uniqueSections: string[] = [];
+  findSectionHandled.forEach((entry) => {
+    entry.sectionAssigned.forEach((section) => {
+      if (!uniqueSections.includes(section)) {
+        uniqueSections.push(section);
+      }
+    });
+  });
+  return uniqueSections;
+}
+
+// Cross Origin APIS
+async function getStudentClusterAssignments() {
+  const clusterAssignments = await fetch(
+    "http://localhost:8080/api/assignments"
+  );
+  if (!clusterAssignments.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const fetchedClusterAssignments = await clusterAssignments.json();
+  console.log(fetchedClusterAssignments);
+  return fetchedClusterAssignments;
+}
+
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
   console.log(userData);
@@ -186,6 +220,18 @@ export async function student_sectionList(
 
   console.log(studentsWithStatus);
   return studentsWithStatus;
+}
+
+// Get students for Analytics
+export async function faculty_analytics() {
+  const studentClusterAssignments: any = await getStudentClusterAssignments();
+  console.log(typeof studentClusterAssignments);
+  return studentClusterAssignments;
+}
+
+export async function getStudentBySection() {
+  const studentsBySection = await prisma.student.findMany({});
+  return studentsBySection
 }
 
 // Get Quiz using Faculty
