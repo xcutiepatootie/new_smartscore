@@ -50,7 +50,7 @@ model Faculty {
 
 model Quiz_Result {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
-  score           Int
+  score           Float
   time            Int
   out_of_focus    Int
   answers_clicked Int
