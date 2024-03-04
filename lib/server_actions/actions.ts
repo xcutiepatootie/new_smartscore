@@ -231,7 +231,7 @@ export async function faculty_analytics() {
 
 export async function getStudentBySection() {
   const studentsBySection = await prisma.student.findMany({});
-  return studentsBySection
+  return studentsBySection;
 }
 
 // Get Quiz using Faculty
@@ -321,6 +321,10 @@ export async function updateQuiz(
 // Delete Quiz
 export async function deleteQuiz(quizIdLocal: string) {
   const [delQuestions, delQuiz] = await prisma.$transaction([
+    /* prisma.quizTaken.deleteMany({
+      where:
+    }), */
+
     prisma.question.deleteMany({
       where: { quizId: quizIdLocal },
     }),
@@ -427,7 +431,7 @@ export async function submitStudentAnswers(
       },
     });
 
-    if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect) {
+    if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect === true) {
       console.log("pasok HAHAHA");
       const updateStudentDone = await prisma.quizTaken.update({
         where: {
@@ -471,6 +475,18 @@ export async function submitStudentAnswers(
         student: true,
       },
     });
+
+    if (studentResult.isPerfect === true) {
+      console.log("pasok HAHAHA");
+      const updateStudentDone = await prisma.quizTaken.update({
+        where: {
+          id: saveToStudentTakenQuiz?.id,
+        },
+        data: {
+          isDone: true,
+        },
+      });
+    }
 
     const saveResult = await prisma.quiz_Result.create({
       data: {

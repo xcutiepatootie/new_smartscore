@@ -130,6 +130,8 @@ export const Take_Quiz = ({
     }
 
     score = (score / quiz.numberOfItems) * 100;
+    score = Math.round(score * 100) / 100; 
+
 
     return { score, perfect };
   }
