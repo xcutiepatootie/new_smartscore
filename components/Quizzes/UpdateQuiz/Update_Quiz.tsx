@@ -57,7 +57,7 @@ export const Update_Quiz = ({
   const onSubmit: SubmitHandler<QuizFields> = async (data) => {
     console.log("heloo");
     // Handle form submission logic here
-    console.log(data);
+    console.log("Submitted data:",data);
     const updateQuizData = await updateQuiz(
       data,
       selectedQuiz.id as string,

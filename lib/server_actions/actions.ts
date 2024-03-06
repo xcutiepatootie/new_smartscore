@@ -289,11 +289,11 @@ export async function updateQuiz(
       subject: updateQuizData.subject, // Update subject if needed
       questions: {
         // Associate updated questions with the quiz
-        upsert: questionsLocal.questions.map((question: any) => ({
+        upsert: questionsLocal.questions.map((question: any, index:number) => ({
           where: { id: question.id }, // Provide the ID of the question you want to update
           update: {
             questionText: question.questionText, // Update question text if needed
-            options: question.options, // Update options if needed
+            options: updateQuizData.questions[index].options, // Update options if needed
             correctAnswer: question.correctAnswer, // Update correct answer if needed
           },
           create: {
