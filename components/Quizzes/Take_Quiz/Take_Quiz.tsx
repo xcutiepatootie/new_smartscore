@@ -188,7 +188,7 @@ export const Take_Quiz = ({
                   <li key={`question_${index}`} className="mb-4">
                     <div className="border-2 rounded-lg m-4 p-4 bg-white shadow-lg">
                       <p className="text-lg font-medium mb-2">
-                        Question {index + 1}: {question.questionText}
+                        {index + 1}: {question.questionText}
                       </p>
                       {question.options.map((option, optionIndex) => (
                         <div key={`option_${optionIndex}`}>
