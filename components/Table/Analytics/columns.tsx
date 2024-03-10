@@ -9,7 +9,6 @@ import { Student } from "@prisma/client";
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-
 export const columns: ColumnDef<Student>[] = [
   /*  {
     id: "actions",
@@ -58,8 +57,22 @@ export const columns: ColumnDef<Student>[] = [
     header: "Name",
   },
   {
+    accessorKey: "studentId",
+    header: "Student Id",
+  },
+  {
     accessorKey: "section",
-    header: "Section",
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+        >
+          Section
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      );
+    },
   },
   {
     accessorKey: "amount",

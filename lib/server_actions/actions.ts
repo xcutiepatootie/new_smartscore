@@ -228,9 +228,24 @@ export async function faculty_analytics() {
   console.log(typeof studentClusterAssignments);
   return studentClusterAssignments;
 }
+// Get quizTaken for Analytics
+export async function getQuizTaken(quizId: string) {
+  const fetchQuizTakenById = await prisma.quizTaken.findMany({
+    where: {
+      quizId: quizId,
+    },
+  });
+  return fetchQuizTakenById;
+}
 
-export async function getStudentBySection() {
-  const studentsBySection = await prisma.student.findMany({});
+export async function getStudentBySection(sectionsHandled: string[]) {
+  const studentsBySection = await prisma.student.findMany({
+    where: {
+      section: {
+        in: sectionsHandled,
+      },
+    },
+  });
   return studentsBySection;
 }
 
@@ -289,19 +304,21 @@ export async function updateQuiz(
       subject: updateQuizData.subject, // Update subject if needed
       questions: {
         // Associate updated questions with the quiz
-        upsert: questionsLocal.questions.map((question: any, index:number) => ({
-          where: { id: question.id }, // Provide the ID of the question you want to update
-          update: {
-            questionText: question.questionText, // Update question text if needed
-            options: updateQuizData.questions[index].options, // Update options if needed
-            correctAnswer: question.correctAnswer, // Update correct answer if needed
-          },
-          create: {
-            questionText: question.questionText, // Create a new question if not found
-            options: question.options,
-            correctAnswer: question.correctAnswer,
-          },
-        })),
+        upsert: questionsLocal.questions.map(
+          (question: any, index: number) => ({
+            where: { id: question.id }, // Provide the ID of the question you want to update
+            update: {
+              questionText: question.questionText, // Update question text if needed
+              options: updateQuizData.questions[index].options, // Update options if needed
+              correctAnswer: question.correctAnswer, // Update correct answer if needed
+            },
+            create: {
+              questionText: question.questionText, // Create a new question if not found
+              options: question.options,
+              correctAnswer: question.correctAnswer,
+            },
+          })
+        ),
       },
       Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
     },

@@ -1,3 +1,4 @@
+"use client";
 import { Button } from "@/components/ui/button";
 import {
   Popover,
@@ -34,6 +35,7 @@ const Quiz_section_Popover = ({ quizzes, setSelectedQuiz }: any) => {
     const quizObject = {
       value: quiz.quizName.toLowerCase(),
       label: quiz.quizName,
+      quizId: quiz.id,
     };
 
     // For each sectionAssigned, create an object with the section as value and label

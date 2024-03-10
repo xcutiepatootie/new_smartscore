@@ -2,7 +2,7 @@
 import Quiz_DateAdded from "@/components/Cards/Dashboard/Faculty/Quiz_DateAdded";
 import Quiz_Section from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_Section";
 import TnumberOfQuiz from "@/components/Cards/Dashboard/TnumberOfQuiz";
-import TnumberOfQuizCreatedByUser from "@/components/Cards/Dashboard/TnumberOfQuizCreatedByUser";
+import TnumberOfQuizCreatedByUser from "@/components/Cards/Dashboard/Faculty/TnumberOfQuizCreatedByUser";
 import { config } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
@@ -12,6 +12,7 @@ import {
   quizSection_Card,
 } from "@/lib/server_actions/actions";
 import { QuizData_Cards } from "@/types/types";
+import Subjects_Handled_Card from "@/components/Cards/Dashboard/Faculty/Subjects_Handled_Card";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -33,7 +34,7 @@ export default async function Dashboard() {
             <div className="mx-2 space-y-4">
               <div className="flex flex-row space-x-2">
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
+                <Subjects_Handled_Card userSession={session?.user} />
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
               </div>
