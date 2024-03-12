@@ -5,11 +5,12 @@ import { ArrowUpDown } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Student } from "@prisma/client";
+import { tableData_faculty } from "@/types/types";
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
 
-export const columns: ColumnDef<Student>[] = [
+export const columns: ColumnDef<tableData_faculty>[] = [
   /*  {
     id: "actions",
     cell: ({ row }) => {
@@ -75,16 +76,35 @@ export const columns: ColumnDef<Student>[] = [
     },
   },
   {
-    accessorKey: "amount",
-    header: () => <div className="text-right">Amount</div>,
+    accessorKey: "score",
+    header: "Score",
+  },
+  {
+    accessorKey: "time",
+    header: "Time (In Seconds)",
+  },
+  {
+    accessorKey: "outOfFocus",
+    header: "Out of Focus",
+  },
+  {
+    accessorKey: "answersClicked",
+    header: "Answers Clicked/Changes",
+  },
+  {
+    accessorKey: "retriesLeft",
+    header: "Retries Left",
+  },
+  {
+    accessorKey: "clusterAssignment",
+    header: () => <div className="">Cluster Assignment</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = new Intl.NumberFormat("en-US", {
-        style: "currency",
-        currency: "PHP",
-      }).format(amount);
+      const assignment: number = row.getValue("clusterAssignment");
+      // row.getValue("clusterAssignment")
 
-      return <div className="text-right font-medium">{formatted}</div>;
+      return (
+        <div className="text-right font-medium">Cluster: {assignment}</div>
+      );
     },
   },
 ];

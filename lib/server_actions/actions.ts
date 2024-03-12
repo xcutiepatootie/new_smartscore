@@ -52,9 +52,9 @@ export async function getSectionHandled() {
 }
 
 // Cross Origin APIS
-async function getStudentClusterAssignments() {
+export async function getStudentClusterAssignments(quizId: string) {
   const clusterAssignments = await fetch(
-    "http://localhost:8080/api/assignments"
+    `http://localhost:8080/api/assignments?quizId=${quizId}`
   );
   if (!clusterAssignments.ok) {
     throw new Error("Failed to fetch data");
@@ -62,6 +62,18 @@ async function getStudentClusterAssignments() {
   const fetchedClusterAssignments = await clusterAssignments.json();
   console.log(fetchedClusterAssignments);
   return fetchedClusterAssignments;
+}
+
+export async function getStudentRecords(quizId: string) {
+  const studentRecords = await fetch(
+    `http://localhost:8080/api/student_records?quizId=${quizId}`
+  );
+  if (!studentRecords.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const fetchedStudentRecords = await studentRecords.json();
+  console.log(fetchedStudentRecords);
+  return fetchedStudentRecords;
 }
 
 // Server Action for Create || Auth User
@@ -223,18 +235,22 @@ export async function student_sectionList(
 }
 
 // Get students for Analytics
-export async function faculty_analytics() {
+/* export async function faculty_analytics() {
   const studentClusterAssignments: any = await getStudentClusterAssignments();
   console.log(typeof studentClusterAssignments);
   return studentClusterAssignments;
-}
+} */
 // Get quizTaken for Analytics
 export async function getQuizTaken(quizId: string) {
   const fetchQuizTakenById = await prisma.quizTaken.findMany({
     where: {
       quizId: quizId,
+      isDone: true,
     },
+
+    include: { student: true },
   });
+  console.log(fetchQuizTakenById);
   return fetchQuizTakenById;
 }
 

@@ -24,9 +24,12 @@ const Quiz_section_Popover = ({ quizzes, setSelectedQuiz }: any) => {
   console.log(value);
 
   const handleSelectQuiz = (currentValue: SetStateAction<string>) => {
-    setValue(currentValue === value ? "" : currentValue);
+    const newValue = currentValue === value ? "" : currentValue;
+    console.log(newValue);
+
+    setValue(newValue);
     setOpen(false);
-    setSelectedQuiz(currentValue);
+    setSelectedQuiz(newValue);
   };
 
   // Map over quizzes to transform them into the desired format

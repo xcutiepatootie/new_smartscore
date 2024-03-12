@@ -78,3 +78,18 @@ export interface QuizData_Cards {
   quizName: string;
   sectionAssigned: string[];
 }
+
+export const analytics_table_faculty = z.object({
+  email: z.string(),
+  name: z.string(),
+  studentId: z.string(),
+  section: z.string(),
+  answersClicked: z.number(),
+  score: z.number(),
+  time: z.number(),
+  retriesLeft: z.number(),
+  outOfFocus: z.number(),
+  clusterAssignment: z.number(),
+});
+
+export type tableData_faculty = z.infer<typeof analytics_table_faculty>;
