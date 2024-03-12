@@ -108,10 +108,11 @@ const Analytics_Table = async () => {
   console.log("Quizzes:", quizzes);
   return (
     <>
-      <Card className="w-full p-4">
-        <Client_table data={data} quizzes={quizzes}/>
+      <Card className="w-screen h-[800px] p-4">
+        <Client_table data={data} quizzes={quizzes} />
         {/* <DataTable columns={columns} data={data} quizzes={quizzes} /> */}
       </Card>
+      
     </>
   );
 };

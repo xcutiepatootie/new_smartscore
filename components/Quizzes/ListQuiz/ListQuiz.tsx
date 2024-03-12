@@ -112,7 +112,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                     <td className="flex items-center justify-center px-6 py-4 text-center">
                       <div className="mx-2">
                         <button
-                          className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                          className="bg-lsblue text-black hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
                           onClick={() =>
                             router.push(
                               `/dashboard/quizzes/update-quiz?quizId=${quiz.id}`
