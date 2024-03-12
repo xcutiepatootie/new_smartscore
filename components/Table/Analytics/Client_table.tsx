@@ -9,6 +9,8 @@ import { tableData_faculty } from "@/types/types";
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
+import ClusterValues from "@/components/Cards/Analytics/Faculty/ClusterValues";
+import { Card } from "@/components/ui/card";
 
 function Client_table({ data, quizzes }: any) {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
@@ -122,21 +124,32 @@ function Client_table({ data, quizzes }: any) {
 
   return (
     <>
-      <Quiz_section_Popover
-        quizzes={quizzes}
-        setSelectedQuiz={setSelectedQuiz}
-      />
-      {selectedQuizId.length > 0 && !loading ? (
+      <div className="flex flex-row w-full space-x-2">
+        <div className="w-[80%]">
+          <Card className="w-auto h-[800px] p-4">
+            <Quiz_section_Popover
+              quizzes={quizzes}
+              setSelectedQuiz={setSelectedQuiz}
+            />
+            {selectedQuizId.length > 0 && !loading ? (
+              <div>
+                <DataTable columns={columns} data={finData} />
+              </div>
+            ) : selectedQuizId.length > 0 && loading ? (
+              <div>loading...</div>
+            ) : (
+              <div className="flex h-full items-center justify-center">
+                <h1>Please Select A Quiz</h1>
+              </div>
+            )}
+          </Card>
+        </div>
         <div>
-          <DataTable columns={columns} data={finData} />
+          <Card className="w-auto h-[800px] p-4">
+            <ClusterValues quizId={selectedQuizId}/>
+          </Card>
         </div>
-      ) : selectedQuizId.length > 0 && loading ? (
-        <div>loading...</div>
-      ) : (
-        <div className="flex h-full items-center justify-center">
-          <h1>Please Select A Quiz</h1>
-        </div>
-      )}
+      </div>
     </>
   );
 }

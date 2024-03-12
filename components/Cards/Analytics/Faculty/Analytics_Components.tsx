@@ -4,10 +4,11 @@ import {
   quizSection_Card,
 } from "@/lib/server_actions/actions";
 import { Student } from "@prisma/client";
-import { Card } from "../ui/card";
-import Client_table from "./Analytics/Client_table";
-import { columns } from "./Analytics/columns";
-import { DataTable } from "./Analytics/data-table";
+import { Card } from "../../../ui/card";
+import Client_table from "../../../Table/Analytics/Client_table";
+import { columns } from "../../../Table/Analytics/columns";
+import { DataTable } from "../../../Table/Analytics/data-table";
+import ClusterValues from "./ClusterValues";
 
 async function getData(sectionsHandled: string[]): Promise<Student[]> {
   // Fetch data from your API here.
@@ -108,11 +109,15 @@ const Analytics_Table = async () => {
   console.log("Quizzes:", quizzes);
   return (
     <>
-      <Card className="w-screen h-[800px] p-4">
+      <div className="w-full">
         <Client_table data={data} quizzes={quizzes} />
         {/* <DataTable columns={columns} data={data} quizzes={quizzes} /> */}
-      </Card>
-      
+      </div>
+      {/* <div className="w-[20%]">
+        <Card className="w-auto h-[800px] p-4">
+          <ClusterValues />
+        </Card>
+      </div> */}
     </>
   );
 };
