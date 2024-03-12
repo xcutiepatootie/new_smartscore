@@ -10,16 +10,18 @@ import { useEffect, useState } from "react";
 import { columns } from "./columns";
 import { DataTable } from "./data-table";
 import ClusterValues from "@/components/Cards/Analytics/Faculty/ClusterValues";
-import { Card } from "@/components/ui/card";
+import {
+  Card,
+  CardDescription,
+  CardFooter,
+  CardTitle,
+} from "@/components/ui/card";
 
 function Client_table({ data, quizzes }: any) {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [selectedQuizId, setSelectedQuizId] = useState<string>(""); // State to store the selected quiz id
   const [finData, setFinData] = useState<tableData_faculty[]>([]);
   const [loading, setLoading] = useState<boolean>(true); // State to store the selected quiz id
-
-  console.log(quizzes);
-  console.log(selectedQuiz, selectedQuizId);
 
   useEffect(() => {
     // Find the selected quiz and set its id
@@ -31,14 +33,10 @@ function Client_table({ data, quizzes }: any) {
       setSelectedQuizId(selectedQuizObject.id);
     } else {
       setSelectedQuizId(""); // Reset id if selected quiz is not found
-      console.log(selectedQuizObject);
     }
   }, [selectedQuiz]);
 
-  console.log(selectedQuiz);
-
   useEffect(() => {
-    console.log(selectedQuizId);
     setLoading(true);
     if (selectedQuizId) {
       const fetchQuizTaken = async () => {
@@ -145,8 +143,15 @@ function Client_table({ data, quizzes }: any) {
           </Card>
         </div>
         <div>
-          <Card className="w-auto h-[800px] p-4">
-            <ClusterValues quizId={selectedQuizId}/>
+          <Card className="w-auto h-[800px] p-4 ">
+            <CardTitle className="py-2">Cluster Values</CardTitle>
+            <CardDescription className="py-2">
+              shows the average value of each attribute for each cluster
+            </CardDescription>
+            <ClusterValues quizId={selectedQuizId} />
+            <CardFooter className="mt-4">
+              <p>Card Footer</p>
+            </CardFooter>
           </Card>
         </div>
       </div>

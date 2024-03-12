@@ -76,6 +76,18 @@ export async function getStudentRecords(quizId: string) {
   return fetchedStudentRecords;
 }
 
+export async function getClusterValues(quizId: string) {
+  const clusterValues = await fetch(
+    `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`
+  );
+  if (!clusterValues.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const fetchedClusterValues = await clusterValues.json();
+  console.log(fetchedClusterValues);
+  return fetchedClusterValues;
+}
+
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
   console.log(userData);
