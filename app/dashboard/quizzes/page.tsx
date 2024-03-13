@@ -13,7 +13,7 @@ const Quizzes = async () => {
   const getSession = await getServerSession(config);
   const userSection = getSession?.user.userSection;
 
-  let allQuiz;
+  let allQuiz: any;
   if (getSession?.user.role === "faculty") {
     allQuiz = await getQuizzesList_faculty();
   }
@@ -29,7 +29,11 @@ const Quizzes = async () => {
   return (
     <>
       <Add_List_Quiz
-        quizList={allQuiz?.getAllQuizzes}
+        quizList={
+          getSession?.user.role === "faculty"
+            ? allQuiz?.getAllQuizzes
+            : allQuiz?.quizzesBasedOnSection
+        }
         quizTaken={allQuiz?.getAllTakenQuiz}
         studentSection={allSection}
       />
