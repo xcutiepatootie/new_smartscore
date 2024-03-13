@@ -88,6 +88,20 @@ export async function getClusterValues(quizId: string) {
   return fetchedClusterValues;
 }
 
+export async function getClusterChart(quizId: string) {
+  const clusterChart = await fetch(
+    `http://localhost:8080/charts/plot64?quizId=${quizId}`
+  );
+  if (!clusterChart.ok) {
+    throw new Error("Failed to fetch data");
+  }
+
+  const fetchClusterChart = await clusterChart.text();
+
+  console.log(fetchClusterChart);
+  return fetchClusterChart;
+}
+
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
   console.log(userData);

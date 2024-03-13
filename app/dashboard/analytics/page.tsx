@@ -1,4 +1,5 @@
 import Analytics_Table from "@/components/Cards/Analytics/Faculty/Analytics_Components";
+import Analytics_tabs from "@/components/Cards/Analytics/Faculty/Tabs/Analytics_tabs";
 import { config } from "@/lib/auth";
 import { quizSection_Card } from "@/lib/server_actions/actions";
 import { getServerSession } from "next-auth";
@@ -11,10 +12,8 @@ export default async function page() {
   return (
     <>
       {getUserSession?.user.role === "faculty" ? (
-        <div className="flex flex-row w-full">
-          <div className="flex h-full w-[100%] space-x-2">
-            <Analytics_Table />
-          </div>
+        <div className="w-full">
+          <Analytics_tabs />
         </div>
       ) : (
         <>Student Analytics</>
