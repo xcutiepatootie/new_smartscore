@@ -280,6 +280,34 @@ export async function getQuizTaken(quizId: string) {
   return fetchQuizTakenById;
 }
 
+// Get quizTaken submission date
+export async function getQuizTakenHistory() {
+  const userSession = await getUserSession();
+  const quizzes = await prisma.quiz.findMany({
+    where: { facultyId: userSession?.user.id },
+    select: { id: true, quizName: true },
+  });
+  console.log("Quizzes: ", quizzes);
+
+  const quizTakenHistory = [];
+
+  for (const quiz of quizzes) {
+    const quizTaken = await prisma.quizTaken.findMany({
+      where: { quizId: quiz.id },
+      include: { student: true },
+    });
+    quizTakenHistory.push({ quiz, quizTaken });
+  }
+
+  const finalData = quizzes.map((quizHistory) => ({
+    quizId: quizHistory.id,
+    quizName: quizHistory.quizName,
+  }));
+
+  console.log("finalData", finalData);
+  return quizTakenHistory;
+}
+
 export async function getStudentBySection(sectionsHandled: string[]) {
   const studentsBySection = await prisma.student.findMany({
     where: {
