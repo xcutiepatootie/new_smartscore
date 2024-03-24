@@ -3,6 +3,7 @@ import {
   QuizFields,
   SignUpFormFields,
   Student_Quiz_Result,
+  clusterType,
 } from "@/types/types";
 import { Faculty, Question, Quiz, Student, User } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -78,13 +79,15 @@ export async function getStudentRecords(quizId: string) {
 
 export async function getClusterValues(quizId: string) {
   const clusterValues = await fetch(
-    `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`
+    `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
+    { cache: "force-cache" }
   );
   if (!clusterValues.ok) {
     throw new Error("Failed to fetch data");
   }
-  const fetchedClusterValues = await clusterValues.json();
+  const fetchedClusterValues: clusterType = await clusterValues.json();
   console.log(fetchedClusterValues);
+  
   return fetchedClusterValues;
 }
 
