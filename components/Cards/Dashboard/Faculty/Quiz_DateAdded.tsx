@@ -1,4 +1,3 @@
-"use client";
 import {
   Card,
   CardHeader,
@@ -7,9 +6,12 @@ import {
   CardContent,
   CardFooter,
 } from "@/components/ui/card";
+import { getQuizTakenHistory } from "@/lib/server_actions/actions";
 import React from "react";
 
-const Quiz_DateAdded = () => {
+const Quiz_DateAdded = async () => {
+  const testquiz = await getQuizTakenHistory();
+  console.log(JSON.stringify(testquiz, null, 2));
   return (
     <>
       <Card className="w-1/3">
@@ -22,7 +24,6 @@ const Quiz_DateAdded = () => {
         <CardContent>
           <p>Quiz Count: {}</p>
         </CardContent>
-     
       </Card>
     </>
   );
