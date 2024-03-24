@@ -21,40 +21,36 @@ export default async function Dashboard() {
    } */
   const session = await getServerSession(config);
   const quizzes = await quizSection_Card();
-  
+
   console.log(quizzes);
 
   return (
     <>
-      <div className="">
-       
-
-        <div className="flex flex-row h-auto max-sm:flex=col">
-          {session?.user.role === "faculty" ? (
-            <div className="mx-2 space-y-4">
-              <div className="flex flex-row space-x-2">
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
-                <Subjects_Handled_Card userSession={session?.user} />
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
-              </div>
-
-              <div className="flex flex-row space-x-2 h-[750px]">
-                <Quiz_Section quizzes={quizzes}/>
-                <Quiz_DateAdded />
-              </div>
+      <div className="flex flex-row h-full max-sm:flex=col">
+        {session?.user.role === "faculty" ? (
+          <div className="mx-2 space-y-4">
+            <div className="flex flex-row space-x-2">
+              <TnumberOfQuizCreatedByUser userSession={session?.user} />
+              <Subjects_Handled_Card userSession={session?.user} />
+              <TnumberOfQuizCreatedByUser userSession={session?.user} />
+              <TnumberOfQuizCreatedByUser userSession={session?.user} />
             </div>
-          ) : (
-            <div className="mx-2">
-              <div className="flex flex-row">
-                <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
-              </div>
+
+            <div className="flex flex-row space-x-2 h-[700px]">
+              <Quiz_Section quizzes={quizzes} />
+              <Quiz_DateAdded />
             </div>
-          )}
-        </div>
+          </div>
+        ) : (
+          <div className="mx-2">
+            <div className="flex flex-row">
+              <TnumberOfQuiz userSession={session?.user} />
+              <TnumberOfQuiz userSession={session?.user} />
+              <TnumberOfQuiz userSession={session?.user} />
+              <TnumberOfQuiz userSession={session?.user} />
+            </div>
+          </div>
+        )}
       </div>
     </>
   );
