@@ -8,10 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getClusterValues } from "@/lib/server_actions/actions";
+import { clusterType } from "@/types/types";
 
 const ClusterValues = ({ quizId }: { quizId: string }) => {
   console.log(quizId);
-  const [clusterData, setClusterData] = useState([]);
+  const [clusterData, setClusterData] = useState<clusterType>([]);
 
   useEffect(() => {
     if (quizId !== "") {
@@ -31,7 +32,7 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
   return (
     <div className="space-y-3">
       {clusterData.map((data: any) => (
-        <Card>
+        <Card key={data.clusterNumber}>
           <CardHeader>
             <CardTitle>Cluster {data.clusterNumber}</CardTitle>
           </CardHeader>
