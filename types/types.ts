@@ -93,3 +93,18 @@ export const analytics_table_faculty = z.object({
 });
 
 export type tableData_faculty = z.infer<typeof analytics_table_faculty>;
+
+export const clusterValuesType = z.array(
+  z.object({
+    attributeAverages: z.object({
+      answers_clicked: z.number(),
+      out_of_focus: z.number(),
+      retriesLeft: z.number(),
+      score: z.number(),
+      time: z.number(),
+    }),
+    clusterNumber: z.number(),
+  })
+);
+
+export type clusterType = z.infer<typeof clusterValuesType>;
