@@ -4,6 +4,7 @@ import React from "react";
 import Analytics_Table from "../Analytics_Components";
 import Charts from "../Charts";
 import { quizSection_Card } from "@/lib/server_actions/actions";
+import Feedback from "../Feedback/Feedback";
 
 const Analytics_tabs = async () => {
   const quizzes: any = await quizSection_Card();
@@ -22,7 +23,10 @@ const Analytics_tabs = async () => {
           </div>
         </div>
       </TabsContent>
-      <TabsContent value="feedback">Provide Feedback here.</TabsContent>
+      <TabsContent value="feedback">
+        Provide Feedback here.
+        <Feedback />
+      </TabsContent>
       <TabsContent value="charts">
         View Charts.
         <Charts quizzes={quizzes} />
