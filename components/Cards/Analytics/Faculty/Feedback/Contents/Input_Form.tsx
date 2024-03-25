@@ -18,7 +18,7 @@ const Input_Form = ({ clusterData }: { clusterData: clusterType }) => {
   } = useForm<feedbackSchemaType>({ resolver: zodResolver(feedbackSchema) });
 
   const onSubmit: SubmitHandler<feedbackSchemaType> = async (data) => {
-    console.log(data);
+    console.log(data.feedbacks);
   };
   return (
     <>

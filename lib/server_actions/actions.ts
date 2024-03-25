@@ -87,7 +87,7 @@ export async function getClusterValues(quizId: string) {
   }
   const fetchedClusterValues: clusterType = await clusterValues.json();
   console.log(fetchedClusterValues);
-  
+
   return fetchedClusterValues;
 }
 
@@ -355,6 +355,19 @@ export async function getQuizzesList_faculty() {
 
   const getAllTakenQuiz = await prisma.quizTaken.findMany({});
   return { getAllQuizzes, getAllTakenQuiz, formatCount };
+}
+
+// Save Feedback to db
+export async function setFeedback() {
+  const session = await getUserSession();
+  const updateFacultyFeedback = await prisma.faculty.update({
+    where: {
+      facultyId: session?.user.id,
+    },
+    data: {
+      feedbacks: {},
+    },
+  });
 }
 
 // Update Quiz
