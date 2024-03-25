@@ -15,6 +15,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import ClusterValues from "../../ClusterValues";
+import { Input } from "@/components/ui/input";
+import Input_Form from "./Input_Form";
 
 const Feedback_Input = ({ quizzes }: any) => {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
@@ -76,11 +78,8 @@ const Feedback_Input = ({ quizzes }: any) => {
 
         {clusterData && (
           <>
-            {clusterData.map((cluster) => (
-              <div key={cluster.clusterNumber}>
-                <Label>Cluster {cluster.clusterNumber}</Label>
-              </div>
-            ))}
+            <Input_Form clusterData={clusterData}/>
+          
           </>
         )}
       </div>

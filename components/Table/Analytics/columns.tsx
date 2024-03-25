@@ -103,7 +103,7 @@ export const columns: ColumnDef<tableData_faculty>[] = [
       // row.getValue("clusterAssignment")
 
       return (
-        <div className="text-right font-medium">Cluster: {assignment}</div>
+        <div className="text-right font-medium">Cluster: {assignment + 1}</div>
       );
     },
   },

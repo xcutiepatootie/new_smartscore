@@ -108,3 +108,9 @@ export const clusterValuesType = z.array(
 );
 
 export type clusterType = z.infer<typeof clusterValuesType>;
+
+export const feedbackSchema = z.object({
+  feedbacks: z.array(z.object({ feedback: z.string().min(1) })),
+});
+
+export type feedbackSchemaType = z.infer<typeof feedbackSchema>;
