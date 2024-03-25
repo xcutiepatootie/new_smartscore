@@ -45,6 +45,7 @@ model Faculty {
   username  String
   email     String
   user      User?   @relation(fields: [facultyId], references: [id])
+  feedbacks Json?
 
   Quiz Quiz[]
 }
