@@ -35,6 +35,7 @@ model Student {
   user         User?         @relation(fields: [studentId], references: [id])
   Quiz         Quiz[]
   Quiz_Result  Quiz_Result[]
+  feedbacks    Json?
 }
 
 model Faculty {
