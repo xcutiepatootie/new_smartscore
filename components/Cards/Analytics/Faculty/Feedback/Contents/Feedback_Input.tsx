@@ -78,8 +78,11 @@ const Feedback_Input = ({ quizzes }: any) => {
 
         {clusterData && (
           <>
-            <Input_Form clusterData={clusterData}/>
-          
+            <Input_Form
+              quizId={selectedQuizId}
+              quizName={selectedQuiz}
+              clusterData={clusterData}
+            />
           </>
         )}
       </div>

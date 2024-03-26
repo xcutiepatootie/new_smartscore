@@ -4,6 +4,7 @@ import {
   SignUpFormFields,
   Student_Quiz_Result,
   clusterType,
+  feedbackSchemaType,
 } from "@/types/types";
 import { Faculty, Question, Quiz, Student, User } from "@prisma/client";
 import bcrypt from "bcrypt";
@@ -55,7 +56,8 @@ export async function getSectionHandled() {
 // Cross Origin APIS
 export async function getStudentClusterAssignments(quizId: string) {
   const clusterAssignments = await fetch(
-    `http://localhost:8080/api/assignments?quizId=${quizId}`
+    `http://localhost:8080/api/assignments?quizId=${quizId}`,
+    { cache: "force-cache" }
   );
   if (!clusterAssignments.ok) {
     throw new Error("Failed to fetch data");
@@ -67,7 +69,8 @@ export async function getStudentClusterAssignments(quizId: string) {
 
 export async function getStudentRecords(quizId: string) {
   const studentRecords = await fetch(
-    `http://localhost:8080/api/student_records?quizId=${quizId}`
+    `http://localhost:8080/api/student_records?quizId=${quizId}`,
+    { cache: "force-cache" }
   );
   if (!studentRecords.ok) {
     throw new Error("Failed to fetch data");
@@ -93,7 +96,8 @@ export async function getClusterValues(quizId: string) {
 
 export async function getClusterChart(quizId: string) {
   const clusterChart = await fetch(
-    `http://localhost:8080/charts/plot64?quizId=${quizId}`
+    `http://localhost:8080/charts/plot64?quizId=${quizId}`,
+    { cache: "force-cache" }
   );
   if (!clusterChart.ok) {
     throw new Error("Failed to fetch data");
@@ -358,16 +362,34 @@ export async function getQuizzesList_faculty() {
 }
 
 // Save Feedback to db
-export async function setFeedback() {
+export async function setFeedback(
+  quizId: string,
+  quizName: string,
+  feedbacks: feedbackSchemaType
+) {
   const session = await getUserSession();
-  const updateFacultyFeedback = await prisma.faculty.update({
-    where: {
-      facultyId: session?.user.id,
-    },
-    data: {
-      feedbacks: {},
-    },
-  });
+  try {
+    const updateFacultyFeedback = await prisma.feedbacksPosted.upsert({
+      where: {
+        quizId: quizId,
+      },
+      update: {
+        quizName: quizName,
+        feedbacks: feedbacks.feedbacks,
+      },
+      create: {
+        facultyId: session?.user.id,
+        quizName: quizName,
+        feedbacks: feedbacks.feedbacks,
+        Quiz: { connect: { id: quizId } },
+      },
+    });
+    console.log(updateFacultyFeedback);
+    return updateFacultyFeedback;
+  } catch (error) {
+    console.log(error);
+    return "Error";
+  }
 }
 
 // Update Quiz

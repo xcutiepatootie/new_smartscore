@@ -25,17 +25,17 @@ enum Role {
 }
 
 model Student {
-  id           String        @id @default(auto()) @map("_id") @db.ObjectId
-  studentId    String?       @unique @db.ObjectId
-  name         String
-  section      String?
-  username     String
-  email        String
-  quizzesTaken QuizTaken[]
-  user         User?         @relation(fields: [studentId], references: [id])
-  Quiz         Quiz[]
-  Quiz_Result  Quiz_Result[]
-  feedbacks    Json?
+  id                String        @id @default(auto()) @map("_id") @db.ObjectId
+  studentId         String?       @unique @db.ObjectId
+  name              String
+  section           String?
+  username          String
+  email             String
+  quizzesTaken      QuizTaken[]
+  user              User?         @relation(fields: [studentId], references: [id])
+  Quiz              Quiz[]
+  Quiz_Result       Quiz_Result[]
+  feedbacksReceived Json?
 }
 
 model Faculty {
@@ -45,9 +45,21 @@ model Faculty {
   username  String
   email     String
   user      User?   @relation(fields: [facultyId], references: [id])
-  feedbacks Json?
 
-  Quiz Quiz[]
+  Quiz            Quiz[]
+}
+
+model FeedbacksPosted {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  facultyId String?  @db.ObjectId
+  quizName  String
+  feedbacks Json
+  Quiz      Quiz?    @relation(fields: [quizId], references: [id])
+  quizId    String   @unique @db.ObjectId
+}
+
+model FeedbacksReceived {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
 }
 
 model Quiz_Result {
@@ -91,19 +103,20 @@ model Retry {
 }
 
 model Quiz {
-  id              String      @id @default(auto()) @map("_id") @db.ObjectId
-  quizName        String      @unique
-  quizCode        String      @unique
+  id              String            @id @default(auto()) @map("_id") @db.ObjectId
+  quizName        String            @unique
+  quizCode        String            @unique
   numberOfItems   Int
   subject         String
   sectionAssigned String[]
-  facultyId       String?     @db.ObjectId
+  facultyId       String?           @db.ObjectId
   facultyName     String?
-  studentId       String?     @db.ObjectId
+  studentId       String?           @db.ObjectId
   questions       Question[]
   QuizTaken       QuizTaken[]
-  Faculty         Faculty?    @relation(fields: [facultyId], references: [facultyId])
-  Student         Student?    @relation(fields: [studentId], references: [studentId])
+  Faculty         Faculty?          @relation(fields: [facultyId], references: [facultyId])
+  Student         Student?          @relation(fields: [studentId], references: [studentId])
+  feedbacksPosted FeedbacksPosted[]
 }
 
 model Question {

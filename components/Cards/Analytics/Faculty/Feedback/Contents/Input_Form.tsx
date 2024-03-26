@@ -1,13 +1,24 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
+import { setFeedback } from "@/lib/server_actions/actions";
 import { clusterType, feedbackSchema, feedbackSchemaType } from "@/types/types";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 
-const Input_Form = ({ clusterData }: { clusterData: clusterType }) => {
+const Input_Form = ({
+  clusterData,
+  quizName,
+  quizId,
+}: {
+  clusterData: clusterType;
+  quizName: string;
+  quizId: string;
+}) => {
+  const { toast } = useToast();
   const {
     control,
     register,
@@ -18,7 +29,24 @@ const Input_Form = ({ clusterData }: { clusterData: clusterType }) => {
   } = useForm<feedbackSchemaType>({ resolver: zodResolver(feedbackSchema) });
 
   const onSubmit: SubmitHandler<feedbackSchemaType> = async (data) => {
+    console.log(quizName);
     console.log(data.feedbacks);
+
+    const updateData = await setFeedback(quizId, quizName, data);
+    console.log(updateData);
+    if (updateData === "Error") {
+      toast({
+        className: "bg-red-600 text-neutral-100",
+        title: "SmartScore",
+        description: "Error posting a Feedback.",
+      });
+    } else {
+      toast({
+        className: "bg-green-600 text-neutral-100",
+        title: "SmartScore",
+        description: "Successfully posted a Feedback.",
+      });
+    }
   };
   return (
     <>
@@ -38,7 +66,7 @@ const Input_Form = ({ clusterData }: { clusterData: clusterType }) => {
           Submit
         </Button>
       </form>
-      {/*  <DevTool control={control} /> */}
+      <DevTool control={control} />
     </>
   );
 };
