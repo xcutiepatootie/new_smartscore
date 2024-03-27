@@ -130,8 +130,7 @@ export const Take_Quiz = ({
     }
 
     score = (score / quiz.numberOfItems) * 100;
-    score = Math.round(score * 100) / 100; 
-
+    score = Math.round(score * 100) / 100;
 
     return { score, perfect };
   }
@@ -171,7 +170,7 @@ export const Take_Quiz = ({
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col">
       <div className="">
         <div className="container w-screen h-[85vh] mx-auto mt-4 bg-slate-50 p-4 rounded-lg shadow-lg overflow-y-auto">
           <h3 className="text-xl font-semibold mb-2">
@@ -183,43 +182,45 @@ export const Take_Quiz = ({
               <div className="mt-4">
                 <span className="m-4 ">{formatTime(time)}</span>
               </div>
-              <div className="flex flex-row flex-wrap">
+              <div className="flex flex-col flex-wrap">
                 {selectedQuiz?.questions.map((question, index) => (
                   <li key={`question_${index}`} className="mb-4">
-                    <div className="border-2 rounded-lg m-4 p-4 bg-white shadow-lg">
-                      <p className="text-lg font-medium mb-2">
-                        {index + 1}: {question.questionText}
-                      </p>
-                      {question.options.map((option, optionIndex) => (
-                        <div key={`option_${optionIndex}`}>
-                          <Controller
-                            key={`option_${optionIndex}`}
-                            name={`studentAnswers.${index}.answer`}
-                            control={control}
-                            defaultValue=""
-                            render={({ field }) => (
-                              <label
-                                key={`label_${optionIndex}`}
-                                className="block"
-                              >
-                                <input
-                                  id={`option_${index}_${optionIndex}`}
-                                  className="mr-2"
-                                  type="radio"
-                                  {...field}
-                                  value={option}
-                                  checked={field.value === option}
-                                  onChange={() => {
-                                    field.onChange(option);
-                                    handleAnswerChange();
-                                  }}
-                                />
-                                {option}
-                              </label>
-                            )}
-                          />
-                        </div>
-                      ))}
+                    <div className="flex">
+                      <div className="border-2 rounded-lg m-4 p-4 bg-white shadow-lg">
+                        <p className="text-lg font-medium mb-2">
+                          {index + 1}: {question.questionText}
+                        </p>
+                        {question.options.map((option, optionIndex) => (
+                          <div key={`option_${optionIndex}`}>
+                            <Controller
+                              key={`option_${optionIndex}`}
+                              name={`studentAnswers.${index}.answer`}
+                              control={control}
+                              defaultValue=""
+                              render={({ field }) => (
+                                <label
+                                  key={`label_${optionIndex}`}
+                                  className="block"
+                                >
+                                  <input
+                                    id={`option_${index}_${optionIndex}`}
+                                    className="mr-2"
+                                    type="radio"
+                                    {...field}
+                                    value={option}
+                                    checked={field.value === option}
+                                    onChange={() => {
+                                      field.onChange(option);
+                                      handleAnswerChange();
+                                    }}
+                                  />
+                                  {option}
+                                </label>
+                              )}
+                            />
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </li>
                 ))}
