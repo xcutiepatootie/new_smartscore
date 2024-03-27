@@ -375,12 +375,12 @@ export async function setFeedback(
       },
       update: {
         quizName: quizName,
-        feedbacks: feedbacks.feedbacks,
+        PostedFeedbacks: feedbacks.postedFeedbacks,
       },
       create: {
         facultyId: session?.user.id,
         quizName: quizName,
-        feedbacks: feedbacks.feedbacks,
+        PostedFeedbacks: feedbacks.postedFeedbacks,
         Quiz: { connect: { id: quizId } },
       },
     });
@@ -390,6 +390,19 @@ export async function setFeedback(
     console.log(error);
     return "Error";
   }
+}
+
+// Get Previous Feedback
+export async function getPrevFeedback(quizId: string) {
+  const getFeedback = await prisma.feedbacksPosted.findUnique({
+    where: {
+      quizId: quizId,
+    },
+    select: {
+      PostedFeedbacks: true,
+    },
+  });
+  return getFeedback;
 }
 
 // Update Quiz

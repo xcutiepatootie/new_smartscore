@@ -2,8 +2,11 @@
 
 import Quiz_section_Popover from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_section_Popover/Quiz_section_Popover";
 import { Label } from "@/components/ui/label";
-import { getClusterValues } from "@/lib/server_actions/actions";
-import { clusterType } from "@/types/types";
+import {
+  getClusterValues,
+  getPrevFeedback,
+} from "@/lib/server_actions/actions";
+import { clusterType, feedbackSchemaType } from "@/types/types";
 import React, { useEffect, useState } from "react";
 import {
   Dialog,
@@ -17,8 +20,16 @@ import { Button } from "@/components/ui/button";
 import ClusterValues from "../../ClusterValues";
 import { Input } from "@/components/ui/input";
 import Input_Form from "./Input_Form";
+import { Prisma } from "@prisma/client";
+
+export type FeedbackItem = {
+  feedback: string;
+};
 
 const Feedback_Input = ({ quizzes }: any) => {
+  const [prevFeedback, setPrevFeedback] = useState<string[]>([]);
+  const [jprevFeedback, setJPrevFeedback] = useState<any>();
+
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [clusterData, setClusterData] = useState<clusterType>([]);
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
@@ -39,6 +50,22 @@ const Feedback_Input = ({ quizzes }: any) => {
 
   useEffect(() => {
     if (selectedQuiz !== "") {
+      const selectedQuizObject = async () => {
+        console.log("quizid", selectedQuizId);
+        const fetchData = await getPrevFeedback(selectedQuizId);
+        setJPrevFeedback(fetchData);
+        if (fetchData) {
+          const { PostedFeedbacks } = fetchData;
+          setPrevFeedback(PostedFeedbacks);
+        }
+      };
+
+      selectedQuizObject();
+    }
+  }, [selectedQuizId]);
+
+  useEffect(() => {
+    if (selectedQuiz !== "") {
       const fetchClusterValues = async () => {
         console.log("quizid", selectedQuizId);
         const fetchData = await getClusterValues(selectedQuizId);
@@ -51,6 +78,7 @@ const Feedback_Input = ({ quizzes }: any) => {
     }
   }, [selectedQuizId]);
   console.log(clusterData);
+  console.log(prevFeedback);
   return (
     <>
       <div className="flex flex-col h-full">
@@ -76,9 +104,10 @@ const Feedback_Input = ({ quizzes }: any) => {
           )}
         </div>
 
-        {clusterData && (
+        {clusterData && selectedQuiz && (
           <>
             <Input_Form
+              prevfeedbacks={prevFeedback}
               quizId={selectedQuizId}
               quizName={selectedQuiz}
               clusterData={clusterData}

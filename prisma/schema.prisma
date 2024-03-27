@@ -46,16 +46,16 @@ model Faculty {
   email     String
   user      User?   @relation(fields: [facultyId], references: [id])
 
-  Quiz            Quiz[]
+  Quiz Quiz[]
 }
 
 model FeedbacksPosted {
-  id        String   @id @default(auto()) @map("_id") @db.ObjectId
-  facultyId String?  @db.ObjectId
-  quizName  String
-  feedbacks Json
-  Quiz      Quiz?    @relation(fields: [quizId], references: [id])
-  quizId    String   @unique @db.ObjectId
+  id              String   @id @default(auto()) @map("_id") @db.ObjectId
+  facultyId       String?  @db.ObjectId
+  quizName        String
+  PostedFeedbacks String[]
+  Quiz            Quiz?    @relation(fields: [quizId], references: [id])
+  quizId          String   @unique @db.ObjectId
 }
 
 model FeedbacksReceived {
