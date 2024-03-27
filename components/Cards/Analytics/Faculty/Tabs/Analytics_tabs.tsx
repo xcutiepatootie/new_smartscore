@@ -24,7 +24,6 @@ const Analytics_tabs = async () => {
         </div>
       </TabsContent>
       <TabsContent value="feedback">
-        Provide Feedback here.
         <Feedback quizzes={quizzes} />
       </TabsContent>
       <TabsContent value="charts">

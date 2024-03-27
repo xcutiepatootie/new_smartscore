@@ -21,6 +21,7 @@ import ClusterValues from "../../ClusterValues";
 import { Input } from "@/components/ui/input";
 import Input_Form from "./Input_Form";
 import { Prisma } from "@prisma/client";
+import Charts from "../../Charts";
 
 export type FeedbackItem = {
   feedback: string;
@@ -105,14 +106,25 @@ const Feedback_Input = ({ quizzes }: any) => {
         </div>
 
         {clusterData && selectedQuiz && (
-          <>
-            <Input_Form
-              prevfeedbacks={prevFeedback}
-              quizId={selectedQuizId}
-              quizName={selectedQuiz}
-              clusterData={clusterData}
-            />
-          </>
+          <div className="h-full space-y-2">
+            <div className="flex flex-row gap-4 justify-around p-2">
+              <ClusterValues quizId={selectedQuizId} />
+            </div>
+
+            <div className="flex flex-row w-full items-center justify-center">
+              <Charts quizId={selectedQuizId} />
+            </div>
+
+            <div className="border rounded-md shadow-lg p-4">
+              <Label className="text-2xl underline"> Provide Feedback here.</Label>
+              <Input_Form
+                prevfeedbacks={prevFeedback}
+                quizId={selectedQuizId}
+                quizName={selectedQuiz}
+                clusterData={clusterData}
+              />
+            </div>
+          </div>
         )}
       </div>
     </>

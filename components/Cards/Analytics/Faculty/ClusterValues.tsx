@@ -30,7 +30,7 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
   console.log("Final Data", clusterData);
 
   return (
-    <div className="space-y-3">
+    <>
       {clusterData.map((data: any) => (
         <Card key={data.clusterNumber}>
           <CardHeader>
@@ -45,7 +45,7 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
           </CardContent>
         </Card>
       ))}
-    </div>
+    </>
   );
 };
 

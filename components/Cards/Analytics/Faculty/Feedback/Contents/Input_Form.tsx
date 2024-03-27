@@ -76,11 +76,11 @@ const Input_Form = ({
   console.log(/* prevfeedbacks */);
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
+      <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col pt-4">
         <div className="space-y-4">
           {clusterData.map((cluster, index) => (
             <div key={cluster.clusterNumber}>
-              <Label>Cluster {cluster.clusterNumber}</Label>
+              <Label className="text-xl italic ">Cluster {cluster.clusterNumber}</Label>
               <Input
                 {...register(`postedFeedbacks.${index}`, {})}
                 placeholder="Enter Feedback Here"

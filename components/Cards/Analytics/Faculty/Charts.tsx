@@ -6,8 +6,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import DistancePicker from "./DropdownMenu/DistancePicker";
 import ValuesPicker from "./DropdownMenu/ValuesPicker";
 import { Label } from "@/components/ui/label";
+import Image from "next/image";
 
-const Charts = ({ quizzes }: any) => {
+const Charts = ({ quizzes, quizId }: any) => {
   console.log(quizzes);
 
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
@@ -28,7 +29,7 @@ const Charts = ({ quizzes }: any) => {
     setYValue(value);
   }, []);
 
-  useEffect(() => {
+  /*  useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizzes.find(
       (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz
@@ -39,13 +40,13 @@ const Charts = ({ quizzes }: any) => {
     } else {
       setSelectedQuizId(""); // Reset id if selected quiz is not found
     }
-  }, [selectedQuiz]);
+  }, [selectedQuiz]); */
 
   useEffect(() => {
     setLoading(true);
-    if (selectedQuizId) {
+    if (quizId) {
       const fetchChart = async () => {
-        const getChart = await getClusterChart(selectedQuizId);
+        const getChart = await getClusterChart(quizId);
         return getChart;
       };
 
@@ -57,7 +58,7 @@ const Charts = ({ quizzes }: any) => {
         });
       }, 1000);
     }
-  }, [selectedQuizId]);
+  }, [quizId]);
 
   console.log(selectedQuiz, selectedQuizId);
   console.log(xvalue);
@@ -65,36 +66,34 @@ const Charts = ({ quizzes }: any) => {
   console.log(selectedDistanceMethod);
   return (
     <div>
-      <Quiz_section_Popover
-        quizzes={quizzes}
-        setSelectedQuiz={setSelectedQuiz}
-      />
-      <div className="grid grid-cols-2">
-        <Card className="w-auto p-2">
-          <CardContent>
-            {data && (
-              <>
-                <div className="flex flex-row space-x-4">
-                  <DistancePicker
-                    setSelectedDistanceMethod={setSelectedDistanceMethod}
-                  />
-                  <div>
-                    <Label>X Value: </Label>
-                    <ValuesPicker setSelectedValue={handleSetXValue} />
-                  </div>
-                  <div>
-                    <Label>Y Value: </Label>
-                    <ValuesPicker setSelectedValue={handleSetYValue} />
-                  </div>
+      <Card className="w-auto p-2">
+        <CardContent>
+          {data && (
+            <>
+              <div className="flex flex-row space-x-4">
+                <DistancePicker
+                  setSelectedDistanceMethod={setSelectedDistanceMethod}
+                />
+                <div>
+                  <Label>X Value: </Label>
+                  <ValuesPicker setSelectedValue={handleSetXValue} />
                 </div>
+                <div>
+                  <Label>Y Value: </Label>
+                  <ValuesPicker setSelectedValue={handleSetYValue} />
+                </div>
+              </div>
 
-                <img src={`data:image/png;base64,${data}`} alt="Base64 Image" />
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <div></div>
-      </div>
+              <Image
+                width={850}
+                height={250}
+                src={`data:image/png;base64,${data}`}
+                alt="Base64 Image"
+              />
+            </>
+          )}
+        </CardContent>
+      </Card>
 
       {/* <div>{imageSrc && <img src={imageSrc} alt="API Image" />}</div> */}
     </div>
