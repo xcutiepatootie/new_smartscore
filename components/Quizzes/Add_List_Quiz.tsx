@@ -6,6 +6,8 @@ import { useSession } from "next-auth/react";
 import { useState } from "react";
 import TakeQuiz_UseCode from "./Take_Quiz/TakeQuiz_UseCode";
 import { Button } from "../ui/button";
+import { IoCreate } from "react-icons/io5";
+import { IoList } from "react-icons/io5";
 
 export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
   const [showViewQuiz, setShowViewQuiz] = useState(true);
@@ -29,6 +31,9 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
                   onClick={handleToggleView}
                   disabled={showViewQuiz}
                 >
+                  <span className="mr-2">
+                    <IoList size={25} />
+                  </span>
                   View Quiz
                 </Button>
               </div>
@@ -42,6 +47,9 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
                     onClick={handleToggleView}
                     disabled={!showViewQuiz}
                   >
+                    <span className="mr-2">
+                      <IoCreate size={25} />
+                    </span>
                     Create Quiz
                   </Button>
                 </div>
@@ -63,7 +71,7 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
               {showViewQuiz ? (
                 <ListQuiz quizList={quizList} quizTaken={quizTaken} />
               ) : (
-                <AddQuiz studentSection={studentSection}/>
+                <AddQuiz studentSection={studentSection} />
               )}
             </div>
           </div>

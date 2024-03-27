@@ -7,6 +7,8 @@ import { useState } from "react";
 import { deleteQuiz } from "@/lib/server_actions/actions";
 import { Quiz } from "@prisma/client";
 import Delete_Quiz from "../Delete_Quiz/Delete_Quiz";
+import { RiEdit2Fill } from "react-icons/ri";
+import { Button } from "@/components/ui/button";
 
 const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
@@ -111,7 +113,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                   ) : (
                     <td className="flex items-center justify-center px-6 py-4 text-center">
                       <div className="mx-2">
-                        <button
+                        <Button
                           className="bg-lsblue text-black hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
                           onClick={() =>
                             router.push(
@@ -119,8 +121,11 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                             )
                           }
                         >
+                          <span className="mr-2">
+                            <RiEdit2Fill size={25} />
+                          </span>
                           Update Quiz
-                        </button>
+                        </Button>
                       </div>
                       <div className="mx-2">
                         {/*   <button
