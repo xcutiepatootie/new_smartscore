@@ -9,6 +9,8 @@ import { Quiz } from "@prisma/client";
 import Delete_Quiz from "../Delete_Quiz/Delete_Quiz";
 import { RiEdit2Fill } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
+import { MdRefresh } from "react-icons/md";
+import { RiBrainFill } from "react-icons/ri";
 
 const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
@@ -74,7 +76,6 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                   )}
                   {session?.user.role === "student" ? (
                     <td className="px-6 py-4 text-center">
-                      {" "}
                       {checkAllQuizinQuizTakenByUser[index] ? (
                         <>
                           <span>
@@ -84,7 +85,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                                 (takenQuiz: any) => takenQuiz.quizId === quiz.id
                               )?.retriesLeft}
                           </span>
-                          <button
+                          <Button
                             className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
                             onClick={() =>
                               router.push(
@@ -92,12 +93,15 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                               )
                             }
                           >
+                            <span className="mr-2">
+                              <MdRefresh size={25} />
+                            </span>
                             Retry Quiz
-                          </button>
+                          </Button>
                         </>
                       ) : (
                         <>
-                          <button
+                          <Button
                             className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
                             onClick={() =>
                               router.push(
@@ -105,8 +109,11 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                               )
                             }
                           >
+                            <span className="mr-2">
+                              <RiBrainFill size={25} />
+                            </span>
                             Take Quiz
-                          </button>
+                          </Button>
                         </>
                       )}
                     </td>
