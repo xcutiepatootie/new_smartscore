@@ -8,8 +8,12 @@ import { createUser } from "@/lib/server_actions/actions";
 import { useToast } from "../ui/use-toast";
 import { useState } from "react";
 import { watch } from "fs";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { useRouter } from "next/navigation";
 
 const SignupForm = () => {
+  const router = useRouter();
   const { toast } = useToast();
   const {
     register,
@@ -40,25 +44,25 @@ const SignupForm = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen">
+    <div className="flex justify-center items-center h-screen w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+        className="bg-white shadow-2xl drop-shadow-2xl rounded px-8 max-sm:px-4 pt-6 pb-8 mb-4 sm:w-1/2"
       >
-        <label
+        <Label
           className="block text-gray-700 text-sm font-bold mb-4 border-b-2 border-zinc-300"
           htmlFor="SignupTag"
         >
           Sign-Up
-        </label>
+        </Label>
         <div className="mb-4">
-          <label
+          <Label
             className="block text-gray-700 text-sm font-bold mb-2"
             htmlFor="name"
           >
             Name
-          </label>
-          <input
+          </Label>
+          <Input
             {...register("name", { required: true })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="name"
@@ -77,7 +81,7 @@ const SignupForm = () => {
           >
             Username
           </label>
-          <input
+          <Input
             {...register("username", { required: true })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="username"
@@ -96,7 +100,7 @@ const SignupForm = () => {
           >
             Email
           </label>
-          <input
+          <Input
             {...register("email", { required: true })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="email"
@@ -114,22 +118,24 @@ const SignupForm = () => {
           </label>
           <div className="flex items-center justify-around">
             <div>
-              <input
+              <Input
                 {...register("role", { required: true })}
                 type="radio"
                 id="faculty"
                 name="role"
                 value="faculty"
+                className="h-4"
               />
               <span className="ml-2">Faculty</span>
             </div>
             <div>
-              <input
+              <Input
                 {...register("role", { required: true })}
                 type="radio"
                 id="student"
                 name="role"
                 value="student"
+                className="h-4"
               />
               <span className="ml-2">Student</span>
             </div>
@@ -147,7 +153,7 @@ const SignupForm = () => {
             >
               Section
             </label>
-            <input
+            <Input
               {...register("classSection", { required: true })}
               className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
               id="classSection"
@@ -167,7 +173,7 @@ const SignupForm = () => {
           >
             Password
           </label>
-          <input
+          <Input
             {...register("password", { required: true })}
             className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
             id="password"
@@ -190,6 +196,11 @@ const SignupForm = () => {
             Sign Up
           </button>
         </div>
+        <Label className="text-sm mt-4 text-balance">
+          Already have an account?
+          <span onClick={()=>{router.push("/")}} className="text-lsblue hover:text-blue-800"> Click Here </span>
+          to Login
+        </Label>
       </form>
     </div>
   );
