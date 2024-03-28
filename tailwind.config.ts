@@ -83,6 +83,9 @@ const config = {
       fontFamily: {
         margarine: ["var(--font-margarine)"],
       },
+      backgroundImage: (theme) => ({
+        "signin-background-image": "url('/images/signinbackground.jpeg')",
+      }),
     },
   },
   plugins: [require("tailwindcss-animate")],

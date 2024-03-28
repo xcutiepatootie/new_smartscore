@@ -1,5 +1,6 @@
+import SigininForm from "@/components/Forms/SigninForm";
 import { Label } from "@/components/ui/label";
-import { margarine } from "@/util/fonts";
+import { margarine, poppins } from "@/util/fonts";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";
@@ -13,22 +14,61 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center h-screen">
-      <div className="grid grid-cols-2 w-full h-full">
-        <div className="flex flex-col justify-center items-center">
+      <div className="grid md:grid-cols-2 w-full h-full max-sm:grid-col-1">
+        <div
+          className="bg-gradient-to-r from-[#FED968] from-10% via-[#E7DCBC] via-50% to-[#FFE7A0] to-90%
+        flex flex-col justify-center items-center border-2 border-black h-screen"
+        >
           <Image
-            className="-mt-56"
+            className="md:-mt-24 md:h-auto md:w-auto sm:h-24 sm:w-24"
             src={"/images/iconcroppped.png"}
             alt="HAHA"
             width={500}
-            height={250}
+            height={500}
           />
 
-          <Label className="text-3xl">
+          <h1 className="text-3xl">
             <span className={margarine.className}>Smartscore</span>
+          </h1>
+          <Label className="text-xl p-4 px-10 text-center">
+            <span className={poppins.className}>
+              Welcome to SmartScore! We're here to help educators understand
+              student performance and empower them to shine brighter by building
+              on strengths and tackling weaknesses.
+            </span>
           </Label>
         </div>
-        <div className="">
-          <h1>Landing page</h1>
+        <div className="relative">
+          <div className="absolute inset-0 bg-signin-background-image bg-cover bg-center"></div>
+
+          <div className="absolute inset-0 bg-slate-400 bg-opacity-65"> </div>
+
+          <div className="relative z-10 h-screen flex flex-col justify-center items-center">
+            <div className="flex flex-col items-center justify-center">
+              <h1 className="text-4xl">
+                <span className={margarine.className}>
+                  Smartscore
+                  <Image
+                    className="-mt-24 ml-40 h-full w-auto relative"
+                    src={"/images/iconcroppped.png"}
+                    alt="HAHA"
+                    width={125}
+                    height={150}
+                  />
+                </span>
+              </h1>
+
+              <Label className="text-xl px-10 text-center">
+                <span className={poppins.className}>
+                  Empowering Students, Enlightening Educators: Assessing
+                  Strengths, Addressing Weaknesses
+                </span>
+              </Label>
+            </div>
+            <div className="mt-4">
+              <SigininForm />
+            </div>
+          </div>
         </div>
       </div>
     </div>
