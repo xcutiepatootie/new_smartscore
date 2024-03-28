@@ -29,36 +29,34 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
   console.log(data);
 
   return (
-    <>
-      <Card className="w-[375px] h-[180]">
-        <CardHeader className="">
-          <CardTitle className="flex flex-row line-clamp-2 text-lg">
-            <div className="flex flex-row justify-between">
-              Quizzes Posted By {user.userSession.name}
-              <span className="">
-                <MdAssignment className="text-4xl text-emerald-400" />
-              </span>
-            </div>
-          </CardTitle>
-          <div className="mx-1 pb-2 border-b border-gray-200 drop-shadow-2xl" />
-        </CardHeader>
-        <CardContent>
-          {data ? (
-            <>
-              <p>Quiz Posted: </p>
-              {data.map((quiz, index) => (
-                <p key={index}>{quiz.quizName}</p>
-              ))}
-            </>
-          ) : (
-            <p>No quizzes are created by this user.</p>
-          )}
-        </CardContent>
-        {/* <CardFooter>
+    <Card className="w-[375px] h-[180] max-sm:w-[85%]">
+      <CardHeader className="">
+        <CardTitle className="flex flex-row line-clamp-2 text-lg">
+          <div className="flex flex-row justify-between">
+            Quizzes Posted By {user.userSession.name}
+            <span className="">
+              <MdAssignment className="text-4xl text-emerald-400" />
+            </span>
+          </div>
+        </CardTitle>
+        <div className="mx-1 pb-2 border-b border-gray-200 drop-shadow-2xl" />
+      </CardHeader>
+      <CardContent>
+        {data ? (
+          <>
+            <p>Quiz Posted: </p>
+            {data.map((quiz, index) => (
+              <p key={index}>{quiz.quizName}</p>
+            ))}
+          </>
+        ) : (
+          <p>No quizzes are created by this user.</p>
+        )}
+      </CardContent>
+      {/* <CardFooter>
           <p>Card Footer</p>
         </CardFooter> */}
-      </Card>
-    </>
+    </Card>
   );
 };
 

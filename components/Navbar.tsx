@@ -22,7 +22,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="flex grow items-center justify-between shadow-xl bg-violet-300 h-20">
+      <div className="flex grow items-center justify-between shadow-xl bg-violet-300 h-20 w-screen">
         <div className="px-4">
           <Link className="text-2xl font-bold" href="/">
             SmartScore
