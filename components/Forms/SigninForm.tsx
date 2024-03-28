@@ -55,7 +55,7 @@ const SigininForm = () => {
     <div className="flex justify-center items-center h-auto px-4 w-full">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-2xl drop-shadow-2xl rounded px-4 pt-6 pb-8 max-sm:px-8 max-sm:w-full"
+        className="bg-white shadow-2xl drop-shadow-2xl w-[50%] h-full rounded px-4 pt-6 pb-8 max-sm:px-8 max-sm:w-full"
       >
         <label
           className="block text-gray-700 text-sm font-bold mb-4 border-b-2 border-zinc-300"
@@ -127,7 +127,7 @@ const SigininForm = () => {
                     </div>
                     {errors.role && (<div className='text-red-500'>{errors.role.message}</div>)}
                 </div> */}
-        <div className="flex items-center justify-between">
+        <div className="flex items-center justify-between mb-5">
           <button
             disabled={isSubmitting}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105"
@@ -136,15 +136,14 @@ const SigininForm = () => {
             Sign In
           </button>
         </div>
-        <Label className="text-sm mt-4">
+        <Label className="text-md mt-8">
           Don't have an account yet?{" "}
           <span
             onClick={() => {
               router.push("/signup");
             }}
-            className="text-lsblue hover:text-blue-800"
+            className="text-blue-600 hover:text-blue-800 hover:scale-150"
           >
-            {" "}
             Click Here{" "}
           </span>
           to Sign Up

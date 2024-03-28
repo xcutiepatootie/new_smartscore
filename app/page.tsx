@@ -14,10 +14,11 @@ export default async function Home() {
 
   return (
     <div className="flex min-h-screen flex-col items-center h-screen">
-      <div className="grid md:grid-cols-2 w-full h-full max-sm:grid-col-1">
+      <div className="grid md:grid-cols-3 w-full h-full max-sm:grid-col-1">
         <div
           className="bg-gradient-to-r from-[#FED968] from-10% via-[#E7DCBC] via-50% to-[#FFE7A0] to-90%
-        flex flex-col justify-center items-center border-2 border-black h-screen"
+          shadow-2xl
+        flex flex-col justify-center items-center border border-black border-opacity-20 h-screen"
         >
           <Image
             className="md:-mt-24 md:h-auto md:w-auto sm:h-24 sm:w-24"
@@ -38,7 +39,7 @@ export default async function Home() {
             </span>
           </Label>
         </div>
-        <div className="relative">
+        <div className="relative col-span-2">
           <div className="absolute inset-0 bg-signin-background-image bg-cover bg-center"></div>
 
           <div className="absolute inset-0 bg-[#FFECB4] bg-opacity-80"> </div>
@@ -65,7 +66,7 @@ export default async function Home() {
                 </span>
               </Label>
             </div>
-            <div className="mt-4 w-full">
+            <div className="mt-4 w-full h-auto">
               <SigininForm />
             </div>
           </div>
