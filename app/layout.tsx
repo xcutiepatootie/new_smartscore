@@ -1,11 +1,14 @@
 import Navbar from "@/components/Navbar";
-import { Inter } from "next/font/google";
+import { Inter, Margarine } from "next/font/google";
 
 import "./globals.css";
 import { NextAuthProvider } from "./providers";
 import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
+const margarine = Margarine({ weight: "400", preload: false });
+
+const inter_init = inter.className;
 
 export const metadata = {
   title: "SmartScore",
@@ -19,9 +22,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter_init} ${margarine}`}>
         <NextAuthProvider>
-          <Navbar />
           <div className="flex flex-col">{children}</div>
           <Toaster />
         </NextAuthProvider>

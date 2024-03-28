@@ -1,13 +1,13 @@
-import type { Config } from "tailwindcss"
+import type { Config } from "tailwindcss";
 
 const config = {
   darkMode: ["class"],
   content: [
-    './pages/**/*.{ts,tsx}',
-    './components/**/*.{ts,tsx}',
-    './app/**/*.{ts,tsx}',
-    './src/**/*.{ts,tsx}',
-	],
+    "./pages/**/*.{ts,tsx}",
+    "./components/**/*.{ts,tsx}",
+    "./app/**/*.{ts,tsx}",
+    "./src/**/*.{ts,tsx}",
+  ],
   prefix: "",
   theme: {
     container: {
@@ -19,13 +19,12 @@ const config = {
     },
     extend: {
       colors: {
-
         //User colors
-        thistle: '#CDB4DB',
-        fairytale: '#FFC8DD',
-        carnation: '#FFAFCC',
-        uranianblue: '#BDE0FE',
-        lsblue: '#A2D2FF',
+        thistle: "#CDB4DB",
+        fairytale: "#FFC8DD",
+        carnation: "#FFAFCC",
+        uranianblue: "#BDE0FE",
+        lsblue: "#A2D2FF",
 
         //Shadcn
         border: "hsl(var(--border))",
@@ -81,9 +80,12 @@ const config = {
         "accordion-down": "accordion-down 0.2s ease-out",
         "accordion-up": "accordion-up 0.2s ease-out",
       },
+      fontFamily: {
+        margarine: ["var(--font-margarine)"],
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],
-} satisfies Config
+} satisfies Config;
 
-export default config
+export default config;
