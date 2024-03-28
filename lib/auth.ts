@@ -92,7 +92,7 @@ export const config: NextAuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/signin",
+    signIn: "/",
     signOut: "/signout",
   },
   callbacks: {
