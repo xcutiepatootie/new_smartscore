@@ -41,7 +41,7 @@ export default async function Home() {
         <div className="relative">
           <div className="absolute inset-0 bg-signin-background-image bg-cover bg-center"></div>
 
-          <div className="absolute inset-0 bg-slate-400 bg-opacity-65"> </div>
+          <div className="absolute inset-0 bg-[#FFECB4] bg-opacity-80"> </div>
 
           <div className="relative z-10 h-screen flex flex-col justify-center items-center">
             <div className="flex flex-col items-center justify-center">
@@ -65,7 +65,7 @@ export default async function Home() {
                 </span>
               </Label>
             </div>
-            <div className="mt-4">
+            <div className="mt-4 w-full">
               <SigininForm />
             </div>
           </div>
