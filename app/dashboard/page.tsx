@@ -38,7 +38,7 @@ export default async function Dashboard() {
               </div>
             </div>
 
-            <div className="flex flex-row space-x-2 h-[700px] w-full p-4 max-sm:flex-col">
+            <div className="flex flex-row space-x-2 h-[700px] w-full px-8 max-sm:flex-col">
               <Quiz_Section quizzes={quizzes} />
               <Quiz_DateAdded />
             </div>

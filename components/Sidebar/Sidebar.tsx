@@ -41,19 +41,16 @@ const Sidebar = async () => {
         </h1>
       </div>
 
-      <div className="mt-2">
+      <div className="flex flex-col mt-2 items-center justify-center">
         {userSession && (
           <>
-            <p>
-              <FaRegUser className="" />
-              Name: {userSession.user.name}
-            </p>
-            <p>Email: {userSession.user.email}</p>
+            <h1 className="font-bold">{userSession.user.name}</h1>
+            <p className="font-medium">{userSession.user.email}</p>
             {userSession.user.role === "student" && (
-              <p>Section: {user_section}</p>
+              <p>{userSession.user.userSection}</p>
             )}
 
-            <p>Role: {userSession.user.role}</p>
+            <p className="capitalize font-semibold">{userSession.user.role}</p>
           </>
         )}
       </div>
