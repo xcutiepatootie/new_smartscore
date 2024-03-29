@@ -24,7 +24,9 @@ export async function ProfileCards({ user }: any) {
         <CardContent className="flex h-full flex-col items-center justify-evenly">
           <Avatar className="h-[40%] w-auto">
             <AvatarImage className="" src="https://github.com/shadcn.png" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback className="h-auto w-full min-w-[300px]">
+              CN
+            </AvatarFallback>
           </Avatar>
           <div
             className={`${poppins.className} flex min-h-44 flex-col items-center justify-start`}
@@ -33,7 +35,7 @@ export async function ProfileCards({ user }: any) {
             <h2 className="text-xl font-extralight">{user.email}</h2>
           </div>
 
-          {user.role === "student" && <p>Section: {user_section}</p>}
+          {user.role === "student" && <p>{user.userSection}</p>}
         </CardContent>
       </Card>
 
@@ -67,7 +69,7 @@ export async function ProfileCards({ user }: any) {
             <p>{user.username}</p>
             <Separator className="my-2  bg-yellow-800" />
 
-            {user.role === "student" && <p>Section: {user_section}</p>}
+            {user.role === "student" && <p>{user.userSection}</p>}
             <p>To Be Added </p>
           </div>
         </CardContent>

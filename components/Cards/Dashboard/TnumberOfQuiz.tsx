@@ -12,8 +12,8 @@ const TnumberOfQuiz = async ({ userSession }: any) => {
   const user = userSession;
   let user_section: any = null;
   if (user.role === "student") {
-    const { section } = userSession?.userSection;
-    user_section = section;
+
+    user_section = userSession?.userSection
   }
 
   async function getData() {

@@ -44,12 +44,18 @@ export default async function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="">
-            <div className="flex flex-row">
-              <TnumberOfQuiz userSession={session?.user} />
-              <TnumberOfQuiz userSession={session?.user} />
-              <TnumberOfQuiz userSession={session?.user} />
-              <TnumberOfQuiz userSession={session?.user} />
+          <div className="flex w-full flex-col items-center justify-center space-y-4">
+            <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
+              <div className="flex flex-row space-x-4 max-md:flex-col max-md:items-center max-md:justify-center">
+                <TnumberOfQuiz userSession={session?.user} />
+                <TnumberOfQuiz userSession={session?.user} />
+                <TnumberOfQuiz userSession={session?.user} />
+                <TnumberOfQuiz userSession={session?.user} />
+              </div>
+            </div>
+            <div className="flex h-[700px] w-full flex-row space-x-2 px-8 max-sm:flex-col">
+              <Quiz_Section quizzes={quizzes} />
+              <Quiz_DateAdded />
             </div>
           </div>
         )}
