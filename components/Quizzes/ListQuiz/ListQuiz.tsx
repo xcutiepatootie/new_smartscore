@@ -23,20 +23,20 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
     // Find if quizId exists in quizTaken array
     return quizTaken.some(
       (takenQuiz: any) =>
-        takenQuiz.quizId === quizId && takenQuiz.studentId === studentId
+        takenQuiz.quizId === quizId && takenQuiz.studentId === studentId,
     );
   };
 
   // Filter out quizTaken data with isDone === true
   const filteredQuizTaken = quizTaken.filter(
     (takenQuiz: any) =>
-      takenQuiz.isDone && session?.user.id === takenQuiz.studentId
+      takenQuiz.isDone && session?.user.id === takenQuiz.studentId,
   );
 
   // Filter out quizTaken data with isDone === false
   const filteredQuizTaken_NotDone = quizTaken.filter(
     (takenQuiz: any) =>
-      !takenQuiz.isDone && session?.user.id === takenQuiz.studentId
+      !takenQuiz.isDone && session?.user.id === takenQuiz.studentId,
   );
 
   console.log("Completed: ", filteredQuizTaken);
@@ -47,9 +47,9 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
 
   return (
     <div className="w-full">
-      <table className="w-full bg-white border border-gray-200">
-        <thead className="">
-          <tr className="bg-gray-100 ">
+      <table className="w-full border border-gray-200 bg-white">
+        <thead className="bg-yellow-200">
+          <tr className=" ">
             <th className="px-6 py-4 text-left">Name</th>
             <th className="px-6 py-4 text-left">Subject</th>
             {session?.user?.role === "faculty" && (
@@ -58,13 +58,13 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
             <th className="px-6 py-4 text-center">Option</th>
           </tr>
         </thead>
-        <tbody>
+        <tbody className="bg-yellow-50">
           {quizList.map((quiz: Quiz, index: number) => {
             const isNotTakenOrNotDone =
               !isQuizTaken(quiz.id, session?.user.id) ||
               (isQuizTaken(quiz.id, session?.user.id) &&
                 !filteredQuizTaken.find(
-                  (takenQuiz: any) => takenQuiz.quizId === quiz.id
+                  (takenQuiz: any) => takenQuiz.quizId === quiz.id,
                 )?.isDone);
             if (isNotTakenOrNotDone) {
               return (
@@ -82,14 +82,15 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                             Number of Retries Left:{" "}
                             {checkAllQuizinQuizTakenByUser[index] &&
                               filteredQuizTaken_NotDone.find(
-                                (takenQuiz: any) => takenQuiz.quizId === quiz.id
+                                (takenQuiz: any) =>
+                                  takenQuiz.quizId === quiz.id,
                               )?.retriesLeft}
                           </span>
                           <Button
-                            className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ml-4"
+                            className="ml-4 rounded bg-lsblue px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-violet-500 hover:text-white"
                             onClick={() =>
                               router.push(
-                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
+                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`,
                               )
                             }
                           >
@@ -102,10 +103,10 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                       ) : (
                         <>
                           <Button
-                            className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                            className="rounded bg-lsblue px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-violet-500 hover:text-white"
                             onClick={() =>
                               router.push(
-                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`
+                                `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`,
                               )
                             }
                           >
@@ -121,10 +122,10 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                     <td className="flex items-center justify-center px-6 py-4 text-center">
                       <div className="mx-2">
                         <Button
-                          className="bg-lsblue text-black hover:bg-blue-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+                          className="rounded bg-amber-300 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-yellow-600 hover:text-white"
                           onClick={() =>
                             router.push(
-                              `/dashboard/quizzes/update-quiz?quizId=${quiz.id}`
+                              `/dashboard/quizzes/update-quiz?quizId=${quiz.id}`,
                             )
                           }
                         >
