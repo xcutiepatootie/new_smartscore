@@ -26,10 +26,10 @@ export default async function Dashboard() {
 
   return (
     <>
-      <div className="flex flex-row h-full max-sm:grid max-sm:grid-rows-2">
+      <div className="flex h-full flex-row max-sm:grid max-sm:grid-rows-2">
         {session?.user.role === "faculty" ? (
-          <div className="space-y-4 flex flex-col justify-center items-center w-full">
-            <div className="flex flex-row md:space-x-4 max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:w-full max-lg:p-2 max-lg:space-y-6">
+          <div className="flex w-full flex-col items-center justify-center space-y-4">
+            <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
               <div className="flex flex-row space-x-4 max-md:flex-col max-md:items-center max-md:justify-center">
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
                 <Subjects_Handled_Card userSession={session?.user} />
@@ -38,7 +38,7 @@ export default async function Dashboard() {
               </div>
             </div>
 
-            <div className="flex flex-row space-x-2 h-[700px] w-full px-8 max-sm:flex-col">
+            <div className="flex h-[700px] w-full flex-row space-x-2 px-8 max-sm:flex-col">
               <Quiz_Section quizzes={quizzes} />
               <Quiz_DateAdded />
             </div>

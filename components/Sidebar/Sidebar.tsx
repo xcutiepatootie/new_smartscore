@@ -22,16 +22,16 @@ const Sidebar = async () => {
   }
   return (
     <nav
-      className="grid grid-rows-5 gap-2 h-screen w-full p-8
-    bg-gradient-to-b from-[#F2CA4F]
-    left-80 lg:left-0 lg:w-60  peer-focus:left-0 peer:transition ease-out delay-150 duration-200"
+      className="peer:transition left-80 grid h-screen w-full grid-rows-5
+    gap-2 bg-gradient-to-b
+    from-[#F2CA4F] p-8 delay-150  duration-200 ease-out peer-focus:left-0 lg:left-0 lg:w-60"
     >
       <div className="p-4">
-        <h1 className="text-2xl text-center items-center">
+        <h1 className="items-center text-center text-2xl">
           <span className={margarine.className}>
             Smartscore
             <Image
-              className="-mt-16 ml-32 w-auto h-auto relative"
+              className="relative -mt-16 ml-32 h-auto w-auto"
               src={"/images/iconcroppped.png"}
               alt="HAHA"
               width={50}
@@ -41,7 +41,7 @@ const Sidebar = async () => {
         </h1>
       </div>
 
-      <div className="flex flex-col mt-2 items-center justify-center">
+      <div className="mt-2 flex flex-col items-center justify-center">
         {userSession && (
           <>
             <h1 className="font-bold">{userSession.user.name}</h1>
@@ -50,43 +50,43 @@ const Sidebar = async () => {
               <p>{userSession.user.userSection}</p>
             )}
 
-            <p className="capitalize font-semibold">{userSession.user.role}</p>
+            <p className="font-semibold capitalize">{userSession.user.role}</p>
           </>
         )}
       </div>
 
       <div className="">
-        <div className=" my-4border-gray-100 pb-4 pr-5 w-full h-full">
-          <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+        <div className=" my-4 h-full w-full border-gray-100 pb-4 pr-5">
+          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
             <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
             <Link href={"/dashboard"}>
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
                 Dashboard
               </h3>
             </Link>
           </div>
 
-          <div className="flex mb-2 justify-start items-center gap-4 px-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
             <MdQuiz className="text-2xl text-gray-600 group-hover:text-white " />
             <Link href={"/dashboard/quizzes"}>
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
                 Quiz
               </h3>
             </Link>
           </div>
 
-          <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
             <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
             <Link href={"/dashboard/profile"}>
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
                 Profile
               </h3>
             </Link>
           </div>
-          <div className="flex  mb-2 justify-start items-center gap-4 pl-5 hover:bg-gray-900 p-2 rounded-md group cursor-pointer hover:shadow-lg m-auto">
+          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
             <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
             <Link href={"/dashboard/analytics"}>
-              <h3 className="text-base text-gray-800 group-hover:text-white font-semibold ">
+              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
                 Analytics
               </h3>
             </Link>
@@ -94,7 +94,7 @@ const Sidebar = async () => {
         </div>
       </div>
 
-      <div className="row-span-2 flex justify-start items-center">
+      <div className="row-span-2 flex items-center justify-start">
         <Signout_Button />
       </div>
     </nav>

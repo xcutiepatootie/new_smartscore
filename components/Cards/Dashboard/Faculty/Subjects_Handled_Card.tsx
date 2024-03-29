@@ -37,7 +37,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
   console.log(data);
 
   return (
-    <Card className="w-[375px] h-[180] max-sm:w-[85%]">
+    <Card className="h-[180] w-[375px] max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">
           Subjects Handled by {user.name}

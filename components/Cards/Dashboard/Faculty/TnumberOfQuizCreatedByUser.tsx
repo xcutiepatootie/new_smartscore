@@ -29,9 +29,9 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
   console.log(data);
 
   return (
-    <Card className="w-[375px] h-[180] max-sm:w-[85%]">
+    <Card className="h-[180] w-[375px] max-sm:w-[85%]">
       <CardHeader className="">
-        <CardTitle className="flex flex-row line-clamp-2 text-lg">
+        <CardTitle className="line-clamp-2 flex flex-row text-lg">
           <div className="flex flex-row justify-between">
             Quizzes Posted By {user.userSession.name}
             <span className="">
@@ -39,7 +39,7 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
             </span>
           </div>
         </CardTitle>
-        <div className="mx-1 pb-2 border-b border-gray-200 drop-shadow-2xl" />
+        <div className="mx-1 border-b border-gray-200 pb-2 drop-shadow-2xl" />
       </CardHeader>
       <CardContent>
         {data ? (
