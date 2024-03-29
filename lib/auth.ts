@@ -71,7 +71,7 @@ export const config: NextAuthOptions = {
               });
 
               console.log(userSection);
-              user.userSection = userSection;
+              user.userSection = userSection?.section;
             } catch (error) {}
           }
 
@@ -114,7 +114,7 @@ export const config: NextAuthOptions = {
       session.user.role = token.role;
       session.user.username = token.username;
       session.user.userSection = token.userSection;
-      // console.log(session)
+       console.log(session)
 
       return session;
     },
