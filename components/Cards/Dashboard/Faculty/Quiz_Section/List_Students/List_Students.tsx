@@ -40,7 +40,7 @@ const List_Students = ({
       <div className="my-2 w-full">
         {/*  <h2>Students in Section {section}</h2> */}
 
-        <ListStudent_Table dataq={students} quizId={quizId} />
+        <ListStudent_Table section={section} quizId={quizId} />
       </div>
     </>
   );
