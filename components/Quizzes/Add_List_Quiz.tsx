@@ -34,7 +34,7 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
             View Quiz
           </Button>
 
-          {session?.user.role === "faculty" && (
+          {session?.user.role === "faculty" ? (
             <div className="px-4">
               <Button
                 className={`rounded bg-yellow-500 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-yellow-600 hover:text-white ${
@@ -49,17 +49,13 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
                 Create Quiz
               </Button>
             </div>
-          )}
-        </div>
-
-        <div className="flex flex-row">
-          {session?.user.role === "student" && (
+          ) : (
             <div className="px-4">
               {/*  <button
-                    className={`bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 `}
-                  >
-                    Take Quiz Using Code
-                  </button> */}
+                className={`bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 `}
+              >
+                Take Quiz Using Code
+              </button> */}
               <TakeQuiz_UseCode />
             </div>
           )}

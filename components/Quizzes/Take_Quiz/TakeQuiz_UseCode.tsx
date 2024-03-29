@@ -38,9 +38,11 @@ const TakeQuiz_UseCode = () => {
     if (find === "Quiz is already done") {
       setError("quizCode", { type: "custom", message: "Quiz is already done" });
     }
-    if(find === "Quiz is not assigned in your section"){
-      setError("quizCode", { type: "custom", message: "Quiz is not assigned in your section" });
-
+    if (find === "Quiz is not assigned in your section") {
+      setError("quizCode", {
+        type: "custom",
+        message: "Quiz is not assigned in your section",
+      });
     }
   };
 
@@ -48,7 +50,7 @@ const TakeQuiz_UseCode = () => {
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200"
+          className="rounded bg-yellow-500 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-yellow-600 hover:text-white"
           variant="outline"
         >
           Take Quiz Using Quiz Code
@@ -79,7 +81,7 @@ const TakeQuiz_UseCode = () => {
           </div>
 
           {errors.quizCode && (
-            <div className="text-red-500 text-xs">
+            <div className="text-xs text-red-500">
               {errors.quizCode.type === "custom" ? (
                 <>
                   <br />
