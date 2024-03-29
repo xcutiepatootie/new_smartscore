@@ -57,7 +57,7 @@ export async function getSectionHandled() {
 export async function getStudentClusterAssignments(quizId: string) {
   const clusterAssignments = await fetch(
     `http://localhost:8080/api/assignments?quizId=${quizId}`,
-    { cache: "force-cache" }
+    { cache: "force-cache" },
   );
   if (!clusterAssignments.ok) {
     throw new Error("Failed to fetch data");
@@ -70,7 +70,7 @@ export async function getStudentClusterAssignments(quizId: string) {
 export async function getStudentRecords(quizId: string) {
   const studentRecords = await fetch(
     `http://localhost:8080/api/student_records?quizId=${quizId}`,
-    { cache: "force-cache" }
+    { cache: "force-cache" },
   );
   if (!studentRecords.ok) {
     throw new Error("Failed to fetch data");
@@ -83,7 +83,7 @@ export async function getStudentRecords(quizId: string) {
 export async function getClusterValues(quizId: string) {
   const clusterValues = await fetch(
     `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
-    { cache: "force-cache" }
+    { cache: "force-cache" },
   );
   if (!clusterValues.ok) {
     throw new Error("Failed to fetch data");
@@ -97,7 +97,7 @@ export async function getClusterValues(quizId: string) {
 export async function getClusterChart(quizId: string) {
   const clusterChart = await fetch(
     `http://localhost:8080/charts/plot64?quizId=${quizId}`,
-    { cache: "force-cache" }
+    { cache: "force-cache" },
   );
   if (!clusterChart.ok) {
     throw new Error("Failed to fetch data");
@@ -237,7 +237,7 @@ export async function quizSection_Card() {
 // Get students for Quiz_Section Card
 export async function student_sectionList(
   sectionLocal: string,
-  quizId: string
+  quizId: string,
 ) {
   const getStudents = await prisma.student.findMany({
     where: { section: sectionLocal },
@@ -252,7 +252,7 @@ export async function student_sectionList(
   const studentsWithStatus = getStudents.map((student) => {
     // Check if there is a corresponding entry in getQuizTaken for this student
     const quizTakenByStudent = getQuizTaken.find(
-      (quiz) => quiz.studentId === student.studentId && quiz.isDone === true
+      (quiz) => quiz.studentId === student.studentId && quiz.isDone === true,
     );
 
     // If quizTakenByStudent is undefined, it means the student hasn't taken the quiz
@@ -296,23 +296,74 @@ export async function getQuizTakenHistory() {
   });
   console.log("Quizzes: ", quizzes);
 
-  const quizTakenHistory = [];
+  const quizTakenHistory: {
+    quiz: { id: string; quizName: string };
+    quizTaken: { id: string }[];
+  }[] = [];
 
   for (const quiz of quizzes) {
     const quizTaken = await prisma.quizTaken.findMany({
       where: { quizId: quiz.id },
-      include: { student: true },
+      select: { id: true },
     });
     quizTakenHistory.push({ quiz, quizTaken });
   }
+
+  const quizTakenIds = quizTakenHistory.map((item) =>
+    item.quizTaken.map((itemTaken) => itemTaken.id),
+  );
 
   const finalData = quizzes.map((quizHistory) => ({
     quizId: quizHistory.id,
     quizName: quizHistory.quizName,
   }));
 
+  const flatQuizTakenIds = quizTakenIds.flat();
+
+  console.log(flatQuizTakenIds);
+
+  const documents = await prisma.quiz_Result.findMany({
+    where: {
+      quizTakenId: {
+        in: flatQuizTakenIds,
+      },
+    },
+    include: { student: true },
+    orderBy: {
+      dateTaken: "desc",
+    },
+    take: 10,
+  });
+  const sortedDocuments = documents.sort((a: any, b: any) => {
+    const dateA = new Date(a.date).getTime();
+    const dateB = new Date(b.date).getTime();
+    return dateB - dateA;
+  });
+  console.log("Documents", documents.length);
+
+  console.log(quizTakenHistory);
+  console.log(sortedDocuments);
+
+  // Iterate over each document in the sorted documents array
+  const documentsWithQuizName = sortedDocuments.map((doc) => {
+    // Find the corresponding quizTaken object in the quizTakenHistory
+    const matchingQuizTaken = quizTakenHistory.find((quizTaken) =>
+      quizTaken.quizTaken.some((quiz) => quiz.id === doc.quizTakenId),
+    );
+
+    // If a matching quizTaken object is found, extract the quizName
+    const quizName = matchingQuizTaken
+      ? matchingQuizTaken.quiz.quizName
+      : "Unknown";
+
+    // Add the quizName to the document and return the modified document
+    return { ...doc, quizName };
+  });
+
+  console.log(documentsWithQuizName);
+
   console.log("finalData", finalData);
-  return quizTakenHistory;
+  return documentsWithQuizName;
 }
 
 export async function getStudentBySection(sectionsHandled: string[]) {
@@ -365,7 +416,7 @@ export async function getQuizzesList_faculty() {
 export async function setFeedback(
   quizId: string,
   quizName: string,
-  feedbacks: feedbackSchemaType
+  feedbacks: feedbackSchemaType,
 ) {
   const session = await getUserSession();
   try {
@@ -409,7 +460,7 @@ export async function getPrevFeedback(quizId: string) {
 export async function updateQuiz(
   updateQuizData: QuizFields,
   quizIdLocal: string,
-  questionsLocal: any
+  questionsLocal: any,
 ) {
   const session = await getUserSession();
 
@@ -438,7 +489,7 @@ export async function updateQuiz(
               options: question.options,
               correctAnswer: question.correctAnswer,
             },
-          })
+          }),
         ),
       },
       Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
@@ -495,7 +546,7 @@ export async function getQuizzesList_student() {
 
   //Filter Quiz Data base from Current Section
   const quizzesBasedOnSection = getAllQuizzes.filter((quiz) =>
-    quiz.sectionAssigned.includes(section)
+    quiz.sectionAssigned.includes(section),
   );
   console.log("Filtered:", quizzesBasedOnSection);
 
@@ -529,7 +580,7 @@ export async function getSelectedQuiz(quizID: string) {
 // Submit Student Answers and Records
 export async function submitStudentAnswers(
   quizId: string,
-  studentResult: Student_Quiz_Result
+  studentResult: Student_Quiz_Result,
 ) {
   const userSession = await getUserSession();
   const currentTimestamp = Date.now();
