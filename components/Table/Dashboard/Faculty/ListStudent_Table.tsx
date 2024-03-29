@@ -7,10 +7,10 @@ import { DataTable } from "./data-table";
 import { student_sectionList } from "@/lib/server_actions/actions";
 
 function ListStudent_Table({
-  dataq,
+  section,
   quizId,
 }: {
-  dataq: StudentWithStatus[];
+  section: string;
   quizId: string;
 }) {
   const [loading, setLoading] = useState(true);
@@ -18,16 +18,14 @@ function ListStudent_Table({
 
   useEffect(() => {
     const setData = async () => {
-      const fetchData = await student_sectionList("10-FC", quizId);
+      const fetchData = await student_sectionList(section, quizId);
       setStudents(fetchData);
     };
     setData();
     setTimeout(() => {
       setLoading(false);
     }, 1000);
-  }, [dataq]);
-
-  const data: StudentWithStatus[] = [...dataq];
+  }, [section]);
 
   console.log(students);
 
@@ -39,7 +37,7 @@ function ListStudent_Table({
             <p>Loading...</p>
           ) : (
             <>
-              {dataq && <DataTable columns={columns} data={students} />}
+              {section && <DataTable columns={columns} data={students} />}
               {/*  <Card className="h-[800px] w-auto p-4"></Card> */}
             </>
           )}

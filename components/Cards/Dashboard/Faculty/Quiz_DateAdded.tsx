@@ -11,7 +11,9 @@ import React from "react";
 
 const Quiz_DateAdded = async () => {
   const testquiz = await getQuizTakenHistory();
+  console.log("======================");
   console.log(JSON.stringify(testquiz, null, 2));
+  console.log("======================");
   return (
     <>
       <Card className="w-1/3">
