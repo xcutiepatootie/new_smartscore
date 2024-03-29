@@ -8,9 +8,13 @@ import {
 } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { getQuizTakenHistory } from "@/lib/server_actions/actions";
 import { lexend, poppins } from "@/utils/fonts";
+import { FaStickyNote } from "react-icons/fa";
+
 import React from "react";
+import { FaClock, FaCalendarCheck } from "react-icons/fa";
 
 const Quiz_DateAdded = async () => {
   const quizHistory = await getQuizTakenHistory();
@@ -31,9 +35,13 @@ const Quiz_DateAdded = async () => {
             <div className="space-y-4">
               {quizHistory.map((history) => (
                 <Card className="h-auto w-full p-1" key={history.id}>
-                  <CardTitle className={`${lexend.className} p-4 text-xl`}>
-                    Quiz Submitted: {history.quizName}
+                  <CardTitle
+                    className={`${lexend.className} flex items-center p-2 text-xl`}
+                  >
+                    <FaStickyNote size={25} className="text-yellow-400 mr-2" /> Quiz Submitted:{" "}
+                    {history.quizName}
                   </CardTitle>
+                  <Separator className="my-2 bg-amber-300 " />
                   <CardContent className="flex flex-col">
                     <Label className={`${poppins.className} text-lg`}>
                       Submitted by: {history.student?.name}
@@ -41,6 +49,16 @@ const Quiz_DateAdded = async () => {
                     <Label className={`${poppins.className} text-md`}>
                       Section: {history.student?.section}
                     </Label>
+                    <div className="ml-6 flex w-full flex-row space-x-8 p-2">
+                      <Label className="flex w-full items-center gap-2">
+                        <FaClock size={20} />
+                        {history.dateTaken.toLocaleTimeString()}
+                      </Label>
+                      <Label className="flex w-full items-center gap-2">
+                        <FaCalendarCheck size={20} />
+                        {history.dateTaken.toLocaleDateString()}
+                      </Label>
+                    </div>
                   </CardContent>
                 </Card>
               ))}
