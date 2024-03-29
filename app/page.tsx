@@ -1,6 +1,6 @@
 import SigininForm from "@/components/Forms/SigninForm";
 import { Label } from "@/components/ui/label";
-import { margarine, poppins } from "@/util/fonts";
+import { margarine, poppins } from "@/utils/fonts";
 import { getServerSession } from "next-auth";
 import Image from "next/image";
 import { redirect } from "next/navigation";

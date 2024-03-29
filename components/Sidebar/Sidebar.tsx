@@ -10,8 +10,9 @@ import {
 } from "react-icons/md";
 import Signout_Button from "./Signout_Button";
 import { Label } from "../ui/label";
-import { margarine, poppins } from "@/util/fonts";
+import { margarine, poppins } from "@/utils/fonts";
 import Image from "next/image";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 const Sidebar = async () => {
   const userSession = await getServerSession(config);
@@ -22,11 +23,11 @@ const Sidebar = async () => {
   }
   return (
     <nav
-      className="peer:transition left-80 grid h-screen w-full grid-rows-5
+      className="peer:transition left-80 grid h-screen w-full grid-rows-6
     gap-2 bg-gradient-to-b
     from-[#F2CA4F] p-8 delay-150  duration-200 ease-out peer-focus:left-0 lg:left-0 lg:w-60"
     >
-      <div className="p-4">
+      <div className="p-2 pt-4">
         <h1 className="items-center text-center text-2xl">
           <span className={margarine.className}>
             Smartscore
@@ -41,9 +42,13 @@ const Sidebar = async () => {
         </h1>
       </div>
 
-      <div className="mt-2 flex flex-col items-center justify-center">
+      <div className="flex flex-col items-center justify-center">
         {userSession && (
           <>
+            <Avatar className="h-[60%] w-auto">
+              <AvatarImage className="" src="https://github.com/shadcn.png" />
+              <AvatarFallback>CN</AvatarFallback>
+            </Avatar>
             <h1 className="font-bold">{userSession.user.name}</h1>
             <p className="font-medium">{userSession.user.email}</p>
             {userSession.user.role === "student" && (
@@ -55,7 +60,7 @@ const Sidebar = async () => {
         )}
       </div>
 
-      <div className="">
+      <div className="row-span-2  pt-8">
         <div className=" my-4 h-full w-full border-gray-100 pb-4 pr-5">
           <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
             <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
