@@ -37,22 +37,20 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
   console.log(data);
 
   return (
-    <>
-      <Card className="w-[375px] h-[180]">
-        <CardHeader>
-          <CardTitle className="line-clamp-2 text-lg">
-            Subjects Handled by {user.name}
-          </CardTitle>
-          <CardDescription>shows the subjects you handled!</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <p>Subjects Handled: </p>
-          {data.map((subject: any, index) => (
-            <p key={index}>{subject}</p>
-          ))}
-        </CardContent>
-      </Card>
-    </>
+    <Card className="h-[180] w-[375px] max-sm:w-[85%]">
+      <CardHeader>
+        <CardTitle className="line-clamp-2 text-lg">
+          Subjects Handled by {user.name}
+        </CardTitle>
+        <CardDescription>shows the subjects you handled!</CardDescription>
+      </CardHeader>
+      <CardContent>
+        <p>Subjects Handled: </p>
+        {data.map((subject: any, index) => (
+          <p key={index}>{subject}</p>
+        ))}
+      </CardContent>
+    </Card>
   );
 };
 

@@ -24,6 +24,9 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${inter_init} ${margarine}`}>
         <NextAuthProvider>
+          <div className="md:hidden">
+            <Navbar />
+          </div>
           <div className="flex flex-col">{children}</div>
           <Toaster />
         </NextAuthProvider>

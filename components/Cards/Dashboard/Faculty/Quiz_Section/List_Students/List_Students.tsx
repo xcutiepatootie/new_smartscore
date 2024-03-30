@@ -11,8 +11,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import ListStudent_Table from "@/components/Table/Dashboard/Faculty/ListStudent_Table";
 
-interface StudentWithStatus extends Student {
+export interface StudentWithStatus extends Student {
   status: string; // Add the status field
 }
 
@@ -36,37 +37,10 @@ const List_Students = ({
   console.log(students);
   return (
     <>
-      <div className="my-2">
-        <h2>Students in Section {section}</h2>
-        <Table>
-          <TableCaption>
-            A list of your students who taken the quiz.
-          </TableCaption>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead className="text-right">Status</TableHead>
-            </TableRow>
-          </TableHeader>
-          <TableBody>
-            {students.map((student) => (
-              <TableRow key={student.id}>
-                <TableCell>{student.name}</TableCell>
-                <TableCell>{student.email}</TableCell>
-                <TableCell className="text-right">{student.status}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+      <div className="my-2 w-full">
+        {/*  <h2>Students in Section {section}</h2> */}
 
-        {/*     <ul>
-          {students.map((student) => (
-            <li key={student.id}>
-              Name: {student.name}, Email: {student.email}
-            </li>
-          ))}
-        </ul> */}
+        <ListStudent_Table section={section} quizId={quizId} />
       </div>
     </>
   );

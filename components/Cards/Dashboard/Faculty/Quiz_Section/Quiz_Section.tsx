@@ -15,6 +15,7 @@ import { QuizData_Cards } from "@/types/types";
 import React, { useState } from "react";
 import Quiz_section_Popover from "./Quiz_section_Popover/Quiz_section_Popover";
 import List_Students from "./List_Students/List_Students";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
   const [selectedQuiz, setSelectedQuiz] = useState<string>(""); // Set default selected quiz
@@ -49,7 +50,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
           />
           {/* Render Here The Quiz And Section */}
           <Tabs className="w-auto py-2">
-            <TabsList className="grid w-full grid-cols-2">
+            <TabsList className="flex w-full flex-row justify-around">
               {selectedQuizObject &&
                 selectedQuizObject.sectionAssigned.map((section, index) => (
                   <TabsTrigger
@@ -65,7 +66,12 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
                 <TabsContent key={index} value={section}>
                   <Card>
                     <CardContent className="space-y-2">
-                      <List_Students quizId={selectedQuizObject.id} section={section} />
+                      <ScrollArea className="w-auto h-[450px]">
+                        <List_Students
+                          quizId={selectedQuizObject.id}
+                          section={section}
+                        />
+                      </ScrollArea>
                     </CardContent>
                     <CardFooter>{/* Your footer */}</CardFooter>
                   </Card>

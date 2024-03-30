@@ -24,10 +24,10 @@ const Quizzes = async () => {
   const allSection = await getSections();
   //console.log(allSection)
 
-  // console.log(JSON.stringify(allQuiz.getAllQuizzes, null, 2));
+  console.log(JSON.stringify(allQuiz.quizzesBasedOnSection, null, 2));
 
   return (
-    <>
+    <div className="flex items-center justify-center">
       <Add_List_Quiz
         quizList={
           getSession?.user.role === "faculty"
@@ -37,7 +37,7 @@ const Quizzes = async () => {
         quizTaken={allQuiz?.getAllTakenQuiz}
         studentSection={allSection}
       />
-    </>
+    </div>
   );
 };
 

@@ -7,12 +7,19 @@ import {
   ScoreResult,
   Student_Quiz_Result,
 } from "@/types/types";
+import { margarine, poppins } from "@/utils/fonts";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { RiHourglassFill } from "react-icons/ri";
+import { MdSubject } from "react-icons/md";
+import { MdQuiz } from "react-icons/md";
+import { Separator } from "@/components/ui/separator";
+import { Button } from "@/components/ui/button";
+import { Label } from "@/components/ui/label";
 
 export const Take_Quiz = ({
   selectedQuiz,
@@ -21,6 +28,7 @@ export const Take_Quiz = ({
   selectedQuiz: QuizFields;
   quizId: string;
 }) => {
+  const [startQuiz, setStartQuiz] = useState<boolean>(false);
   const [answerChanges, setAnswerChanges] = useState(0);
   const [isPageFocused, setIsPageFocused] = useState(true);
   const [focusCount, setFocusCount] = useState(0);
@@ -34,7 +42,7 @@ export const Take_Quiz = ({
     formState: { errors, isLoading, isDirty },
   } = useForm<QuizAnswerFields>({ resolver: zodResolver(QuizAnswersSchema) });
 
-  const [timerStopped, setTimerStopped] = useState<boolean>(false);
+  const [timerStopped, setTimerStopped] = useState<boolean>(true);
   const [time, setTime] = useState<number>(0);
   const router = useRouter();
 
@@ -111,7 +119,7 @@ export const Take_Quiz = ({
 
   function calculateScore(
     quiz: QuizFields,
-    answers: QuizAnswerFields
+    answers: QuizAnswerFields,
   ): ScoreResult {
     let score = 0;
     let perfect = false;
@@ -139,10 +147,10 @@ export const Take_Quiz = ({
     console.log(data);
     handleTimerStop();
     const selectedInputs = document.querySelectorAll(
-      'input[type="radio"]:checked'
+      'input[type="radio"]:checked',
     );
     const selectedValues = Array.from(selectedInputs).map(
-      (input: any) => input.value
+      (input: any) => input.value,
     );
 
     const studentScore = calculateScore(selectedQuiz, data);
@@ -172,69 +180,118 @@ export const Take_Quiz = ({
   return (
     <div className="flex flex-col">
       <div className="">
-        <div className="container w-screen h-[85vh] mx-auto mt-4 bg-slate-50 p-4 rounded-lg shadow-lg overflow-y-auto">
-          <h3 className="text-xl font-semibold mb-2">
+        <div className="container mx-auto mt-4 h-[85vh] w-screen overflow-y-auto rounded-lg bg-slate-50 p-4 shadow-lg">
+          <h3 className="mb-2 flex flex-row items-center justify-center text-xl font-semibold">
+            <span>
+              <MdQuiz size={25} className="mr-4" />
+            </span>
             Quiz Name: {selectedQuiz?.quizName}
           </h3>
-          <p className="text-gray-500 mb-4">Subject: {selectedQuiz?.subject}</p>
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <ul className="border bg-white shadow-2xl">
-              <div className="mt-4">
-                <span className="m-4 ">{formatTime(time)}</span>
-              </div>
-              <div className="flex flex-col flex-wrap">
-                {selectedQuiz?.questions.map((question, index) => (
-                  <li key={`question_${index}`} className="mb-4">
-                    <div className="flex">
-                      <div className="border-2 rounded-lg m-4 p-4 bg-white shadow-lg">
-                        <p className="text-lg font-medium mb-2">
-                          {index + 1}: {question.questionText}
-                        </p>
-                        {question.options.map((option, optionIndex) => (
-                          <div key={`option_${optionIndex}`}>
-                            <Controller
-                              key={`option_${optionIndex}`}
-                              name={`studentAnswers.${index}.answer`}
-                              control={control}
-                              defaultValue=""
-                              render={({ field }) => (
-                                <label
-                                  key={`label_${optionIndex}`}
-                                  className="block"
-                                >
-                                  <input
-                                    id={`option_${index}_${optionIndex}`}
-                                    className="mr-2"
-                                    type="radio"
-                                    {...field}
-                                    value={option}
-                                    checked={field.value === option}
-                                    onChange={() => {
-                                      field.onChange(option);
-                                      handleAnswerChange();
-                                    }}
-                                  />
-                                  {option}
-                                </label>
-                              )}
-                            />
-                          </div>
-                        ))}
-                      </div>
+          <p className="mb-4 flex flex-row items-center justify-center text-gray-500">
+            <span>
+              <MdSubject size={20} className="mr-4" />
+            </span>
+            Subject: {selectedQuiz?.subject}
+          </p>
+          <Separator className="my-2 h-1 bg-lime-700" />
+          {startQuiz ? (
+            <>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <ul className="border bg-white shadow-2xl">
+                  <div className="mt-4 flex flex-row items-center justify-center  ">
+                    <div className="flex items-center justify-center rounded-lg border bg-gray-50 px-6">
+                      <RiHourglassFill
+                        size={40}
+                        className="animate-infinite animate-duration-[2500ms] animate-ease-in-out animate-alternate-reverse animate-pulse text-amber-800"
+                      />
+                      <span
+                        className={`${margarine.className}flex m-4 w-48 flex-row rounded-lg  px-4 py-2 text-2xl font-bold`}
+                      >
+                        {formatTime(time)}
+                      </span>
                     </div>
-                  </li>
-                ))}
-              </div>
-            </ul>
-            <div className="py-4">
-              <button
-                className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md focus:outline-none"
-                type="submit"
+                  </div>
+                  <div className="flex flex-col flex-wrap">
+                    {selectedQuiz?.questions.map((question, index) => (
+                      <li key={`question_${index}`} className="mb-4">
+                        <div className="flex">
+                          <div className="m-4 rounded-lg border-2 bg-white p-4 shadow-lg">
+                            <p className="mb-2 text-lg font-medium">
+                              {index + 1}: {question.questionText}
+                            </p>
+                            {question.options.map((option, optionIndex) => (
+                              <div key={`option_${optionIndex}`}>
+                                <Controller
+                                  key={`option_${optionIndex}`}
+                                  name={`studentAnswers.${index}.answer`}
+                                  control={control}
+                                  defaultValue=""
+                                  render={({ field }) => (
+                                    <label
+                                      key={`label_${optionIndex}`}
+                                      className="block"
+                                    >
+                                      <input
+                                        id={`option_${index}_${optionIndex}`}
+                                        className="mr-2"
+                                        type="radio"
+                                        {...field}
+                                        value={option}
+                                        checked={field.value === option}
+                                        onChange={() => {
+                                          field.onChange(option);
+                                          handleAnswerChange();
+                                        }}
+                                      />
+                                      {option}
+                                    </label>
+                                  )}
+                                />
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      </li>
+                    ))}
+                  </div>
+                </ul>
+                <div className="py-4">
+                  <button
+                    className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
+                    type="submit"
+                  >
+                    Submit
+                  </button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <div className="flex h-full flex-col items-center justify-center gap-8 bg-slate-300">
+              <Label className={`${poppins.className} text-4xl`}>
+                DISCLAIMER
+              </Label>
+              <p className="w-1/2 text-wrap rounded-2xl bg-white p-12 text-xl shadow-2xl drop-shadow-2xl">
+                Changing tabs or exiting the form will be counted and will be
+                recorded in the database. The timer will start once you begin
+                the quiz.Make sure you're ready before starting. You can now
+                start the quiz.
+                <br />
+                <br />
+                If you have any concerns or questions, please reach out to your
+                teacher.
+              </p>
+
+              <Button
+                className="h-[10%] w-1/3 bg-green-600 text-3xl hover:bg-lime-500"
+                onClick={() => {
+                  setStartQuiz(true);
+                  setTimerStopped(false);
+                }}
               >
-                Submit
-              </button>
+                Start Quiz
+              </Button>
             </div>
-          </form>
+          )}
         </div>
       </div>
       {/*  <DevTool control={control} /> */}
