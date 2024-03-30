@@ -24,7 +24,7 @@ const Quizzes = async () => {
   const allSection = await getSections();
   //console.log(allSection)
 
-  // console.log(JSON.stringify(allQuiz.getAllQuizzes, null, 2));
+  console.log(JSON.stringify(allQuiz.quizzesBasedOnSection, null, 2));
 
   return (
     <div className="flex items-center justify-center">

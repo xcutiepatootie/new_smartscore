@@ -11,6 +11,7 @@ import { RiEdit2Fill } from "react-icons/ri";
 import { Button } from "@/components/ui/button";
 import { MdRefresh } from "react-icons/md";
 import { RiBrainFill } from "react-icons/ri";
+import { lexend } from "@/utils/fonts";
 
 const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
@@ -78,7 +79,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                     <td className="px-6 py-4 text-center">
                       {checkAllQuizinQuizTakenByUser[index] ? (
                         <>
-                          <span>
+                          <span className={`${lexend.className}`}>
                             Number of Retries Left:{" "}
                             {checkAllQuizinQuizTakenByUser[index] &&
                               filteredQuizTaken_NotDone.find(
@@ -87,7 +88,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                               )?.retriesLeft}
                           </span>
                           <Button
-                            className="ml-4 rounded bg-lsblue px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-violet-500 hover:text-white"
+                            className="ml-4 rounded bg-amber-500 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-amber-600 hover:text-white"
                             onClick={() =>
                               router.push(
                                 `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`,
@@ -103,7 +104,7 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
                       ) : (
                         <>
                           <Button
-                            className="rounded bg-lsblue px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-violet-500 hover:text-white"
+                            className="rounded bg-amber-500 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-amber-600 hover:text-white"
                             onClick={() =>
                               router.push(
                                 `/dashboard/quizzes/take-quiz?quizId=${quiz.id}`,

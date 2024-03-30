@@ -7,12 +7,17 @@ import {
   ScoreResult,
   Student_Quiz_Result,
 } from "@/types/types";
+import { margarine } from "@/utils/fonts";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
+import { RiHourglassFill } from "react-icons/ri";
+import { MdSubject } from "react-icons/md";
+import { MdQuiz } from "react-icons/md";
+import { Separator } from "@/components/ui/separator";
 
 export const Take_Quiz = ({
   selectedQuiz,
@@ -111,7 +116,7 @@ export const Take_Quiz = ({
 
   function calculateScore(
     quiz: QuizFields,
-    answers: QuizAnswerFields
+    answers: QuizAnswerFields,
   ): ScoreResult {
     let score = 0;
     let perfect = false;
@@ -139,10 +144,10 @@ export const Take_Quiz = ({
     console.log(data);
     handleTimerStop();
     const selectedInputs = document.querySelectorAll(
-      'input[type="radio"]:checked'
+      'input[type="radio"]:checked',
     );
     const selectedValues = Array.from(selectedInputs).map(
-      (input: any) => input.value
+      (input: any) => input.value,
     );
 
     const studentScore = calculateScore(selectedQuiz, data);
@@ -172,22 +177,39 @@ export const Take_Quiz = ({
   return (
     <div className="flex flex-col">
       <div className="">
-        <div className="container w-screen h-[85vh] mx-auto mt-4 bg-slate-50 p-4 rounded-lg shadow-lg overflow-y-auto">
-          <h3 className="text-xl font-semibold mb-2">
+        <div className="container mx-auto mt-4 h-[85vh] w-screen overflow-y-auto rounded-lg bg-slate-50 p-4 shadow-lg">
+          <h3 className="mb-2 flex flex-row items-center justify-center text-xl font-semibold">
+            <span><MdQuiz size={25} className="mr-4"/></span>
             Quiz Name: {selectedQuiz?.quizName}
           </h3>
-          <p className="text-gray-500 mb-4">Subject: {selectedQuiz?.subject}</p>
+          <p className="mb-4 flex flex-row items-center justify-center text-gray-500">
+            <span>
+              <MdSubject size={20} className="mr-4"/>
+            </span>
+            Subject: {selectedQuiz?.subject}
+          </p>
+          <Separator className="my-2 bg-lime-700 h-1"/>
           <form onSubmit={handleSubmit(onSubmit)}>
             <ul className="border bg-white shadow-2xl">
-              <div className="mt-4">
-                <span className="m-4 ">{formatTime(time)}</span>
+              <div className="mt-4 flex flex-row items-center justify-center  ">
+                <div className="flex items-center justify-center rounded-lg border bg-gray-50 px-6">
+                  <RiHourglassFill
+                    size={40}
+                    className="animate-infinite animate-duration-[2500ms] animate-ease-in-out animate-alternate-reverse animate-pulse text-amber-800"
+                  />
+                  <span
+                    className={`${margarine.className}flex m-4 w-48 flex-row rounded-lg  px-4 py-2 text-2xl font-bold`}
+                  >
+                    {formatTime(time)}
+                  </span>
+                </div>
               </div>
               <div className="flex flex-col flex-wrap">
                 {selectedQuiz?.questions.map((question, index) => (
                   <li key={`question_${index}`} className="mb-4">
                     <div className="flex">
-                      <div className="border-2 rounded-lg m-4 p-4 bg-white shadow-lg">
-                        <p className="text-lg font-medium mb-2">
+                      <div className="m-4 rounded-lg border-2 bg-white p-4 shadow-lg">
+                        <p className="mb-2 text-lg font-medium">
                           {index + 1}: {question.questionText}
                         </p>
                         {question.options.map((option, optionIndex) => (
@@ -228,7 +250,7 @@ export const Take_Quiz = ({
             </ul>
             <div className="py-4">
               <button
-                className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md focus:outline-none"
+                className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
                 type="submit"
               >
                 Submit
