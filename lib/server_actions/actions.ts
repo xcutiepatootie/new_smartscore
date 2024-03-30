@@ -541,13 +541,15 @@ export async function getQuizzesList_student() {
   });
 
   console.log(getAllQuizzes);
-  const { section }: any = userSession?.user.userSection;
+  const section = userSession?.user.userSection;
   console.log("HAHA", section);
 
   //Filter Quiz Data base from Current Section
-  const quizzesBasedOnSection = getAllQuizzes.filter((quiz) =>
-    quiz.sectionAssigned.includes(section),
-  );
+  const quizzesBasedOnSection = getAllQuizzes.filter((quiz) => {
+    console.log("Quiz Section:", quiz.sectionAssigned);
+    console.log("User Section:", section);
+    return quiz.sectionAssigned.includes(section as string);
+  });
   console.log("Filtered:", quizzesBasedOnSection);
 
   const getQuizzesCount = await prisma.quiz.count();
@@ -700,7 +702,7 @@ export async function submitStudentAnswers(
 
 export async function takeQuizUseCode(quizCodeLocal: string) {
   const userSession = await getUserSession();
-  const { section }: any = userSession?.user.userSection;
+  const section: any = userSession?.user.userSection;
 
   const findQuiz = await prisma.quiz.findUnique({
     where: { quizCode: quizCodeLocal },
@@ -711,6 +713,7 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
   }
 
   const checkQuizIsAssigned = findQuiz.sectionAssigned.includes(section);
+  console.log(checkQuizIsAssigned);
 
   console.log(checkQuizIsAssigned);
   if (checkQuizIsAssigned === false) {
