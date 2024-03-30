@@ -699,7 +699,7 @@ export async function submitStudentAnswers(
     redirect("/dashboard/quizzes");
   }
 }
-
+//  Take Quiz Using code
 export async function takeQuizUseCode(quizCodeLocal: string) {
   const userSession = await getUserSession();
   const section: any = userSession?.user.userSection;
@@ -738,4 +738,26 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
 
   console.log(findQuiz);
   redirect(`/dashboard/quizzes/take-quiz?quizId=${findQuiz?.id}`);
+}
+// Fetch Quiz Names for popover
+export async function getQuizNames() {
+  const userSession = await getUserSession();
+  const quizNames = await prisma.quiz.findMany({
+    where: { sectionAssigned: { has: userSession?.user.userSection } },
+    select: {
+      quizName: true,
+    },
+  });
+
+  console.log(quizNames);
+
+  const mappedQuizNames = quizNames.map((quiz) => {
+    const quizNames = {
+      value: quiz.quizName.toLowerCase(),
+      label: quiz.quizName,
+    };
+    return quizNames;
+  });
+  console.log(mappedQuizNames);
+  return mappedQuizNames;
 }
