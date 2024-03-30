@@ -22,7 +22,7 @@ export default async function page() {
           <Analytics_tabs />
         </div>
       ) : (
-        <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
+        <div className="grid h-[95%] w-full grid-cols-2 grid-rows-2 gap-2">
           {/*     <StudentAnalytics_Tabs /> */}
           {quizNames && <Student_Analytics quizNames={quizNames} />}
         </div>
