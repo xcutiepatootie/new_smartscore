@@ -7,11 +7,16 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
-const Chart = () => {
+const Chart = (quizTitle: { quizTitle: string }) => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Chart for quizTitle</CardTitle>
+        <CardTitle>
+          Chart for{" "}
+          <span className="capitalize">
+            <>{!quizTitle ? "" : quizTitle.quizTitle}</>
+          </span>
+        </CardTitle>
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>

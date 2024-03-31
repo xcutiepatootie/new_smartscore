@@ -39,8 +39,10 @@ const testData = [
 
 export default function QuizName_Popover({
   popoverValues,
+  setSelectedQuiz,
 }: {
   popoverValues: { value: string; label: string }[];
+  setSelectedQuiz: React.Dispatch<React.SetStateAction<string>>;
 }) {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState("");
@@ -51,7 +53,7 @@ export default function QuizName_Popover({
 
     setValue(newValue);
     setOpen(false);
-    /* setSelectedQuiz(newValue); */
+    setSelectedQuiz(newValue);
   };
   return (
     <>

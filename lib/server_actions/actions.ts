@@ -745,6 +745,7 @@ export async function getQuizNames() {
   const quizNames = await prisma.quiz.findMany({
     where: { sectionAssigned: { has: userSession?.user.userSection } },
     select: {
+      id: true,
       quizName: true,
     },
   });
@@ -753,6 +754,7 @@ export async function getQuizNames() {
 
   const mappedQuizNames = quizNames.map((quiz) => {
     const quizNames = {
+      id: quiz.id,
       value: quiz.quizName.toLowerCase(),
       label: quiz.quizName,
     };
