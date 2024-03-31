@@ -64,6 +64,7 @@ export async function getStudentClusterAssignments(quizId: string) {
   }
   const fetchedClusterAssignments = await clusterAssignments.json();
   console.log(fetchedClusterAssignments);
+
   return fetchedClusterAssignments;
 }
 
@@ -420,6 +421,8 @@ export async function setFeedback(
 ) {
   const session = await getUserSession();
   try {
+    const getClusterAssignments = await getStudentClusterAssignments(quizId);
+
     const updateFacultyFeedback = await prisma.feedbacksPosted.upsert({
       where: {
         quizId: quizId,
@@ -427,12 +430,14 @@ export async function setFeedback(
       update: {
         quizName: quizName,
         PostedFeedbacks: feedbacks.postedFeedbacks,
+        StudentClusters: { update: { assignment: getClusterAssignments } },
       },
       create: {
         facultyId: session?.user.id,
         quizName: quizName,
         PostedFeedbacks: feedbacks.postedFeedbacks,
         Quiz: { connect: { id: quizId } },
+        StudentClusters: { create: { assignment: getClusterAssignments } },
       },
     });
     console.log(updateFacultyFeedback);
