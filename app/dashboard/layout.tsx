@@ -9,7 +9,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className={inter.className}>
+    <div /* className={inter.className} */>
       {/* Include shared UI here e.g. a header or sidebar */}
       <div className="flex">
         <div className="max-md:hidden max-md:w-0">
