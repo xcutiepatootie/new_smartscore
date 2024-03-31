@@ -6,8 +6,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { useState } from "react";
 
-const Feedback = () => {
+const Feedback = ({ feedback }: any) => {
   return (
     <Card className="h-full">
       <CardHeader>
@@ -15,9 +17,10 @@ const Feedback = () => {
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
+        <Label>You belong to Cluster:{feedback.cluster + 1}</Label>
+        <br />
+        <Label>Your teacher's feedback:{feedback.feedback}</Label>
       </CardContent>
-      
     </Card>
   );
 };

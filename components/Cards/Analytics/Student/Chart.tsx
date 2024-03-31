@@ -2,24 +2,23 @@ import {
   Card,
   CardContent,
   CardDescription,
-  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
 import { useState } from "react";
-import { Bar } from "react-chartjs-2";
 
 import {
-  Chart as ChartJS,
   CategoryScale,
+  Chart as ChartJS,
+  Legend,
+  LineElement,
   LinearScale,
   PointElement,
-  LineElement,
   Title,
   Tooltip,
-  Legend,
 } from "chart.js";
 import { Line } from "react-chartjs-2";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 ChartJS.register(
   CategoryScale,
@@ -31,16 +30,15 @@ ChartJS.register(
   Legend,
 );
 
-
 export const options = {
   responsive: true,
   plugins: {
     legend: {
-      position: 'top' as const,
+      position: "top" as const,
     },
     title: {
       display: true,
-      text: 'Chart.js Line Chart',
+      text: "Chart.js Line Chart",
     },
   },
 };
@@ -109,8 +107,11 @@ const Chart = (quizTitle: { quizTitle: string }) => {
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <p>Card Content</p>
-        <Line data={userData} options={options}/>
+        <ScrollArea className="h-[780px] w-auto rounded-md border p-4">
+          <Line data={userData} options={options} />
+          <Line data={userData} options={options} />
+          <Line data={userData} options={options} />
+        </ScrollArea>
       </CardContent>
     </Card>
   );

@@ -6,7 +6,7 @@ import {
   clusterType,
   feedbackSchemaType,
 } from "@/types/types";
-import { Faculty, Question, Quiz, Student, User } from "@prisma/client";
+import { Faculty, Prisma, Question, Quiz, Student, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -767,4 +767,33 @@ export async function getQuizNames() {
   });
   console.log(mappedQuizNames);
   return mappedQuizNames;
+}
+
+export async function getFeedback(quizId: string) {
+  const userSession = await getUserSession();
+  const fetchFeedback = await prisma.feedbacksPosted.findUnique({
+    where: { quizId },
+    include: { StudentClusters: true },
+  });
+
+  const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
+  const assignment = fetchFeedback?.StudentClusters?.assignment;
+
+  const findAssignment: any = assignment?.find(
+    (testAssignment: any) => testAssignment.studentId === userSession?.user.id,
+  );
+
+  if (postedFeedbacks && assignment) {
+    const finalData = {
+      ...findAssignment,
+      feedback: postedFeedbacks[findAssignment.cluster],
+    };
+    console.log(finalData);
+    return finalData;
+  }
+
+  console.log(findAssignment);
+  console.log(postedFeedbacks, assignment);
+  console.log(userSession);
+  //console.log(JSON.stringify(fetchFeedback, null, 2));
 }
