@@ -58,7 +58,7 @@ export const config: NextAuthOptions = {
               headers: {
                 "Content-Type": "application/json",
               },
-            }
+            },
           );
 
           const user = await response.data;
@@ -101,7 +101,8 @@ export const config: NextAuthOptions = {
         token.userSection = user.userSection;
         token.role = user.role;
         token.username = user.username;
-       // console.log("token: ", user, token);
+        token.initialLogin = user.initialLogin;
+        // console.log("token: ", user, token);
       }
 
       //console.log('new token: ', token)
@@ -114,7 +115,8 @@ export const config: NextAuthOptions = {
       session.user.role = token.role;
       session.user.username = token.username;
       session.user.userSection = token.userSection;
-       console.log(session)
+      session.user.initialLogin = token.initialLogin;
+      console.log(session);
 
       return session;
     },

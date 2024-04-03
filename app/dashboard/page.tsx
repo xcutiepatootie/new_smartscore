@@ -10,9 +10,11 @@ import { revalidatePath } from "next/cache";
 import {
   getQuizzesList_faculty,
   quizSection_Card,
+  updateInitialLogin,
 } from "@/lib/server_actions/actions";
 import { QuizData_Cards } from "@/types/types";
 import Subjects_Handled_Card from "@/components/Cards/Dashboard/Faculty/Subjects_Handled_Card";
+import { Label } from "@/components/ui/label";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -21,6 +23,10 @@ export default async function Dashboard() {
    } */
   const session = await getServerSession(config);
   const quizzes = await quizSection_Card();
+
+  if (session?.user.initialLogin) {
+    const updateInitialLoginValue = await updateInitialLogin();
+  }
 
   console.log(quizzes);
 
@@ -47,8 +53,12 @@ export default async function Dashboard() {
           <div className="flex w-full flex-col items-center justify-center space-y-4">
             <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
               <div className="flex flex-row space-x-4 max-md:flex-col max-md:items-center max-md:justify-center">
-                <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
+                {session?.user.initialLogin ? (
+                  <Label>Welcome</Label>
+                ) : (
+                  <Label>Welcome Back</Label>
+                )}
+
                 <TnumberOfQuiz userSession={session?.user} />
                 <TnumberOfQuiz userSession={session?.user} />
               </div>

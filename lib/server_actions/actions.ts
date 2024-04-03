@@ -53,6 +53,21 @@ export async function getSectionHandled() {
   return uniqueSections;
 }
 
+export async function updateInitialLogin() {
+  const userSession = await getUserSession();
+
+  if (userSession) {
+    const updateValue = await prisma.user.update({
+      where: {
+        id: userSession.user.id,
+      },
+      data: {
+        initialLogin: false,
+      },
+    });
+  }
+}
+
 // Cross Origin APIS
 export async function getStudentClusterAssignments(quizId: string) {
   const clusterAssignments = await fetch(
