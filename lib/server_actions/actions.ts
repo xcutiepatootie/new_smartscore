@@ -112,16 +112,21 @@ export async function getClusterChart(quizId: string) {
 
 export async function getChartValues(quizId: string) {
   const userSession = await getUserSession();
-  const studentRecords = await fetch(
-    `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
-    { cache: "force-cache" },
-  );
-  if (!studentRecords.ok) {
-    throw new Error("Failed to fetch data");
+  try {
+    const studentRecords = await fetch(
+      `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
+      { cache: "force-cache" },
+    );
+    console.log(studentRecords);
+    if (!studentRecords.ok) {
+    }
+    const fetchedStudentRecords = await studentRecords.json();
+    console.log(fetchedStudentRecords);
+    return fetchedStudentRecords;
+  } catch (error) {
+    console.log(error);
+    return "No Quiz Found";
   }
-  const fetchedStudentRecords = await studentRecords.json();
-  console.log(fetchedStudentRecords);
-  return fetchedStudentRecords;
 }
 
 // Server Action for Create || Auth User
@@ -785,29 +790,35 @@ export async function getQuizNames() {
 
 export async function getFeedback(quizId: string) {
   const userSession = await getUserSession();
-  const fetchFeedback = await prisma.feedbacksPosted.findUnique({
-    where: { quizId },
-    include: { StudentClusters: true },
-  });
+  try {
+    const fetchFeedback = await prisma.feedbacksPosted.findUnique({
+      where: { quizId },
+      include: { StudentClusters: true },
+    });
 
-  const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
-  const assignment = fetchFeedback?.StudentClusters?.assignment;
+    const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
+    const assignment = fetchFeedback?.StudentClusters?.assignment;
 
-  const findAssignment: any = assignment?.find(
-    (testAssignment: any) => testAssignment.studentId === userSession?.user.id,
-  );
+    const findAssignment: any = assignment?.find(
+      (testAssignment: any) =>
+        testAssignment.studentId === userSession?.user.id,
+    );
 
-  if (postedFeedbacks && assignment) {
-    const finalData = {
-      ...findAssignment,
-      feedback: postedFeedbacks[findAssignment.cluster],
-    };
-    console.log(finalData);
-    return finalData;
+    if (postedFeedbacks && assignment) {
+      const finalData = {
+        ...findAssignment,
+        feedback: postedFeedbacks[findAssignment.cluster],
+      };
+      console.log(finalData);
+      return finalData;
+    }
+  } catch (error) {
+    console.log(error);
+    return "No Quiz Found";
   }
 
-  console.log(findAssignment);
+  /* console.log(findAssignment);
   console.log(postedFeedbacks, assignment);
-  console.log(userSession);
+  console.log(userSession); */
   //console.log(JSON.stringify(fetchFeedback, null, 2));
 }
