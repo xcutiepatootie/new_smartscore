@@ -15,6 +15,7 @@ import {
 import { QuizData_Cards } from "@/types/types";
 import Subjects_Handled_Card from "@/components/Cards/Dashboard/Faculty/Subjects_Handled_Card";
 import { Label } from "@/components/ui/label";
+import { margarine } from "@/utils/fonts";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -50,20 +51,30 @@ export default async function Dashboard() {
             </div>
           </div>
         ) : (
-          <div className="flex w-full flex-col items-center justify-center space-y-4">
+          <div className="flex w-full flex-col justify-between space-y-4 p-4">
             <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
-              <div className="flex flex-row space-x-4 max-md:flex-col max-md:items-center max-md:justify-center">
+              <div className="flex w-full px-8 flex-row items-center justify-between space-x-4 max-md:flex-col max-md:justify-center">
                 {session?.user.initialLogin ? (
-                  <Label>Welcome</Label>
+                  <div className="">
+                    <Label className={`${margarine.className} text-6xl text-center`}>
+                      Welcome, <br />
+                      {session?.user.name}
+                    </Label>
+                  </div>
                 ) : (
-                  <Label>Welcome Back</Label>
+                  <div className="flex w-1/4 items-center justify-center">
+                    <Label className={`${margarine.className} text-6xl text-center`}>
+                      Welcome back, <br />
+                      {session?.user.name}
+                    </Label>
+                  </div>
                 )}
 
                 <TnumberOfQuiz userSession={session?.user} />
                 <TnumberOfQuiz userSession={session?.user} />
               </div>
             </div>
-            <div className="flex h-[700px] w-full flex-row space-x-2 px-8 max-sm:flex-col">
+            <div className="flex h-[700px] w-full flex-row space-x-2 px-4 max-sm:flex-col">
               <Quiz_Section quizzes={quizzes} />
               <Quiz_DateAdded />
             </div>
