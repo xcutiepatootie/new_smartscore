@@ -8,12 +8,13 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(auto()) @map("_id") @db.ObjectId
-  name     String
-  username String @unique
-  email    String @unique
-  password String
-  role     Role
+  id           String  @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  username     String  @unique
+  email        String  @unique
+  password     String
+  role         Role
+  initialLogin Boolean @default(true)
 
   Student Student[]
   Faculty Faculty[]
@@ -67,7 +68,6 @@ model StudentCluster {
 
   assignment Json[]
 }
-
 
 model Quiz_Result {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
