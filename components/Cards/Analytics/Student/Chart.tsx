@@ -252,13 +252,17 @@ const Chart = ({
   useEffect(() => {
     if (barValues) {
       // For Score
+      console.log(barValues.userValue);
       const newDataset_score = {
         ...barChart_score.datasets[0],
-        data: barValues.scores.map(
-          (data: { averageScore: any }) => data.averageScore,
-        ),
+        data: [
+          ...barValues.scores.map(
+            (data: { averageScore: any }) => data.averageScore,
+          ),
+          barValues.userValue[0].averageScore,
+        ],
       };
-      const newValueAssignment_score = {
+      const newValueAssignment_score: any = {
         ...barChart_score,
         datasets: [newDataset_score],
       };
@@ -267,11 +271,14 @@ const Chart = ({
       // For Time
       const newDataset_time = {
         ...barChart_Time.datasets[0],
-        data: barValues.time.map(
-          (data: { averageTime: any }) => data.averageTime,
-        ),
+        data: [
+          ...barValues.time.map(
+            (data: { averageTime: any }) => data.averageTime,
+          ),
+          barValues.userValue[0].averageTime,
+        ],
       };
-      const newValueAssignment_time = {
+      const newValueAssignment_time: any = {
         ...barChart_Time,
         datasets: [newDataset_time],
       };
@@ -280,11 +287,15 @@ const Chart = ({
       // For answers clicked
       const newDataset_answersClicked = {
         ...barChart_answersClicked.datasets[0],
-        data: barValues.answersclicked.map(
-          (data: { averageAnswersClicked: any }) => data.averageAnswersClicked,
-        ),
+        data: [
+          ...barValues.answersclicked.map(
+            (data: { averageAnswersClicked: any }) =>
+              data.averageAnswersClicked,
+          ),
+          barValues.userValue[0].averageAnswersClicked,
+        ],
       };
-      const newValueAssignment_answersClicked = {
+      const newValueAssignment_answersClicked: any = {
         ...barChart_answersClicked,
         datasets: [newDataset_answersClicked],
       };
@@ -293,11 +304,14 @@ const Chart = ({
       // For out of focus
       const newDataset_outoffocus = {
         ...barChart_outOfFocus.datasets[0],
-        data: barValues.outoffocus.map(
-          (data: { averageOutOfFocus: any }) => data.averageOutOfFocus,
-        ),
+        data: [
+          ...barValues.outoffocus.map(
+            (data: { averageOutOfFocus: any }) => data.averageOutOfFocus,
+          ),
+          barValues.userValue[0].averageOutOfFocus,
+        ],
       };
-      const newValueAssignment_outoffocus = {
+      const newValueAssignment_outoffocus: any = {
         ...barChart_outOfFocus,
         datasets: [newDataset_outoffocus],
       };
@@ -306,11 +320,14 @@ const Chart = ({
       // For retries left
       const newDataset_retriesleft = {
         ...barChart_retriesLeft.datasets[0],
-        data: barValues.retriesleft.map(
-          (data: { averageRetriesLeft: any }) => data.averageRetriesLeft,
-        ),
+        data: [
+          ...barValues.retriesleft.map(
+            (data: { averageRetriesLeft: any }) => data.averageRetriesLeft,
+          ),
+          barValues.userValue[0].averageRetriesLeft,
+        ],
       };
-      const newValueAssignment_retriesleft = {
+      const newValueAssignment_retriesleft: any = {
         ...barChart_retriesLeft,
         datasets: [newDataset_retriesleft],
       };

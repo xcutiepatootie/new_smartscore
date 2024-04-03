@@ -111,8 +111,9 @@ export async function getClusterChart(quizId: string) {
 }
 
 export async function getChartValues(quizId: string) {
+  const userSession = await getUserSession();
   const studentRecords = await fetch(
-    `http://localhost:8080/api/student_records_charts?quizId=${quizId}`,
+    `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
     { cache: "force-cache" },
   );
   if (!studentRecords.ok) {
@@ -122,8 +123,6 @@ export async function getChartValues(quizId: string) {
   console.log(fetchedStudentRecords);
   return fetchedStudentRecords;
 }
-
-
 
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
