@@ -5,9 +5,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import {
+  ArcElement,
+  BarElement,
   CategoryScale,
   Chart as ChartJS,
   Legend,
@@ -17,13 +19,15 @@ import {
   Title,
   Tooltip,
 } from "chart.js";
-import { Line } from "react-chartjs-2";
+import { Bar, Line, Doughnut } from "react-chartjs-2";
 import { ScrollArea } from "@/components/ui/scroll-area";
 
 ChartJS.register(
   CategoryScale,
+  ArcElement,
   LinearScale,
   PointElement,
+  BarElement,
   LineElement,
   Title,
   Tooltip,
@@ -31,14 +35,38 @@ ChartJS.register(
 );
 
 export const options = {
+  elements: {
+    bar: {
+      borderWidth: 1,
+    },
+  },
   responsive: true,
   plugins: {
     legend: {
-      position: "top" as const,
+      position: "bottom" as const,
     },
     title: {
       display: true,
-      text: "Chart.js Line Chart",
+      text: "Student Cluster Assignment",
+    },
+  },
+};
+
+export const barOptions = {
+  indexAxis: "y" as const,
+  elements: {
+    bar: {
+      borderWidth: 2,
+    },
+  },
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "right" as const,
+    },
+    title: {
+      display: true,
+      text: "Results by {Selected Attribute}",
     },
   },
 };
@@ -76,7 +104,14 @@ const UserData = [
   },
 ];
 
-const Chart = (quizTitle: { quizTitle: string }) => {
+const Chart = ({
+  quizTitle,
+  clusterAssignments,
+}: {
+  quizTitle: string;
+  clusterAssignments: [{ studentId: string; cluster: number }];
+}) => {
+  console.log(clusterAssignments);
   const [userData, setUserData] = useState({
     labels: UserData.map((data) => data.year),
     datasets: [
@@ -87,7 +122,8 @@ const Chart = (quizTitle: { quizTitle: string }) => {
           "rgba(75,192,192,1)",
           "#ecf0f1",
           "#50AF95",
-          "#f3ba2f",
+          "#FAC898",
+          "#FBEFCA",
           "#2a71d0",
         ],
         borderColor: "black",
@@ -95,22 +131,74 @@ const Chart = (quizTitle: { quizTitle: string }) => {
       },
     ],
   });
+
+  const [clusterCounts, setClusterCounts] = useState<number[]>([]);
+  const [uniqueLabels, setUniqueLabels] = useState<number[]>([]);
+  const [clusterAssignment, setClusterAssignment] = useState<any>({
+    labels: [],
+    datasets: [
+      {
+        label: "Students in this cluster",
+        data: [],
+        backgroundColor: [
+          "rgba(75,192,192,1)",
+          "#ecf0f1",
+          "#50AF95",
+          "#FAC898",
+          "#FBEFCA",
+          "#2a71d0",
+        ],
+        borderColor: "black",
+        borderWidth: 2,
+      },
+    ],
+  });
+
+  useEffect(() => {
+    if (clusterAssignments) {
+      const uniqueLabels = Array.from(
+        new Set(clusterAssignments.map((data) => data.cluster)),
+      ).sort();
+      setUniqueLabels(uniqueLabels);
+
+      const counts: number[] = Array(uniqueLabels.length).fill(0);
+      clusterAssignments.forEach((data) => {
+        counts[data.cluster] += 1;
+      });
+      setClusterCounts(counts);
+
+      const newDataset = {
+        ...clusterAssignment.datasets[0],
+        data: counts,
+      };
+      const newClusterAssignment = {
+        ...clusterAssignment,
+        labels: uniqueLabels,
+        datasets: [newDataset],
+      };
+      setClusterAssignment(newClusterAssignment);
+    }
+  }, [clusterAssignments]);
+
   return (
     <Card className="h-full">
       <CardHeader>
         <CardTitle>
           Chart for{" "}
-          <span className="capitalize">
-            <>{!quizTitle ? "" : quizTitle.quizTitle}</>
-          </span>
+          <span className="capitalize">{!quizTitle ? "" : quizTitle}</span>
         </CardTitle>
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="h-[780px] w-auto rounded-md border p-4">
-          <Line data={userData} options={options} />
-          <Line data={userData} options={options} />
-          <Line data={userData} options={options} />
+        <ScrollArea className="flex h-[780px] w-auto flex-col items-center justify-center space-y-2 rounded-md border p-4">
+          <div className="flex h-1/2 w-full items-center justify-center">
+            <Bar data={userData} options={barOptions} />
+          </div>
+          <div className="mt-12 flex h-1/2 w-1/2 items-center justify-center">
+            {clusterAssignments && (
+              <Doughnut data={clusterAssignment} options={options} />
+            )}
+          </div>
         </ScrollArea>
       </CardContent>
     </Card>

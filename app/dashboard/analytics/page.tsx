@@ -2,7 +2,11 @@ import Analytics_tabs from "@/components/Cards/Analytics/Faculty/Tabs/Analytics_
 import Student_Analytics from "@/components/Cards/Analytics/Student/Student_Analytics";
 
 import { config } from "@/lib/auth";
-import { getQuizNames, quizSection_Card } from "@/lib/server_actions/actions";
+import {
+  getQuizNames,
+  getStudentClusterAssignments,
+  quizSection_Card,
+} from "@/lib/server_actions/actions";
 import { getServerSession } from "next-auth";
 
 export default async function page() {

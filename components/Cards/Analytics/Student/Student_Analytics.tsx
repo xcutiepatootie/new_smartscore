@@ -5,7 +5,10 @@ import Chart from "@/components/Cards/Analytics/Student/Chart";
 import Feedback from "@/components/Cards/Analytics/Student/Feedback";
 import Quiz_Results from "@/components/Cards/Analytics/Student/Quiz_Results";
 import QuizName_Popover from "@/components/Popovers/Student/QuizName_Popover";
-import { getFeedback } from "@/lib/server_actions/actions";
+import {
+  getFeedback,
+  getStudentClusterAssignments,
+} from "@/lib/server_actions/actions";
 const Student_Analytics = ({
   quizNames,
 }: {
@@ -15,6 +18,9 @@ const Student_Analytics = ({
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
   // For Feedbacks
   const [feedback, setFeedback] = useState();
+
+  // For Charts
+  const [clusterAssignment, setClusterAssignment] = useState<any>();
 
   useEffect(() => {
     // Find the selected quiz and set its id
@@ -36,6 +42,10 @@ const Student_Analytics = ({
       const getQuizFeedbacks = async () => {
         const fetchFeedback = await getFeedback(selectedQuizId);
         setFeedback(fetchFeedback);
+
+        const fetchAssignments =
+          await getStudentClusterAssignments(selectedQuizId);
+        setClusterAssignment(fetchAssignments);
       };
       console.log("testing lang hehe");
       getQuizResults;
@@ -52,7 +62,10 @@ const Student_Analytics = ({
           popoverValues={quizNames}
           setSelectedQuiz={setSelectedQuiz}
         />
-        <Chart quizTitle={selectedQuiz} />
+        <Chart
+          quizTitle={selectedQuiz}
+          clusterAssignments={clusterAssignment}
+        />
       </div>
       <div className="h-full p-4">
         <Quiz_Results />
