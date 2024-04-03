@@ -110,6 +110,21 @@ export async function getClusterChart(quizId: string) {
   return fetchClusterChart;
 }
 
+export async function getChartValues(quizId: string) {
+  const studentRecords = await fetch(
+    `http://localhost:8080/api/student_records_charts?quizId=${quizId}`,
+    { cache: "force-cache" },
+  );
+  if (!studentRecords.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const fetchedStudentRecords = await studentRecords.json();
+  console.log(fetchedStudentRecords);
+  return fetchedStudentRecords;
+}
+
+
+
 // Server Action for Create || Auth User
 export async function createUser(userData: SignUpFormFields) {
   console.log(userData);

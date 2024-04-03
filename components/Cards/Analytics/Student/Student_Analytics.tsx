@@ -6,6 +6,7 @@ import Feedback from "@/components/Cards/Analytics/Student/Feedback";
 import Quiz_Results from "@/components/Cards/Analytics/Student/Quiz_Results";
 import QuizName_Popover from "@/components/Popovers/Student/QuizName_Popover";
 import {
+  getChartValues,
   getFeedback,
   getStudentClusterAssignments,
 } from "@/lib/server_actions/actions";
@@ -21,6 +22,7 @@ const Student_Analytics = ({
 
   // For Charts
   const [clusterAssignment, setClusterAssignment] = useState<any>();
+  const [barValues, setBarValues] = useState<any>();
 
   useEffect(() => {
     // Find the selected quiz and set its id
@@ -47,10 +49,16 @@ const Student_Analytics = ({
           await getStudentClusterAssignments(selectedQuizId);
         setClusterAssignment(fetchAssignments);
       };
+
+      const getChartValue = async () => {
+        const fetchChartValue = await getChartValues(selectedQuizId);
+        setBarValues(fetchChartValue);
+      };
       console.log("testing lang hehe");
       getQuizResults;
 
       getQuizFeedbacks();
+      getChartValue();
     }
   }, [selectedQuizId]);
 
@@ -65,6 +73,7 @@ const Student_Analytics = ({
         <Chart
           quizTitle={selectedQuiz}
           clusterAssignments={clusterAssignment}
+          barValues={barValues}
         />
       </div>
       <div className="h-full p-4">
