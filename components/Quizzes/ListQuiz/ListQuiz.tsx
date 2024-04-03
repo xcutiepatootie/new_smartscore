@@ -12,6 +12,10 @@ import { Button } from "@/components/ui/button";
 import { MdRefresh } from "react-icons/md";
 import { RiBrainFill } from "react-icons/ri";
 import { lexend } from "@/utils/fonts";
+import { Separator } from "@/components/ui/separator";
+import { MdQuiz } from "react-icons/md";
+import { Label } from "@/components/ui/label";
+import { FiCheckCircle } from "react-icons/fi";
 
 const ListQuiz = ({ quizList, quizTaken }: any) => {
   const { data: session, status } = useSession();
@@ -46,8 +50,46 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
     return isQuizTaken(quiz.id, session?.user.id);
   });
 
+  let notTakenOrNotDoneCount = 0;
+
+  const test = quizList.map((quiz: Quiz, index: number) => {
+    const isNotTakenOrNotDone =
+      !isQuizTaken(quiz.id, session?.user.id) ||
+      (isQuizTaken(quiz.id, session?.user.id) &&
+        !filteredQuizTaken.find(
+          (takenQuiz: any) => takenQuiz.quizId === quiz.id,
+        )?.isDone);
+    if (isNotTakenOrNotDone) {
+      notTakenOrNotDoneCount++;
+    }
+  });
+
+
+
   return (
     <div className="w-full">
+      <div className="flex flex-row items-center justify-evenly p-2">
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-row items-center justify-center space-x-4">
+            <MdQuiz size={50} className="text-amber-700 " />
+            <Label className={`${lexend.className} text-4xl`}>
+              {notTakenOrNotDoneCount}
+            </Label>
+          </div>
+          <Label className={`${lexend.className} text-2xl`}>
+            Available Quizzes
+          </Label>
+        </div>
+
+        <div className="flex flex-col items-center justify-center space-y-4">
+          <div className="flex flex-row items-center justify-center space-x-4">
+            <FiCheckCircle size={50} className="text-amber-700" />
+            <Label className="text-4xl">{filteredQuizTaken.length}</Label>
+          </div>
+          <Label className={`${lexend.className} text-2xl`}>Finished</Label>
+        </div>
+      </div>
+      <Separator className="my-2 h-1 bg-yellow-800" />
       <table className="w-full border border-gray-200 bg-white">
         <thead className="bg-yellow-200">
           <tr className=" ">

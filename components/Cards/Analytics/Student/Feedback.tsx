@@ -17,9 +17,15 @@ const Feedback = ({ feedback }: any) => {
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <Label>You belong to Cluster:{feedback.cluster + 1}</Label>
+        <Label>
+          You belong to Cluster:
+          {feedback ? feedback.cluster + 1 : "(Not yet Available / Not Ready)"}
+        </Label>
         <br />
-        <Label>Your teacher's feedback:{feedback.feedback}</Label>
+        <Label>
+          Your teacher's feedback:
+          {feedback ? feedback.feedback : "(Not yet Available / Not Ready)"}
+        </Label>
       </CardContent>
     </Card>
   );
