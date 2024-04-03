@@ -6,7 +6,7 @@ import {
   clusterType,
   feedbackSchemaType,
 } from "@/types/types";
-import { Faculty, Question, Quiz, Student, User } from "@prisma/client";
+import { Faculty, Prisma, Question, Quiz, Student, User } from "@prisma/client";
 import bcrypt from "bcrypt";
 import { getServerSession } from "next-auth";
 import { revalidatePath } from "next/cache";
@@ -64,6 +64,7 @@ export async function getStudentClusterAssignments(quizId: string) {
   }
   const fetchedClusterAssignments = await clusterAssignments.json();
   console.log(fetchedClusterAssignments);
+
   return fetchedClusterAssignments;
 }
 
@@ -107,6 +108,20 @@ export async function getClusterChart(quizId: string) {
 
   console.log(fetchClusterChart);
   return fetchClusterChart;
+}
+
+export async function getChartValues(quizId: string) {
+  const userSession = await getUserSession();
+  const studentRecords = await fetch(
+    `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
+    { cache: "force-cache" },
+  );
+  if (!studentRecords.ok) {
+    throw new Error("Failed to fetch data");
+  }
+  const fetchedStudentRecords = await studentRecords.json();
+  console.log(fetchedStudentRecords);
+  return fetchedStudentRecords;
 }
 
 // Server Action for Create || Auth User
@@ -420,6 +435,8 @@ export async function setFeedback(
 ) {
   const session = await getUserSession();
   try {
+    const getClusterAssignments = await getStudentClusterAssignments(quizId);
+
     const updateFacultyFeedback = await prisma.feedbacksPosted.upsert({
       where: {
         quizId: quizId,
@@ -427,12 +444,14 @@ export async function setFeedback(
       update: {
         quizName: quizName,
         PostedFeedbacks: feedbacks.postedFeedbacks,
+        StudentClusters: { update: { assignment: getClusterAssignments } },
       },
       create: {
         facultyId: session?.user.id,
         quizName: quizName,
         PostedFeedbacks: feedbacks.postedFeedbacks,
         Quiz: { connect: { id: quizId } },
+        StudentClusters: { create: { assignment: getClusterAssignments } },
       },
     });
     console.log(updateFacultyFeedback);
@@ -699,7 +718,7 @@ export async function submitStudentAnswers(
     redirect("/dashboard/quizzes");
   }
 }
-
+//  Take Quiz Using code
 export async function takeQuizUseCode(quizCodeLocal: string) {
   const userSession = await getUserSession();
   const section: any = userSession?.user.userSection;
@@ -738,4 +757,57 @@ export async function takeQuizUseCode(quizCodeLocal: string) {
 
   console.log(findQuiz);
   redirect(`/dashboard/quizzes/take-quiz?quizId=${findQuiz?.id}`);
+}
+// Fetch Quiz Names for popover
+export async function getQuizNames() {
+  const userSession = await getUserSession();
+  const quizNames = await prisma.quiz.findMany({
+    where: { sectionAssigned: { has: userSession?.user.userSection } },
+    select: {
+      id: true,
+      quizName: true,
+    },
+  });
+
+  console.log(quizNames);
+
+  const mappedQuizNames = quizNames.map((quiz) => {
+    const quizNames = {
+      id: quiz.id,
+      value: quiz.quizName.toLowerCase(),
+      label: quiz.quizName,
+    };
+    return quizNames;
+  });
+  console.log(mappedQuizNames);
+  return mappedQuizNames;
+}
+
+export async function getFeedback(quizId: string) {
+  const userSession = await getUserSession();
+  const fetchFeedback = await prisma.feedbacksPosted.findUnique({
+    where: { quizId },
+    include: { StudentClusters: true },
+  });
+
+  const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
+  const assignment = fetchFeedback?.StudentClusters?.assignment;
+
+  const findAssignment: any = assignment?.find(
+    (testAssignment: any) => testAssignment.studentId === userSession?.user.id,
+  );
+
+  if (postedFeedbacks && assignment) {
+    const finalData = {
+      ...findAssignment,
+      feedback: postedFeedbacks[findAssignment.cluster],
+    };
+    console.log(finalData);
+    return finalData;
+  }
+
+  console.log(findAssignment);
+  console.log(postedFeedbacks, assignment);
+  console.log(userSession);
+  //console.log(JSON.stringify(fetchFeedback, null, 2));
 }

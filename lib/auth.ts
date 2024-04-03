@@ -101,7 +101,7 @@ export const config: NextAuthOptions = {
         token.userSection = user.userSection;
         token.role = user.role;
         token.username = user.username;
-        console.log("token: ", user, token);
+       // console.log("token: ", user, token);
       }
 
       //console.log('new token: ', token)

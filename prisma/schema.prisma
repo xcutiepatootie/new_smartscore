@@ -50,17 +50,24 @@ model Faculty {
 }
 
 model FeedbacksPosted {
-  id              String   @id @default(auto()) @map("_id") @db.ObjectId
-  facultyId       String?  @db.ObjectId
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  facultyId       String?         @db.ObjectId
   quizName        String
   PostedFeedbacks String[]
-  Quiz            Quiz?    @relation(fields: [quizId], references: [id])
-  quizId          String   @unique @db.ObjectId
+  Quiz            Quiz?           @relation(fields: [quizId], references: [id])
+  quizId          String          @unique @db.ObjectId
+  StudentClusters StudentCluster?
 }
 
-model FeedbacksReceived {
+model StudentCluster {
   id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  FeedbacksPosted   FeedbacksPosted? @relation(fields: [feedbacksPostedId], references: [id])
+  feedbacksPostedId String?          @unique @db.ObjectId
+
+  assignment Json[]
 }
+
 
 model Quiz_Result {
   id              String     @id @default(auto()) @map("_id") @db.ObjectId
