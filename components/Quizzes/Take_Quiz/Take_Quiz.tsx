@@ -266,15 +266,21 @@ export const Take_Quiz = ({
               </form>
             </>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-8 bg-slate-300">
-              <Label className={`${poppins.className} text-4xl`}>
+            <div className="flex h-full flex-col items-center justify-center gap-8 bg-[#f8f1a6]">
+              <Label className={`${poppins.className} text-5xl`}>
                 DISCLAIMER
               </Label>
               <p className="w-1/2 text-wrap rounded-2xl bg-white p-12 text-xl shadow-2xl drop-shadow-2xl">
-                Changing tabs or exiting the form will be counted and will be
-                recorded in the database. The timer will start once you begin
-                the quiz.Make sure you're ready before starting. You can now
-                start the quiz.
+                Before you start the quiz, please note that your clicks will be
+                tracked each time you change your answer. Additionally, opening
+                new tabs while answering will also be monitored. If you don't
+                achieve a perfect score on your first attempt, you'll have 5
+                retries to perfect the quiz. However, if you manage to get a
+                perfect score, the quiz will be considered completed. Make sure
+                you're ready to take the quiz, as the timer will start
+                automatically once you press the start button. If you have any
+                concerns or questions, please reach out to your teacher. Good
+                luck!
                 <br />
                 <br />
                 If you have any concerns or questions, please reach out to your
@@ -282,7 +288,7 @@ export const Take_Quiz = ({
               </p>
 
               <Button
-                className="h-[10%] w-1/3 bg-green-600 text-3xl hover:bg-lime-500"
+                className="h-[10%] w-1/3 bg-yellow-600 text-3xl rounded-full hover:bg-lime-500"
                 onClick={() => {
                   setStartQuiz(true);
                   setTimerStopped(false);
