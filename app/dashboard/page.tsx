@@ -33,19 +33,37 @@ export default async function Dashboard() {
 
   return (
     <>
-      <div className="flex h-full flex-row max-sm:grid max-sm:grid-rows-2">
+      <div className="flex h-full flex-row p-2 px-2 max-sm:grid max-sm:grid-rows-2">
         {session?.user.role === "faculty" ? (
           <div className="flex w-full flex-col items-center justify-center space-y-4">
-            <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
+            <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6  md:space-x-4">
               <div className="flex flex-row space-x-4 max-md:flex-col max-md:items-center max-md:justify-center">
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
+                {session?.user.initialLogin ? (
+                  <div className="">
+                    <Label
+                      className={`${margarine.className} text-center text-6xl`}
+                    >
+                      Welcome, <br />
+                      <span className="capitalize">{session?.user.name}!</span>
+                    </Label>
+                  </div>
+                ) : (
+                  <div className="flex w-1/4 items-center justify-center">
+                    <Label
+                      className={`${margarine.className} text-center text-6xl`}
+                    >
+                      Welcome back, <br />
+                      <span className="capitalize">{session?.user.name}!</span>
+                    </Label>
+                  </div>
+                )}
                 <Subjects_Handled_Card userSession={session?.user} />
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
               </div>
             </div>
 
-            <div className="flex h-[700px] w-full flex-row space-x-2 px-8 max-sm:flex-col">
+            <div className="flex h-[650px] w-full flex-row space-x-2 px-6 max-sm:flex-col">
               <Quiz_Section quizzes={quizzes} />
               <Quiz_DateAdded />
             </div>
@@ -53,19 +71,23 @@ export default async function Dashboard() {
         ) : (
           <div className="flex w-full flex-col justify-between space-y-4 p-4">
             <div className="flex flex-row max-lg:w-full max-lg:flex-col max-lg:items-center max-lg:justify-center max-lg:space-y-6 max-lg:p-2 md:space-x-4">
-              <div className="flex w-full px-8 flex-row items-center justify-between space-x-4 max-md:flex-col max-md:justify-center">
+              <div className="flex w-full flex-row items-center justify-between space-x-4 px-8 max-md:flex-col max-md:justify-center">
                 {session?.user.initialLogin ? (
                   <div className="">
-                    <Label className={`${margarine.className} text-6xl text-center`}>
+                    <Label
+                      className={`${margarine.className} text-center text-6xl`}
+                    >
                       Welcome, <br />
-                      {session?.user.name}
+                      <span className="capitalize">{session?.user.name}!</span>
                     </Label>
                   </div>
                 ) : (
                   <div className="flex w-1/4 items-center justify-center">
-                    <Label className={`${margarine.className} text-6xl text-center`}>
+                    <Label
+                      className={`${margarine.className} text-center text-6xl`}
+                    >
                       Welcome back, <br />
-                      {session?.user.name}
+                      <span className="capitalize">{session?.user.name}!</span>
                     </Label>
                   </div>
                 )}
