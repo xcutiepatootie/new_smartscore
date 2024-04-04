@@ -503,46 +503,61 @@ export async function updateQuiz(
 ) {
   const session = await getUserSession();
 
-  console.log(questionsLocal);
+  console.log("===========");
+  console.log("Submitted Data", updateQuizData);
+  console.log("===========");
+  console.log("Local: ", questionsLocal);
+  console.log("===========");
 
-  const updatedQuizResult = await prisma.quiz.update({
-    where: { id: quizIdLocal },
-    data: {
-      facultyName: session?.user.name, // Update faculty name if needed
-      quizName: updateQuizData.quizName, // Update quiz name if needed
-      numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
-      sectionAssigned: updateQuizData.sectionAssigned,
-      subject: updateQuizData.subject, // Update subject if needed
-      questions: {
-        // Associate updated questions with the quiz
-        upsert: questionsLocal.questions.map(
-          (question: any, index: number) => ({
-            where: { id: question.id }, // Provide the ID of the question you want to update
-            update: {
-              questionText: question.questionText, // Update question text if needed
-              options: updateQuizData.questions[index].options, // Update options if needed
-              correctAnswer: question.correctAnswer, // Update correct answer if needed
-            },
-            create: {
-              questionText: question.questionText, // Create a new question if not found
-              options: question.options,
-              correctAnswer: question.correctAnswer,
-            },
-          }),
-        ),
+  const filteredIds = updateQuizData.questions
+    .filter((question) => question.id !== "")
+    .map((question) => question.id);
+
+  console.log(filteredIds);
+
+  try {
+    const updatedQuizResult = await prisma.quiz.update({
+      where: { id: quizIdLocal },
+      data: {
+        facultyName: session?.user.name, // Update faculty name if needed
+        quizName: updateQuizData.quizName, // Update quiz name if needed
+        numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
+        sectionAssigned: updateQuizData.sectionAssigned,
+        subject: updateQuizData.subject, // Update subject if needed
+        questions: {
+          // Associate updated questions with the quiz
+          upsert: updateQuizData.questions.map(
+            (question: any, index: number) => ({
+              where: { id: quizIdLocal }, // Provide the ID of the question you want to update
+              update: {
+                questionText: question.questionText, // Update question text if needed
+                options: updateQuizData.questions[index].options, // Update options if needed
+                correctAnswer: question.correctAnswer, // Update correct answer if needed
+              },
+              create: {
+                questionText: question.questionText, // Create a new question if not found
+                options: question.options,
+                correctAnswer: question.correctAnswer,
+              },
+            }),
+          ),
+        },
+        Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
       },
-      Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
-    },
-    include: { questions: true }, // Include questions in the updated quiz result
-  });
-  revalidatePath("/dashboard/quizzes");
-  return updatedQuizResult;
+      include: { questions: true }, // Include questions in the updated quiz result
+    });
+    console.log(JSON.stringify(updatedQuizResult, null, 2));
+    revalidatePath("/dashboard/quizzes");
+    return updatedQuizResult;
+  } catch (error) {
+    console.log(error);
+  }
 
   // Associate questions with the quiz
   /*   create: updateQuizData.questions.map((question) => ({
           questionText: question.questionText,
           options: question.options,
-        correctAnswer: question.correctAnswer,
+          correctAnswer: question.correctAnswer,
         })) */
 }
 

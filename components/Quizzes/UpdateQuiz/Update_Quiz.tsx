@@ -8,6 +8,7 @@ import { fromZodError } from "zod-validation-error";
 import Section_Popover from "../AddQuiz/Section_Popover/Section_Popover";
 import { DevTool } from "@hookform/devtools";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export const Update_Quiz = ({
   selectedQuiz,
@@ -25,7 +26,7 @@ export const Update_Quiz = ({
     questions: selectedQuiz.questions,
   };
 
-  console.log(questionIds);
+  console.log("Huh", questionIds);
 
   console.log(questions);
   const { toast } = useToast();
@@ -35,6 +36,7 @@ export const Update_Quiz = ({
     register,
     handleSubmit,
     watch,
+    reset,
     setError,
     formState: { errors, isLoading },
   } = useForm<QuizFields>({
@@ -44,6 +46,7 @@ export const Update_Quiz = ({
       subject: selectedQuiz.subject,
       sectionAssigned: selectedQuiz.sectionAssigned,
       questions: questions.map((question) => ({
+        id: question.id,
         questionText: question.questionText,
         correctAnswer: question.correctAnswer,
         options: [...question.options],
@@ -54,14 +57,30 @@ export const Update_Quiz = ({
 
   const watchLength = watch("numberOfItems");
 
+  useEffect(() => {
+    // Reset the form if prevfeedbacks is not null
+    reset({
+      quizName: selectedQuiz.quizName,
+      numberOfItems: watchLength,
+      subject: selectedQuiz.subject,
+      sectionAssigned: selectedQuiz.sectionAssigned,
+      questions: questions.map((question) => ({
+        id: question.id,
+        questionText: question.questionText,
+        correctAnswer: question.correctAnswer,
+        options: [...question.options],
+      })),
+    });
+  }, [watchLength, reset]);
+
   const onSubmit: SubmitHandler<QuizFields> = async (data) => {
     console.log("heloo");
     // Handle form submission logic here
-    console.log("Submitted data:",data);
+    console.log("Submitted data:", data);
     const updateQuizData = await updateQuiz(
       data,
       selectedQuiz.id as string,
-      questionIds as unknown as []
+      questionIds as unknown as [],
     );
 
     if (updateQuizData) {
@@ -70,7 +89,7 @@ export const Update_Quiz = ({
         title: "SmartScore",
         description: "Successfully Updated a Quiz.",
       });
-      router.push("/dashboard/quizzes");
+      // router.push("/dashboard/quizzes");
     }
 
     const res = QuizSchema.safeParse(data);
@@ -80,16 +99,16 @@ export const Update_Quiz = ({
     console.log(res);
   };
   return (
-    <div className="container w-screen h-[80vh] mx-auto mt-4 bg-white p-4 rounded-lg shadow-lg overflow-y-auto">
+    <div className="container mx-auto mt-4 h-[80vh] w-screen overflow-y-auto rounded-lg bg-white p-4 shadow-lg">
       <h1 className="pb-4">Update Quiz: </h1>
       <div className="border-t-2">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-wrap py-4 border-b-2">
+          <div className="flex flex-wrap border-b-2 py-4">
             <div>
               <label className="px-2">Quiz Name:</label>
               <input
                 {...register("quizName", { required: true })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="text"
                 id="quizName"
               />
@@ -102,7 +121,7 @@ export const Update_Quiz = ({
                 {...register("numberOfItems", {
                   valueAsNumber: true,
                 })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="number"
                 id="numberOfItems"
               />
@@ -115,7 +134,7 @@ export const Update_Quiz = ({
               </label>
               <input
                 {...register("subject", { required: true })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="text"
                 id="subject"
               />
@@ -140,12 +159,20 @@ export const Update_Quiz = ({
             <div className="m-2" key={index}>
               <div>
                 <div className="pb-2">
+                  <input
+                    readOnly
+                    {...register(`questions.${index}.id`)}
+                    className="hidden"
+                    type="text"
+                    id="id"
+                  />
                   <label className="px-2">Question {index + 1}:</label>
+
                   <input
                     {...register(`questions.${index}.questionText`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 w-3/4"
+                    className="w-3/4 rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -157,11 +184,11 @@ export const Update_Quiz = ({
                   {...register(`questions.${index}.correctAnswer`, {
                     required: true,
                   })}
-                  className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   type="text"
                 />
               </div>
-              <div className="flex gap-4 pb-6 border-b-2">
+              <div className="flex gap-4 border-b-2 pb-6">
                 <label className="px-2">Answers:</label>
                 <div>
                   <label>a.</label>
@@ -169,7 +196,7 @@ export const Update_Quiz = ({
                     {...register(`questions.${index}.options.0`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -179,7 +206,7 @@ export const Update_Quiz = ({
                     {...register(`questions.${index}.options.1`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -189,7 +216,7 @@ export const Update_Quiz = ({
                     {...register(`questions.${index}.options.2`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -199,7 +226,7 @@ export const Update_Quiz = ({
                     {...register(`questions.${index}.options.3`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -209,7 +236,7 @@ export const Update_Quiz = ({
 
           <div className="py-4">
             <button
-              className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md focus:outline-none"
+              className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
               type="submit"
             >
               Submit
