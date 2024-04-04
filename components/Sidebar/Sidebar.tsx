@@ -13,6 +13,7 @@ import { Label } from "../ui/label";
 import { margarine, poppins } from "@/utils/fonts";
 import Image from "next/image";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import Signout_Dialog from "./Signout_Dialog";
 
 const Sidebar = async () => {
   const userSession = await getServerSession(config);
@@ -99,8 +100,11 @@ const Sidebar = async () => {
         </div>
       </div>
 
-      <div className="row-span-2 flex items-center justify-start">
-        <Signout_Button />
+      <div className="row-span-2 flex w-full items-center justify-start">
+        <div className="w-full">
+          <Signout_Dialog />
+        </div>
+        {/* <Signout_Button /> */}
       </div>
     </nav>
   );

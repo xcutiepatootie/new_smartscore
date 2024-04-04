@@ -69,7 +69,7 @@ export default async function Dashboard() {
                     </Label>
                   </div>
                 )}
-
+                <TnumberOfQuiz userSession={session?.user} />
                 <TnumberOfQuiz userSession={session?.user} />
                 <TnumberOfQuiz userSession={session?.user} />
               </div>
