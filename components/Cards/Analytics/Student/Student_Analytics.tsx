@@ -10,11 +10,13 @@ import {
   getFeedback,
   getStudentClusterAssignments,
 } from "@/lib/server_actions/actions";
+import { useToast } from "@/components/ui/use-toast";
 const Student_Analytics = ({
   quizNames,
 }: {
   quizNames: { id: string; value: string; label: string }[];
 }) => {
+  const { toast } = useToast();
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
   // For Feedbacks
@@ -47,12 +49,29 @@ const Student_Analytics = ({
 
         const fetchAssignments =
           await getStudentClusterAssignments(selectedQuizId);
-        setClusterAssignment(fetchAssignments);
+        if (fetchAssignments === "No Quiz Found") {
+          toast({
+            title: "No Record Found",
+            description: "Please Answer the Quiz First",
+            variant: "destructive",
+          });
+        } else {
+          setClusterAssignment(fetchAssignments);
+        }
       };
 
       const getChartValue = async () => {
         const fetchChartValue = await getChartValues(selectedQuizId);
-        setBarValues(fetchChartValue);
+        console.log(fetchChartValue);
+        if (fetchChartValue === "No Quiz Found") {
+          toast({
+            title: "No Record Found",
+            description: "Please Answer the Quiz First",
+            variant: "destructive",
+          });
+        } else {
+          setBarValues(fetchChartValue);
+        }
       };
       console.log("testing lang hehe");
       getQuizResults;

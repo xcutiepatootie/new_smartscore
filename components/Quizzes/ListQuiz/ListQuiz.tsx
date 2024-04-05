@@ -64,31 +64,31 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
     }
   });
 
-
-
   return (
     <div className="w-full">
-      <div className="flex flex-row items-center justify-evenly p-2">
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="flex flex-row items-center justify-center space-x-4">
-            <MdQuiz size={50} className="text-amber-700 " />
-            <Label className={`${lexend.className} text-4xl`}>
-              {notTakenOrNotDoneCount}
+      {session?.user?.role === "student" && (
+        <div className="flex flex-row items-center justify-evenly p-2">
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-row items-center justify-center space-x-4">
+              <MdQuiz size={50} className="text-amber-700 " />
+              <Label className={`${lexend.className} text-4xl`}>
+                {notTakenOrNotDoneCount}
+              </Label>
+            </div>
+            <Label className={`${lexend.className} text-2xl`}>
+              Available Quizzes
             </Label>
           </div>
-          <Label className={`${lexend.className} text-2xl`}>
-            Available Quizzes
-          </Label>
-        </div>
 
-        <div className="flex flex-col items-center justify-center space-y-4">
-          <div className="flex flex-row items-center justify-center space-x-4">
-            <FiCheckCircle size={50} className="text-amber-700" />
-            <Label className="text-4xl">{filteredQuizTaken.length}</Label>
+          <div className="flex flex-col items-center justify-center space-y-4">
+            <div className="flex flex-row items-center justify-center space-x-4">
+              <FiCheckCircle size={50} className="text-amber-700" />
+              <Label className="text-4xl">{filteredQuizTaken.length}</Label>
+            </div>
+            <Label className={`${lexend.className} text-2xl`}>Finished</Label>
           </div>
-          <Label className={`${lexend.className} text-2xl`}>Finished</Label>
         </div>
-      </div>
+      )}
       <Separator className="my-2 h-1 bg-yellow-800" />
       <table className="w-full border border-gray-200 bg-white">
         <thead className="bg-yellow-200">

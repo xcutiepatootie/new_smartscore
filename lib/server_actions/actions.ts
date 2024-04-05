@@ -53,6 +53,21 @@ export async function getSectionHandled() {
   return uniqueSections;
 }
 
+export async function updateInitialLogin() {
+  const userSession = await getUserSession();
+
+  if (userSession) {
+    const updateValue = await prisma.user.update({
+      where: {
+        id: userSession.user.id,
+      },
+      data: {
+        initialLogin: false,
+      },
+    });
+  }
+}
+
 // Cross Origin APIS
 export async function getStudentClusterAssignments(quizId: string) {
   const clusterAssignments = await fetch(
@@ -112,16 +127,21 @@ export async function getClusterChart(quizId: string) {
 
 export async function getChartValues(quizId: string) {
   const userSession = await getUserSession();
-  const studentRecords = await fetch(
-    `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
-    { cache: "force-cache" },
-  );
-  if (!studentRecords.ok) {
-    throw new Error("Failed to fetch data");
+  try {
+    const studentRecords = await fetch(
+      `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
+      { cache: "force-cache" },
+    );
+    console.log(studentRecords);
+    if (!studentRecords.ok) {
+    }
+    const fetchedStudentRecords = await studentRecords.json();
+    console.log(fetchedStudentRecords);
+    return fetchedStudentRecords;
+  } catch (error) {
+    console.log(error);
+    return "No Quiz Found";
   }
-  const fetchedStudentRecords = await studentRecords.json();
-  console.log(fetchedStudentRecords);
-  return fetchedStudentRecords;
 }
 
 // Server Action for Create || Auth User
@@ -483,46 +503,70 @@ export async function updateQuiz(
 ) {
   const session = await getUserSession();
 
-  console.log(questionsLocal);
+  console.log("===========");
+  console.log("Submitted Data", updateQuizData);
+  console.log("===========");
+  console.log("Local: ", questionsLocal);
+  console.log("===========");
 
-  const updatedQuizResult = await prisma.quiz.update({
-    where: { id: quizIdLocal },
-    data: {
-      facultyName: session?.user.name, // Update faculty name if needed
-      quizName: updateQuizData.quizName, // Update quiz name if needed
-      numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
-      sectionAssigned: updateQuizData.sectionAssigned,
-      subject: updateQuizData.subject, // Update subject if needed
-      questions: {
-        // Associate updated questions with the quiz
-        upsert: questionsLocal.questions.map(
-          (question: any, index: number) => ({
-            where: { id: question.id }, // Provide the ID of the question you want to update
-            update: {
-              questionText: question.questionText, // Update question text if needed
-              options: updateQuizData.questions[index].options, // Update options if needed
-              correctAnswer: question.correctAnswer, // Update correct answer if needed
-            },
-            create: {
-              questionText: question.questionText, // Create a new question if not found
+  const filteredIds = updateQuizData.questions
+    .filter((question) => question.id !== "")
+    .map((question) => question.id);
+
+  /* const test = updateQuizData.questions
+    .filter((question, index) => !filteredIds[index])
+    .map((question) => ({
+      questionText: question.questionText,
+    }));
+
+  console.log(test); */
+
+  try {
+    const updatedQuizResult = await prisma.quiz.update({
+      where: { id: quizIdLocal },
+      data: {
+        facultyName: session?.user.name, // Update faculty name if needed
+        quizName: updateQuizData.quizName, // Update quiz name if needed
+        numberOfItems: updateQuizData.numberOfItems, // Update number of items if needed
+        sectionAssigned: updateQuizData.sectionAssigned,
+        subject: updateQuizData.subject, // Update subject if needed
+        questions: {
+          updateMany: updateQuizData.questions
+            .filter((question, index) => filteredIds[index])
+            .map((question, index) => ({
+              where: { id: filteredIds[index] },
+              data: {
+                questionText: question.questionText,
+                options: question.options,
+                correctAnswer: question.correctAnswer,
+              },
+            })),
+          create: updateQuizData.questions
+            .filter((question, index) => !filteredIds[index])
+            .map((question) => ({
+              // Here is the change
+              questionText: question.questionText,
               options: question.options,
               correctAnswer: question.correctAnswer,
-            },
-          }),
-        ),
+            })),
+        },
+        Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
       },
-      Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
-    },
-    include: { questions: true }, // Include questions in the updated quiz result
-  });
-  revalidatePath("/dashboard/quizzes");
-  return updatedQuizResult;
+      include: { questions: true }, // Include questions in the updated quiz result
+    });
+    console.log(JSON.stringify(updatedQuizResult, null, 2));
+    revalidatePath("/dashboard/quizzes");
+    return updatedQuizResult;
+  } catch (error) {
+    console.log(error);
+    throw new Error(JSON.stringify(error));
+  }
 
   // Associate questions with the quiz
   /*   create: updateQuizData.questions.map((question) => ({
           questionText: question.questionText,
           options: question.options,
-        correctAnswer: question.correctAnswer,
+          correctAnswer: question.correctAnswer,
         })) */
 }
 
@@ -785,29 +829,35 @@ export async function getQuizNames() {
 
 export async function getFeedback(quizId: string) {
   const userSession = await getUserSession();
-  const fetchFeedback = await prisma.feedbacksPosted.findUnique({
-    where: { quizId },
-    include: { StudentClusters: true },
-  });
+  try {
+    const fetchFeedback = await prisma.feedbacksPosted.findUnique({
+      where: { quizId },
+      include: { StudentClusters: true },
+    });
 
-  const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
-  const assignment = fetchFeedback?.StudentClusters?.assignment;
+    const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
+    const assignment = fetchFeedback?.StudentClusters?.assignment;
 
-  const findAssignment: any = assignment?.find(
-    (testAssignment: any) => testAssignment.studentId === userSession?.user.id,
-  );
+    const findAssignment: any = assignment?.find(
+      (testAssignment: any) =>
+        testAssignment.studentId === userSession?.user.id,
+    );
 
-  if (postedFeedbacks && assignment) {
-    const finalData = {
-      ...findAssignment,
-      feedback: postedFeedbacks[findAssignment.cluster],
-    };
-    console.log(finalData);
-    return finalData;
+    if (postedFeedbacks && assignment) {
+      const finalData = {
+        ...findAssignment,
+        feedback: postedFeedbacks[findAssignment.cluster],
+      };
+      console.log(finalData);
+      return finalData;
+    }
+  } catch (error) {
+    console.log(error);
+    return "No Quiz Found";
   }
 
-  console.log(findAssignment);
+  /* console.log(findAssignment);
   console.log(postedFeedbacks, assignment);
-  console.log(userSession);
+  console.log(userSession); */
   //console.log(JSON.stringify(fetchFeedback, null, 2));
 }

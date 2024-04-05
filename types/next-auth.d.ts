@@ -18,6 +18,7 @@ declare module "next-auth" {
       username: string;
       role: string;
       userSection: string?;
+      initialLogin: boolean;
     } & DefaultSession["user"];
   }
 
@@ -28,6 +29,7 @@ declare module "next-auth" {
     username: string;
     role: string;
     userSection: string?;
+    initialLogin: boolean;
   }
 }
 
@@ -40,5 +42,6 @@ declare module "next-auth/jwt" {
     email: string;
     role: string;
     userSection: string?;
+    initialLogin: boolean;
   }
 }

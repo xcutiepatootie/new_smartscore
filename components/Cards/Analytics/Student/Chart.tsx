@@ -259,7 +259,7 @@ const Chart = ({
           ...barValues.scores.map(
             (data: { averageScore: any }) => data.averageScore,
           ),
-          barValues.userValue[0].averageScore,
+          barValues.userValue[0] ? barValues.userValue[0].averageScore : "",
         ],
       };
       const newValueAssignment_score: any = {
@@ -275,7 +275,7 @@ const Chart = ({
           ...barValues.time.map(
             (data: { averageTime: any }) => data.averageTime,
           ),
-          barValues.userValue[0].averageTime,
+          barValues.userValue[0] ? barValues.userValue[0].averageTime : "",
         ],
       };
       const newValueAssignment_time: any = {
@@ -292,7 +292,9 @@ const Chart = ({
             (data: { averageAnswersClicked: any }) =>
               data.averageAnswersClicked,
           ),
-          barValues.userValue[0].averageAnswersClicked,
+          barValues.userValue[0]
+            ? barValues.userValue[0].averageAnswersClicked
+            : "",
         ],
       };
       const newValueAssignment_answersClicked: any = {
@@ -308,7 +310,9 @@ const Chart = ({
           ...barValues.outoffocus.map(
             (data: { averageOutOfFocus: any }) => data.averageOutOfFocus,
           ),
-          barValues.userValue[0].averageOutOfFocus,
+          barValues.userValue[0]
+            ? barValues.userValue[0].averageOutOfFocus
+            : "",
         ],
       };
       const newValueAssignment_outoffocus: any = {
@@ -324,7 +328,9 @@ const Chart = ({
           ...barValues.retriesleft.map(
             (data: { averageRetriesLeft: any }) => data.averageRetriesLeft,
           ),
-          barValues.userValue[0].averageRetriesLeft,
+          barValues.userValue[0]
+            ? barValues.userValue[0].averageRetriesLeft
+            : "",
         ],
       };
       const newValueAssignment_retriesleft: any = {

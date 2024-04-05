@@ -66,7 +66,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
                 <TabsContent key={index} value={section}>
                   <Card>
                     <CardContent className="space-y-2">
-                      <ScrollArea className="w-auto h-[450px]">
+                      <ScrollArea className="w-auto h-[390px]">
                         <List_Students
                           quizId={selectedQuizObject.id}
                           section={section}
