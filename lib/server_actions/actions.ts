@@ -513,7 +513,13 @@ export async function updateQuiz(
     .filter((question) => question.id !== "")
     .map((question) => question.id);
 
-  console.log(filteredIds);
+  /* const test = updateQuizData.questions
+    .filter((question, index) => !filteredIds[index])
+    .map((question) => ({
+      questionText: question.questionText,
+    }));
+
+  console.log(test); */
 
   try {
     const updatedQuizResult = await prisma.quiz.update({
@@ -525,22 +531,24 @@ export async function updateQuiz(
         sectionAssigned: updateQuizData.sectionAssigned,
         subject: updateQuizData.subject, // Update subject if needed
         questions: {
-          // Associate updated questions with the quiz
-          upsert: updateQuizData.questions.map(
-            (question: any, index: number) => ({
-              where: { id: quizIdLocal }, // Provide the ID of the question you want to update
-              update: {
-                questionText: question.questionText, // Update question text if needed
-                options: updateQuizData.questions[index].options, // Update options if needed
-                correctAnswer: question.correctAnswer, // Update correct answer if needed
-              },
-              create: {
-                questionText: question.questionText, // Create a new question if not found
+          updateMany: updateQuizData.questions
+            .filter((question, index) => filteredIds[index])
+            .map((question, index) => ({
+              where: { id: filteredIds[index] },
+              data: {
+                questionText: question.questionText,
                 options: question.options,
                 correctAnswer: question.correctAnswer,
               },
-            }),
-          ),
+            })),
+          create: updateQuizData.questions
+            .filter((question, index) => !filteredIds[index])
+            .map((question) => ({
+              // Here is the change
+              questionText: question.questionText,
+              options: question.options,
+              correctAnswer: question.correctAnswer,
+            })),
         },
         Faculty: { connect: { facultyId: session?.user.id } }, // Connect faculty if needed
       },
@@ -551,6 +559,7 @@ export async function updateQuiz(
     return updatedQuizResult;
   } catch (error) {
     console.log(error);
+    throw new Error(JSON.stringify(error));
   }
 
   // Associate questions with the quiz

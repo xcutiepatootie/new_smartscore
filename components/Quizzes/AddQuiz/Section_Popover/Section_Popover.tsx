@@ -13,6 +13,12 @@ const Section_Popover = ({ control, studentSection }: any) => {
           <Button variant="outline">Open popover</Button>
         </PopoverTrigger>
         <PopoverContent>
+          <input
+            {...control.register(`sectionAssigned`)}
+            type="checkbox"
+            className="hidden"
+            value="--"
+          />
           {studentSection.map((section: any, index: number) => (
             <div key={index}>
               <input
