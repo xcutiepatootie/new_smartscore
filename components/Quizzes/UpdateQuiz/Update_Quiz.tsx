@@ -89,7 +89,7 @@ export const Update_Quiz = ({
         title: "SmartScore",
         description: "Successfully Updated a Quiz.",
       });
-      // router.push("/dashboard/quizzes");
+      router.push("/dashboard/quizzes");
     }
 
     const res = QuizSchema.safeParse(data);
