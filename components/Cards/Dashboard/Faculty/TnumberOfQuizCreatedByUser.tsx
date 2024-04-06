@@ -32,19 +32,18 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
     <Card className="h-[180] w-[375px] max-sm:w-[85%]">
       <CardHeader className="">
         <CardTitle className="line-clamp-2 flex flex-row text-lg">
-          <div className="flex flex-row justify-between">
+          <div className="flex w-full flex-row justify-between">
             Quizzes Posted By {user.userSession.name}
             <span className="">
               <MdAssignment className="text-4xl text-emerald-400" />
             </span>
           </div>
         </CardTitle>
-        <div className="mx-1 border-b border-gray-200 pb-2 drop-shadow-2xl" />
+        <div className="mx-1 border-b border-amber-500 pb-2 drop-shadow-2xl" />
       </CardHeader>
       <CardContent>
         {data ? (
           <>
-            <p>Quiz Posted: </p>
             {data.map((quiz, index) => (
               <p key={index}>{quiz.quizName}</p>
             ))}

@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import prisma from "@/lib/prisma";
+import { MdSubject } from "react-icons/md";
 
 const Subjects_Handled_Card = async ({ userSession }: any) => {
   const user = userSession;
@@ -40,12 +41,16 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
     <Card className="h-[180] w-[375px] max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">
-          Subjects Handled by {user.name}
+          <div className="flex w-full flex-row justify-between">
+            Subjects Handled by {user.name}
+            <span className="">
+              <MdSubject className="text-4xl text-emerald-400" />
+            </span>
+          </div>
         </CardTitle>
-        <CardDescription>shows the subjects you handled!</CardDescription>
+        <div className="mx-1 border-b border-amber-500 pb-2 drop-shadow-2xl" />
       </CardHeader>
       <CardContent>
-        <p>Subjects Handled: </p>
         {data.map((subject: any, index) => (
           <p key={index}>{subject}</p>
         ))}
