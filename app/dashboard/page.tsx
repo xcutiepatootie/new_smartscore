@@ -16,6 +16,7 @@ import { QuizData_Cards } from "@/types/types";
 import Subjects_Handled_Card from "@/components/Cards/Dashboard/Faculty/Subjects_Handled_Card";
 import { Label } from "@/components/ui/label";
 import { margarine } from "@/utils/fonts";
+import Ranking_Card from "@/components/Cards/Dashboard/Student/Ranking_Card";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -97,7 +98,7 @@ export default async function Dashboard() {
               </div>
             </div>
             <div className="flex h-[700px] w-full flex-row space-x-2 px-4 max-sm:flex-col">
-              <Quiz_Section quizzes={quizzes} />
+              <Ranking_Card />
               <Quiz_DateAdded />
             </div>
           </div>
