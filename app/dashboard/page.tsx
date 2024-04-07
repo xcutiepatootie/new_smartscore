@@ -18,6 +18,7 @@ import { Label } from "@/components/ui/label";
 import { margarine } from "@/utils/fonts";
 import Ranking_Card from "@/components/Cards/Dashboard/Student/Ranking_Card";
 import CompletedQuizzes_Card from "@/components/Cards/Dashboard/Student/CompletedQuizzes_Card";
+import TnumberOfUnfinishedQuiz from "@/components/Cards/Dashboard/Student/TnumberOfUnfinishedQuiz";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -94,7 +95,7 @@ export default async function Dashboard() {
                   </div>
                 )}
                 <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
+                <TnumberOfUnfinishedQuiz />
                 <CompletedQuizzes_Card />
               </div>
             </div>
