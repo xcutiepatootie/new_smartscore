@@ -38,7 +38,7 @@ const CompletedQuizzes_Card = async () => {
         >
           <CarouselContent className="h-full">
             {getQuizzes.map((quiz) => (
-              <CarouselItem className="h-full">
+              <CarouselItem className="h-full" key={quiz.id}>
                 <table className="w-full h-full">
                   <thead className="bg-yellow-200">
                     <tr className=" ">

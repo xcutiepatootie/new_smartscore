@@ -49,10 +49,11 @@ const Student_Analytics = ({
 
         const fetchAssignments =
           await getStudentClusterAssignments(selectedQuizId);
-        if (fetchAssignments === "No Quiz Found") {
+        if (fetchAssignments === "Not Enough Instances to cluster") {
           toast({
-            title: "No Record Found",
-            description: "Please Answer the Quiz First",
+            title: "Not enough instances to show the cluster",
+            description:
+              "Please try again later after many has answered the quiz.",
             variant: "destructive",
           });
         } else {

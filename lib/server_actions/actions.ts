@@ -75,7 +75,9 @@ export async function getStudentClusterAssignments(quizId: string) {
     { cache: "force-cache" },
   );
   if (!clusterAssignments.ok) {
-    throw new Error("Failed to fetch data");
+    /* console.log(clusterAssignments);
+    throw new Error("Failed to fetch data"); */
+    return "Not Enough Instances to cluster";
   }
   const fetchedClusterAssignments = await clusterAssignments.json();
   console.log(fetchedClusterAssignments);
