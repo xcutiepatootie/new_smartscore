@@ -93,10 +93,10 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
       <table className="w-full border border-gray-200 bg-white">
         <thead className="bg-yellow-200">
           <tr className=" ">
-            <th className="px-6 py-4 text-left">Name</th>
-            <th className="px-6 py-4 text-left">Subject</th>
+            <th className="px-6 py-4 text-center">Name</th>
+            <th className="px-6 py-4 text-center">Subject</th>
             {session?.user?.role === "faculty" && (
-              <th className="px-6 py-4 text-left">Quiz Code</th>
+              <th className="px-6 py-4 text-center">Quiz Code</th>
             )}
             <th className="px-6 py-4 text-center">Option</th>
           </tr>
@@ -112,10 +112,10 @@ const ListQuiz = ({ quizList, quizTaken }: any) => {
             if (isNotTakenOrNotDone) {
               return (
                 <tr key={quiz.id} className="border-b border-gray-200">
-                  <td className="px-6 py-4">{quiz.quizName}</td>
-                  <td className="px-6 py-4">{quiz.subject}</td>
+                  <td className="px-6 py-4 text-center">{quiz.quizName}</td>
+                  <td className="px-6 py-4 text-center">{quiz.subject}</td>
                   {session?.user?.role === "faculty" && (
-                    <td className="px-6 py-4">{quiz.quizCode}</td>
+                    <td className="px-6 py-4 text-center">{quiz.quizCode}</td>
                   )}
                   {session?.user.role === "student" ? (
                     <td className="px-6 py-4 text-center">

@@ -40,7 +40,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
         <CardHeader>
           <CardTitle>Quiz Status</CardTitle>
           <CardDescription>
-            shows the list of students which is assigned per section!
+            shows the list of students which is assigned per section.
           </CardDescription>
         </CardHeader>
         <CardContent>
