@@ -938,3 +938,26 @@ export async function getUserCompletedQuizzes() {
   console.log("Completed");
   return completedQuizzes;
 }
+
+// Get Unfinished Quizzes count
+export async function getUserUnfinishedQuizzesCount() {
+  const userSession = await getUserSession();
+
+  const quiz = await prisma.quiz.findMany({
+    where: { sectionAssigned: { has: userSession?.user.userSection } },
+    select: { id: true },
+  });
+
+  // console.log("HAHAHAHAHA", quiz);
+  const test = quiz.map((item) => item.id);
+
+  const finishedQuizzes = await prisma.quizTaken.count({
+    where: { AND: [{ quizId: { in: test }, studentId: userSession?.user.id }] },
+  });
+
+  console.log(quiz.length - finishedQuizzes);
+
+  console.log("Ilan? ", finishedQuizzes);
+
+  return quiz.length - finishedQuizzes;
+}

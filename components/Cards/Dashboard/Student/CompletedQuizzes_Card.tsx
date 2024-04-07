@@ -44,7 +44,7 @@ const CompletedQuizzes_Card = async () => {
                     <tr className=" ">
                       <th className="px-3 py-2 text-center">Name</th>
                       <th className="px-3 py-2 text-center">Subject</th>
-                      <th className="px-3 py-2 text-center">Option</th>
+                      <th className="px-3 py-2 text-center">Status</th>
                     </tr>
                   </thead>
                   <tbody>
