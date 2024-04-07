@@ -1042,3 +1042,24 @@ export async function getStudentRankingByQuiz(quizId: string) {
   console.log(top5Object);
   return top5Object;
 }
+
+export async function getQuizResultByUser(quizId: string) {
+  const userSession = await getUserSession();
+  const results = await prisma.quiz.findUnique({
+    where: {
+      id: quizId,
+    },
+    include: {
+      QuizTaken: {
+        where: { studentId: userSession?.user.id },
+        select: { isPerfect: true, retriesLeft: true, results: true },
+      },
+    },
+  });
+  console.log(results);
+  if (!results) {
+    return "No Record Found";
+  }
+
+  return results;
+}
