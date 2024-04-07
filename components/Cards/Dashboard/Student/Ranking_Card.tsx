@@ -51,7 +51,10 @@ const Ranking_Card = () => {
         <Separator className="mx-4 my-2 h-1 bg-amber-200" />
         <CardContent>
           {sample.map((items, index) => (
-            <div className="m-4 flex w-full flex-row items-center justify-center gap-2 p-4">
+            <div
+              className="m-4 flex w-full flex-row items-center justify-center gap-2 p-4"
+              key={index}
+            >
               <div className="flex h-14 w-full basis-16 items-center justify-center rounded-lg border-2 text-center">
                 <Label>#{index + 1}</Label>
               </div>

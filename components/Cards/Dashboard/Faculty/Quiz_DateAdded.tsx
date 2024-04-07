@@ -29,7 +29,6 @@ const Quiz_DateAdded = async () => {
   let userQuizHistory;
   if (userSession?.user.role === "student") {
     userQuizHistory = await getUserQuizTakenHistory();
-    console.log(userQuizHistory);
   }
   return (
     <>
@@ -87,7 +86,7 @@ const Quiz_DateAdded = async () => {
               ) : (
                 <>
                   {userQuizHistory?.map((quiz, index) => (
-                    <Card className="h-auto w-full p-1" key={index}>
+                    <Card className="h-auto w-full p-1" key={quiz.id}>
                       <CardTitle
                         className={`${lexend.className} flex items-center p-2 text-xl`}
                       >

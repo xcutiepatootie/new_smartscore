@@ -909,9 +909,30 @@ export async function getUserQuizTakenHistory() {
     (a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime(),
   );
 
-  console.log("Quiz Taken", quizzesTaken);
+  /*  console.log("Quiz Taken", quizzesTaken);
   console.log("History", JSON.stringify(quizTakenHistory, null, 2));
-  console.log(allQuizResults);
+  console.log(allQuizResults); */
   return allQuizResults;
   // console.log("History", quizTakenHistory.flat());
+}
+
+// Get Completed Quizzes
+export async function getUserCompletedQuizzes() {
+  const userSession = await getUserSession();
+  const completedQuizzes = await prisma.quizTaken.findMany({
+    where: {
+      AND: [
+        {
+          studentId: userSession?.user.id,
+        },
+        {
+          isDone: true,
+        },
+      ],
+    },
+    include: { quiz: { select: { quizName: true, subject: true } } },
+  });
+
+  console.log("Completed");
+  return completedQuizzes;
 }
