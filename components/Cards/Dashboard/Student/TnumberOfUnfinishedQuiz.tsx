@@ -7,23 +7,25 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { getUserUnfinishedQuizzesCount } from "@/lib/server_actions/actions";
+import CounterUpComponent from "./CountUp/CounterUpComponent";
+import { Label } from "@/components/ui/label";
 
 const TnumberOfUnfinishedQuiz = async () => {
   const data = await getUserUnfinishedQuizzesCount();
   return (
-    <Card className="">
+    <Card className="h-full">
       <CardHeader>
-        <CardTitle>Total Number of Quiz</CardTitle>
+        <CardTitle className="text-xl">
+          Total Number of Unfinished Quiz
+        </CardTitle>
         <CardDescription>
-          shows the number of available quiz for you!
+          shows the number of unfinished quizzes
         </CardDescription>
       </CardHeader>
-      <CardContent>
-        <p>Quiz Count: {data}</p>
+      <CardContent className="flex flex-row items-center justify-center">
+        <CounterUpComponent data={data} />
+        <Label> Quizzes</Label>
       </CardContent>
-      <CardFooter>
-        <p>Card Footer</p>
-      </CardFooter>
     </Card>
   );
 };
