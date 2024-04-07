@@ -8,6 +8,7 @@ import { getServerSession } from "next-auth";
 import { useSession } from "next-auth/react";
 import { revalidatePath } from "next/cache";
 import {
+  getQuizNames,
   getQuizzesList_faculty,
   quizSection_Card,
   updateInitialLogin,
@@ -30,6 +31,12 @@ export default async function Dashboard() {
 
   if (session?.user.initialLogin) {
     const updateInitialLoginValue = await updateInitialLogin();
+  }
+
+  let quizNames;
+  if (session?.user.role === "student") {
+    quizNames = await getQuizNames();
+    console.log(quizNames);
   }
 
   console.log(quizzes);
@@ -100,7 +107,7 @@ export default async function Dashboard() {
               </div>
             </div>
             <div className="flex h-[700px] w-full flex-row space-x-2 px-4 max-sm:flex-col">
-              <Ranking_Card />
+              {quizNames ? <Ranking_Card quizNames={quizNames} /> : <>Not yet Ready</>}
               <Quiz_DateAdded />
             </div>
           </div>
