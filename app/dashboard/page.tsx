@@ -17,6 +17,7 @@ import Subjects_Handled_Card from "@/components/Cards/Dashboard/Faculty/Subjects
 import { Label } from "@/components/ui/label";
 import { margarine } from "@/utils/fonts";
 import Ranking_Card from "@/components/Cards/Dashboard/Student/Ranking_Card";
+import CompletedQuizzes_Card from "@/components/Cards/Dashboard/Student/CompletedQuizzes_Card";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -94,7 +95,7 @@ export default async function Dashboard() {
                 )}
                 <TnumberOfQuiz userSession={session?.user} />
                 <TnumberOfQuiz userSession={session?.user} />
-                <TnumberOfQuiz userSession={session?.user} />
+                <CompletedQuizzes_Card />
               </div>
             </div>
             <div className="flex h-[700px] w-full flex-row space-x-2 px-4 max-sm:flex-col">

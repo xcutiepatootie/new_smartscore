@@ -861,3 +861,78 @@ export async function getFeedback(quizId: string) {
   console.log(userSession); */
   //console.log(JSON.stringify(fetchFeedback, null, 2));
 }
+
+// Get quizTaken submission date
+export async function getUserQuizTakenHistory() {
+  const userSession = await getUserSession();
+
+  const quizzesTaken = await prisma.quizTaken.findMany({
+    where: { studentId: userSession?.user.id },
+    select: { id: true, quizId: true },
+  });
+
+  const quizTakenHistory: {
+    quiz: { id: string; quizName: string }[];
+    quizTakenId: { id: string };
+    quizResult: any[];
+  }[] = [];
+
+  for (const quiz of quizzesTaken) {
+    const getQuizName = await prisma.quiz.findMany({
+      where: { id: quiz.quizId },
+      select: { id: true, quizName: true },
+    });
+
+    const getQuizResult = await prisma.quiz_Result.findMany({
+      where: {
+        quizTakenId: quiz.id,
+      },
+    });
+
+    quizTakenHistory.push({
+      quiz: getQuizName,
+      quizTakenId: { id: quiz.id },
+      quizResult: getQuizResult,
+    });
+  }
+
+  // Flatten the array and include quizName in each quiz result
+  const allQuizResults = quizTakenHistory.flatMap((item) =>
+    item.quizResult.map((result) => ({
+      quizName: item.quiz[0].quizName,
+      ...result,
+      dateTaken: result.dateTaken,
+    })),
+  );
+
+  allQuizResults.sort(
+    (a, b) => new Date(b.dateTaken).getTime() - new Date(a.dateTaken).getTime(),
+  );
+
+  /*  console.log("Quiz Taken", quizzesTaken);
+  console.log("History", JSON.stringify(quizTakenHistory, null, 2));
+  console.log(allQuizResults); */
+  return allQuizResults;
+  // console.log("History", quizTakenHistory.flat());
+}
+
+// Get Completed Quizzes
+export async function getUserCompletedQuizzes() {
+  const userSession = await getUserSession();
+  const completedQuizzes = await prisma.quizTaken.findMany({
+    where: {
+      AND: [
+        {
+          studentId: userSession?.user.id,
+        },
+        {
+          isDone: true,
+        },
+      ],
+    },
+    include: { quiz: { select: { quizName: true, subject: true } } },
+  });
+
+  console.log("Completed");
+  return completedQuizzes;
+}

@@ -278,17 +278,15 @@ export const Take_Quiz = ({
                 retries to perfect the quiz. However, if you manage to get a
                 perfect score, the quiz will be considered completed. Make sure
                 you're ready to take the quiz, as the timer will start
-                automatically once you press the start button. If you have any
-                concerns or questions, please reach out to your teacher. Good
-                luck!
+                automatically once you press the start button.
                 <br />
                 <br />
                 If you have any concerns or questions, please reach out to your
-                teacher.
+                teacher. Good luck!
               </p>
 
               <Button
-                className="h-[10%] w-1/3 bg-yellow-600 text-3xl rounded-full hover:bg-lime-500"
+                className="h-[10%] w-1/3 rounded-full bg-yellow-600 text-3xl hover:bg-lime-500"
                 onClick={() => {
                   setStartQuiz(true);
                   setTimerStopped(false);
