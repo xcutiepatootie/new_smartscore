@@ -20,6 +20,7 @@ import { margarine } from "@/utils/fonts";
 import Ranking_Card from "@/components/Cards/Dashboard/Student/Ranking_Card";
 import CompletedQuizzes_Card from "@/components/Cards/Dashboard/Student/CompletedQuizzes_Card";
 import TnumberOfUnfinishedQuiz from "@/components/Cards/Dashboard/Student/TnumberOfUnfinishedQuiz";
+import SectionsHandled_Card from "@/components/Cards/Dashboard/Faculty/SectionsHandled_Card";
 export default async function Dashboard() {
   /*  const { data: session, status } = useSession()
    console.log(status)
@@ -69,7 +70,7 @@ export default async function Dashboard() {
                 )}
                 <Subjects_Handled_Card userSession={session?.user} />
                 <TnumberOfQuizCreatedByUser userSession={session?.user} />
-                <TnumberOfQuizCreatedByUser userSession={session?.user} />
+                <SectionsHandled_Card />
               </div>
             </div>
 
@@ -107,7 +108,11 @@ export default async function Dashboard() {
               </div>
             </div>
             <div className="flex h-[700px] w-full flex-row space-x-2 px-4 max-sm:flex-col">
-              {quizNames ? <Ranking_Card quizNames={quizNames} /> : <>Not yet Ready</>}
+              {quizNames ? (
+                <Ranking_Card quizNames={quizNames} />
+              ) : (
+                <>Not yet Ready</>
+              )}
               <Quiz_DateAdded />
             </div>
           </div>
