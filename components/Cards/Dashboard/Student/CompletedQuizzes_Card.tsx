@@ -22,7 +22,7 @@ const CompletedQuizzes_Card = async () => {
   const getQuizzes = await getUserCompletedQuizzes();
   console.log(getQuizzes);
   return (
-    <Card className="h-full w-1/4">
+    <Card className="h-full w-[375px] max-sm:w-[85%]">
       <CardHeader>
         <CardTitle>Completed Quizzes</CardTitle>
         <CardDescription>
@@ -39,7 +39,7 @@ const CompletedQuizzes_Card = async () => {
           <CarouselContent className="h-full">
             {getQuizzes.map((quiz) => (
               <CarouselItem className="h-full" key={quiz.id}>
-                <table className="w-full h-full">
+                <table className="h-full w-full">
                   <thead className="bg-yellow-200">
                     <tr className=" ">
                       <th className="px-3 py-2 text-center">Name</th>

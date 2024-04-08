@@ -32,7 +32,7 @@ const Quiz_DateAdded = async () => {
   }
   return (
     <>
-      <Card className="w-1/3">
+      <Card className="w-1/3 h-full max-sm:w-[398px]">
         <CardHeader>
           <CardTitle>Submission History</CardTitle>
           {userSession?.user.role === "faculty" ? (

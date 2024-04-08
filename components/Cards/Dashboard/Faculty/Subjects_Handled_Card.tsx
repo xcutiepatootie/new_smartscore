@@ -39,7 +39,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
   console.log(data);
 
   return (
-    <Card className="h-[180] w-[375px] max-sm:w-[85%]">
+    <Card className="h-full w-[375px] max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">
           <div className="flex w-full flex-row justify-between">

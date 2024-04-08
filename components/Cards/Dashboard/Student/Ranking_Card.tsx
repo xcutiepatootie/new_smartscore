@@ -183,7 +183,7 @@ const Ranking_Card = ({
 
   return (
     <>
-      <Card className="w-2/3">
+      <Card className="h-full w-2/3 max-sm:w-[85%]">
         <CardHeader className="flex items-center justify-center">
           <CardTitle>Ranking</CardTitle>
           <CardDescription>
