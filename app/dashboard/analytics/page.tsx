@@ -22,7 +22,7 @@ export default async function page() {
   return (
     <>
       {getUserSession?.user.role === "faculty" ? (
-        <div className="w-full">
+        <div className="w-full p-4">
           <Analytics_tabs />
         </div>
       ) : (

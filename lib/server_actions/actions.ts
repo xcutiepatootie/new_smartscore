@@ -112,9 +112,13 @@ export async function getClusterValues(quizId: string) {
   return fetchedClusterValues;
 }
 
-export async function getClusterChart(quizId: string) {
+export async function getClusterChart(
+  quizId: string,
+  xvalue: string,
+  yvalue: string,
+) {
   const clusterChart = await fetch(
-    `http://localhost:8080/charts/plot64?quizId=${quizId}`,
+    `http://localhost:8080/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
     { cache: "force-cache" },
   );
   if (!clusterChart.ok) {
@@ -412,6 +416,26 @@ export async function getStudentBySection(sectionsHandled: string[]) {
     },
   });
   return studentsBySection;
+}
+
+export async function getStudentBySectionCount(sectionsHandled: string[]) {
+  interface SectionCount {
+    section: string;
+    count: number;
+  }
+
+  const results: SectionCount[] = [];
+
+  for (const section of sectionsHandled) {
+    const count = await prisma.student.count({
+      where: {
+        section: section,
+      },
+    });
+
+    results.push({ section, count });
+  }
+  return results;
 }
 
 // Get Quiz using Faculty
