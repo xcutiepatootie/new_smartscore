@@ -44,7 +44,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
           <div className="flex w-full flex-row justify-between">
             Subjects Handled by {user.name}
             <span className="">
-              <MdSubject className="text-4xl text-emerald-400" />
+              <MdSubject className="text-4xl text-yellow-400" />
             </span>
           </div>
         </CardTitle>
