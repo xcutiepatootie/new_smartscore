@@ -54,7 +54,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
       <CardContent>
         {data.length < 1 ? (
           <Label className="text-center">
-            The user doesn't have an existing quiz.
+            The user doesn`&apos;`t have an existing quiz.
           </Label>
         ) : (
           <>

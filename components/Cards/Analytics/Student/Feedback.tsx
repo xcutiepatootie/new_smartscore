@@ -13,7 +13,7 @@ const Feedback = ({ feedback }: any) => {
   return (
     <Card className="h-full">
       <CardHeader>
-        <CardTitle>Teacher's Feedback</CardTitle>
+        <CardTitle>Teacher`&apos;`s Feedback</CardTitle>
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
@@ -23,7 +23,7 @@ const Feedback = ({ feedback }: any) => {
         </Label>
         <br />
         <Label>
-          Your teacher's feedback:
+          Your teacher`&apos;`s feedback:
           {feedback ? feedback.feedback : "(Not yet Available / Not Ready)"}
         </Label>
       </CardContent>
