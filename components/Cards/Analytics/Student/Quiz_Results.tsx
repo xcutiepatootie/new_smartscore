@@ -46,10 +46,13 @@ const Quiz_Results = ({ results }: any) => {
                   </Label>
                   <Separator className="my-4 w-full" />
                   <div className="flex items-center justify-center">
-                    <ScrollArea className="w-full h-40">
+                    <ScrollArea className="h-40 w-full">
                       <div className="flex flex-row items-center justify-center space-x-8">
                         {quiz.results.map((result: any, index: number) => (
-                          <Card className="h-[128px] w-[256px] bg-[#FADB7B] p-1">
+                          <Card
+                            className="h-[128px] w-[256px] bg-[#FADB7B] p-1"
+                            key={index}
+                          >
                             <CardContent className="flex flex-col">
                               <div
                                 className="flex flex-col items-center justify-center"

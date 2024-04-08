@@ -137,7 +137,7 @@ const SigininForm = () => {
           </button>
         </div>
         <Label className="text-md mt-8">
-          Don't have an account yet?{" "}
+          Don`&apos;`t have an account yet?{" "}
           <span
             onClick={() => {
               router.push("/signup");

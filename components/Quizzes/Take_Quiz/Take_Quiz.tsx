@@ -275,12 +275,12 @@ export const Take_Quiz = ({
                   Before you start the quiz, please note that your clicks will
                   be tracked each time you change your answer. Additionally,
                   opening new tabs while answering will also be monitored. If
-                  you don't achieve a perfect score on your first attempt,
-                  you'll have 5 retries to perfect the quiz. However, if you
-                  manage to get a perfect score, the quiz will be considered
-                  completed. Make sure you're ready to take the quiz, as the
-                  timer will start automatically once you press the start
-                  button.
+                  you don`&apos;`t achieve a perfect score on your first
+                  attempt, you`&apos;`ll have 5 retries to perfect the quiz.
+                  However, if you manage to get a perfect score, the quiz will
+                  be considered completed. Make sure you`&apos;`re ready to take
+                  the quiz, as the timer will start automatically once you press
+                  the start button.
                   <br />
                   <br />
                   If you have any concerns or questions, please reach out to

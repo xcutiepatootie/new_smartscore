@@ -13,15 +13,15 @@ export default async function Home() {
   }
 
   return (
-    <div className="flex min-h-screen flex-col items-center h-screen">
-      <div className="grid md:grid-cols-3 w-full h-full max-sm:grid-col-1">
+    <div className="flex h-screen min-h-screen flex-col items-center">
+      <div className="max-sm:grid-col-1 grid h-full w-full md:grid-cols-3">
         <div
-          className="bg-gradient-to-r from-[#FED968] from-10% via-[#E7DCBC] via-50% to-[#FFE7A0] to-90%
-          shadow-2xl
-        flex flex-col justify-center items-center border border-black border-opacity-20 h-screen"
+          className="flex h-screen flex-col items-center justify-center border border-black
+          border-opacity-20
+        bg-gradient-to-r from-[#FED968] from-10% via-[#E7DCBC] via-50% to-[#FFE7A0] to-90% shadow-2xl"
         >
           <Image
-            className="md:-mt-24 md:h-auto md:w-auto sm:h-24 sm:w-24"
+            className="sm:h-24 sm:w-24 md:-mt-24 md:h-auto md:w-auto"
             src={"/images/iconcroppped.png"}
             alt="HAHA"
             width={500}
@@ -31,11 +31,11 @@ export default async function Home() {
           <h1 className="text-3xl">
             <span className={margarine.className}>Smartscore</span>
           </h1>
-          <Label className="text-xl p-4 px-10 text-center">
+          <Label className="p-4 px-10 text-center text-xl">
             <span className={poppins.className}>
-              Welcome to SmartScore! We're here to help educators understand
-              student performance and empower them to shine brighter by building
-              on strengths and tackling weaknesses.
+              Welcome to SmartScore! We`&apos;`re here to help educators
+              understand student performance and empower them to shine brighter
+              by building on strengths and tackling weaknesses.
             </span>
           </Label>
         </div>
@@ -44,13 +44,13 @@ export default async function Home() {
 
           <div className="absolute inset-0 bg-[#FFECB4] bg-opacity-80"> </div>
 
-          <div className="relative z-10 h-screen flex flex-col justify-center items-center">
+          <div className="relative z-10 flex h-screen flex-col items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <h1 className="text-4xl">
                 <span className={margarine.className}>
                   Smartscore
                   <Image
-                    className="-mt-24 ml-40 h-full w-auto relative"
+                    className="relative -mt-24 ml-40 h-full w-auto"
                     src={"/images/iconcroppped.png"}
                     alt="HAHA"
                     width={125}
@@ -59,14 +59,14 @@ export default async function Home() {
                 </span>
               </h1>
 
-              <Label className="text-xl px-10 text-center">
+              <Label className="px-10 text-center text-xl">
                 <span className={poppins.className}>
                   Empowering Students, Enlightening Educators: Assessing
                   Strengths, Addressing Weaknesses
                 </span>
               </Label>
             </div>
-            <div className="mt-4 w-full h-auto">
+            <div className="mt-4 h-auto w-full">
               <SigininForm />
             </div>
           </div>
