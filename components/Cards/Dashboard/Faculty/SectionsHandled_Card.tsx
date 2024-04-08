@@ -49,16 +49,26 @@ const SectionsHandled_Card = async () => {
             loop: true,
           }}
         >
-          <CarouselContent className="h-full">
-            {count.map((sections, index) => (
-              <CarouselItem className="h-full" key={index}>
-                <div className="flex flex-col items-center justify-center p-2">
-                  <Label className="text-2xl">{sections.section}</Label>
-                  <Label className="text-3xl">{sections.count} Students</Label>
-                </div>
-              </CarouselItem>
-            ))}
-          </CarouselContent>
+          {count.length < 1 ? (
+            <Label className="text-center">
+              The user doesn't have an existing quiz.
+            </Label>
+          ) : (
+            <CarouselContent className="h-full">
+              <>
+                {count.map((sections, index) => (
+                  <CarouselItem className="h-full" key={index}>
+                    <div className="flex flex-col items-center justify-center p-2">
+                      <Label className="text-2xl">{sections.section}</Label>
+                      <Label className="text-3xl">
+                        {sections.count} Students
+                      </Label>
+                    </div>
+                  </CarouselItem>
+                ))}
+              </>
+            </CarouselContent>
+          )}
           {/* <CarouselPrevious />
           <CarouselNext /> */}
         </Carousel>

@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import prisma from "@/lib/prisma";
 import { MdAssignment } from "react-icons/md";
 
@@ -49,7 +50,7 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
             ))}
           </>
         ) : (
-          <p>No quizzes are created by this user.</p>
+          <Label>The user doesn't have an existing quiz.</Label>
         )}
       </CardContent>
       {/* <CardFooter>

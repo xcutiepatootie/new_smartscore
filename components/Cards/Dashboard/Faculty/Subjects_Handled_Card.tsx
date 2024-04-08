@@ -6,6 +6,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
 import prisma from "@/lib/prisma";
 import { MdSubject } from "react-icons/md";
 
@@ -51,9 +52,17 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
         <div className="mx-1 border-b border-amber-500 pb-2 drop-shadow-2xl" />
       </CardHeader>
       <CardContent>
-        {data.map((subject: any, index) => (
-          <p key={index}>{subject}</p>
-        ))}
+        {data.length < 1 ? (
+          <Label className="text-center">
+            The user doesn't have an existing quiz.
+          </Label>
+        ) : (
+          <>
+            {data.map((subject: any, index) => (
+              <p key={index}>{subject}</p>
+            ))}
+          </>
+        )}
       </CardContent>
     </Card>
   );
