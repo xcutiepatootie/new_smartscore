@@ -35,7 +35,7 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
           <div className="flex w-full flex-row justify-between">
             Quizzes Posted By {user.userSession.name}
             <span className="">
-              <MdAssignment className="text-4xl text-emerald-400" />
+              <MdAssignment className="text-4xl text-yellow-400" />
             </span>
           </div>
         </CardTitle>
