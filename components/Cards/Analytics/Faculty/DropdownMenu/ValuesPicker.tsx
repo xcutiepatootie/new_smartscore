@@ -1,28 +1,24 @@
-import { Check, ChevronsUpDown } from "lucide-react";
-import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command";
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import { Check, ChevronsUpDown } from "lucide-react";
 import { SetStateAction, useState } from "react";
-import { xy_values } from "./Attribute_Values/Attributes";
+import { xy_values } from "./Attribute_Values/attributes";
 
 const ValuesPicker = ({
   setSelectedValue,
+  defaultValue,
 }: {
+  defaultValue: string;
   setSelectedValue: (value: string) => void;
 }) => {
   const [open, setOpen] = useState<boolean>(false);
-  const [value, setValue] = useState<string>("");
+  const [value, setValue] = useState<string>(defaultValue);
 
   const handleSelectValue = (currentValue: SetStateAction<string>) => {
     const newValue = currentValue === value ? "" : currentValue;
@@ -59,7 +55,7 @@ const ValuesPicker = ({
                 <Check
                   className={cn(
                     "mr-2 h-4 w-4",
-                    value === dMethod.value ? "opacity-100" : "opacity-0"
+                    value === dMethod.value ? "opacity-100" : "opacity-0",
                   )}
                 />
                 {dMethod.label}

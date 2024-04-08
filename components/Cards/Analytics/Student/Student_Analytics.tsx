@@ -8,6 +8,7 @@ import QuizName_Popover from "@/components/Popovers/Student/QuizName_Popover";
 import {
   getChartValues,
   getFeedback,
+  getQuizResultByUser,
   getStudentClusterAssignments,
 } from "@/lib/server_actions/actions";
 import { useToast } from "@/components/ui/use-toast";
@@ -26,6 +27,9 @@ const Student_Analytics = ({
   const [clusterAssignment, setClusterAssignment] = useState<any>();
   const [barValues, setBarValues] = useState<any>();
 
+  // For Results
+  const [result, setResult] = useState<any>();
+
   useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizNames.find(
@@ -42,7 +46,11 @@ const Student_Analytics = ({
 
   useEffect(() => {
     if (selectedQuizId !== "") {
-      const getQuizResults = async () => {};
+      const getQuizResult = async () => {
+        const fetchResults = await getQuizResultByUser(selectedQuizId);
+        console.log("Results ", fetchResults);
+        setResult(fetchResults);
+      };
       const getQuizFeedbacks = async () => {
         const fetchFeedback = await getFeedback(selectedQuizId);
         setFeedback(fetchFeedback);
@@ -75,7 +83,7 @@ const Student_Analytics = ({
         }
       };
       console.log("testing lang hehe");
-      getQuizResults;
+      getQuizResult();
 
       getQuizFeedbacks();
       getChartValue();
@@ -85,21 +93,22 @@ const Student_Analytics = ({
   console.log(feedback);
   return (
     <>
-      <div className="row-span-2 h-[95%] space-y-2 px-4 py-2">
+      <div className="row-span-2 h-[95%]  px-4 ">
         <QuizName_Popover
           popoverValues={quizNames}
           setSelectedQuiz={setSelectedQuiz}
         />
+
         <Chart
           quizTitle={selectedQuiz}
           clusterAssignments={clusterAssignment}
           barValues={barValues}
         />
       </div>
-      <div className="h-full p-4">
-        <Quiz_Results />
+      <div className="h-full p-2">
+        <Quiz_Results results={result} />
       </div>
-      <div className="h-full p-4">
+      <div className="h-full p-2">
         <Feedback feedback={feedback} />
       </div>
     </>

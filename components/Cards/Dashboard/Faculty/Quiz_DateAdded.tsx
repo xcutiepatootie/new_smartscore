@@ -32,7 +32,7 @@ const Quiz_DateAdded = async () => {
   }
   return (
     <>
-      <Card className="w-1/3">
+      <Card className="w-1/3 h-full max-sm:w-[398px]">
         <CardHeader>
           <CardTitle>Submission History</CardTitle>
           {userSession?.user.role === "faculty" ? (
@@ -50,38 +50,45 @@ const Quiz_DateAdded = async () => {
             <div className="space-y-4">
               {userSession?.user.role === "faculty" ? (
                 <>
-                  {quizHistory.map((history) => (
-                    <Card className="h-auto w-full p-1" key={history.id}>
-                      <CardTitle
-                        className={`${lexend.className} flex items-center p-2 text-xl`}
-                      >
-                        <FaStickyNote
-                          size={25}
-                          className="mr-2 text-yellow-400"
-                        />{" "}
-                        Quiz Submitted: {history.quizName}
-                      </CardTitle>
-                      <Separator className="my-2 bg-amber-300 " />
-                      <CardContent className="flex flex-col">
-                        <Label className={`${poppins.className} text-lg`}>
-                          Submitted by: {history.student?.name}
-                        </Label>
-                        <Label className={`${poppins.className} text-md`}>
-                          Section: {history.student?.section}
-                        </Label>
-                        <div className="ml-6 flex w-full flex-row space-x-8 p-2">
-                          <Label className="flex w-full items-center gap-2">
-                            <FaClock size={20} />
-                            {history.dateTaken.toLocaleTimeString()}
-                          </Label>
-                          <Label className="flex w-full items-center gap-2">
-                            <FaCalendarCheck size={20} />
-                            {history.dateTaken.toLocaleDateString()}
-                          </Label>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  ))}
+                  {quizHistory.length < 1 ? (
+                    <Label>Students have not yet responded to the quiz.</Label>
+                  ) : (
+                    <>
+                      {" "}
+                      {quizHistory.map((history) => (
+                        <Card className="h-auto w-full p-1" key={history.id}>
+                          <CardTitle
+                            className={`${lexend.className} flex items-center p-2 text-xl`}
+                          >
+                            <FaStickyNote
+                              size={25}
+                              className="mr-2 text-yellow-400"
+                            />{" "}
+                            Quiz Submitted: {history.quizName}
+                          </CardTitle>
+                          <Separator className="my-2 bg-amber-300 " />
+                          <CardContent className="flex flex-col">
+                            <Label className={`${poppins.className} text-lg`}>
+                              Submitted by: {history.student?.name}
+                            </Label>
+                            <Label className={`${poppins.className} text-md`}>
+                              Section: {history.student?.section}
+                            </Label>
+                            <div className="ml-6 flex w-full flex-row space-x-8 p-2">
+                              <Label className="flex w-full items-center gap-2">
+                                <FaClock size={20} />
+                                {history.dateTaken.toLocaleTimeString()}
+                              </Label>
+                              <Label className="flex w-full items-center gap-2">
+                                <FaCalendarCheck size={20} />
+                                {history.dateTaken.toLocaleDateString()}
+                              </Label>
+                            </div>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </>
+                  )}
                 </>
               ) : (
                 <>

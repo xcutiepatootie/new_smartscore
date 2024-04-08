@@ -183,7 +183,7 @@ const Ranking_Card = ({
 
   return (
     <>
-      <Card className="w-2/3">
+      <Card className="h-full w-2/3 max-sm:w-[85%]">
         <CardHeader className="flex items-center justify-center">
           <CardTitle>Ranking</CardTitle>
           <CardDescription>
@@ -194,8 +194,8 @@ const Ranking_Card = ({
             setSelectedQuiz={setSelectedQuiz}
           />
         </CardHeader>
-        <Separator className="mx-4 my-2 h-1 bg-amber-200" />
         <CardContent className="">
+          <Separator className=" my-2 h-1 bg-amber-200" />
           {/* {sample.map((items, index) => (
             <div
               className="m-4 flex w-full flex-row items-center justify-center gap-2 p-4"

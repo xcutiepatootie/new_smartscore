@@ -112,9 +112,13 @@ export async function getClusterValues(quizId: string) {
   return fetchedClusterValues;
 }
 
-export async function getClusterChart(quizId: string) {
+export async function getClusterChart(
+  quizId: string,
+  xvalue: string,
+  yvalue: string,
+) {
   const clusterChart = await fetch(
-    `http://localhost:8080/charts/plot64?quizId=${quizId}`,
+    `http://localhost:8080/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
     { cache: "force-cache" },
   );
   if (!clusterChart.ok) {
@@ -412,6 +416,26 @@ export async function getStudentBySection(sectionsHandled: string[]) {
     },
   });
   return studentsBySection;
+}
+
+export async function getStudentBySectionCount(sectionsHandled: string[]) {
+  interface SectionCount {
+    section: string;
+    count: number;
+  }
+
+  const results: SectionCount[] = [];
+
+  for (const section of sectionsHandled) {
+    const count = await prisma.student.count({
+      where: {
+        section: section,
+      },
+    });
+
+    results.push({ section, count });
+  }
+  return results;
 }
 
 // Get Quiz using Faculty
@@ -1041,4 +1065,25 @@ export async function getStudentRankingByQuiz(quizId: string) {
 
   console.log(top5Object);
   return top5Object;
+}
+
+export async function getQuizResultByUser(quizId: string) {
+  const userSession = await getUserSession();
+  const results = await prisma.quiz.findUnique({
+    where: {
+      id: quizId,
+    },
+    include: {
+      QuizTaken: {
+        where: { studentId: userSession?.user.id },
+        select: { isPerfect: true, retriesLeft: true, results: true },
+      },
+    },
+  });
+  console.log(results);
+  if (!results) {
+    return "No Record Found";
+  }
+
+  return results;
 }

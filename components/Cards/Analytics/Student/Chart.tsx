@@ -41,6 +41,7 @@ export const options = {
     },
   },
   responsive: true,
+  maintainASpectRatio: false,
   plugins: {
     legend: {
       position: "bottom" as const,
@@ -60,6 +61,7 @@ export const barOptions = {
     },
   },
   responsive: true,
+  maintainASpectRatio: false,
   plugins: {
     legend: {
       /* position: "right" as const, */
@@ -71,39 +73,6 @@ export const barOptions = {
     },
   },
 };
-
-const UserData = [
-  {
-    id: 1,
-    year: 2016,
-    userGain: 80000,
-    userLost: 823,
-  },
-  {
-    id: 2,
-    year: 2017,
-    userGain: 45677,
-    userLost: 345,
-  },
-  {
-    id: 3,
-    year: 2018,
-    userGain: 78888,
-    userLost: 555,
-  },
-  {
-    id: 4,
-    year: 2019,
-    userGain: 90000,
-    userLost: 4555,
-  },
-  {
-    id: 5,
-    year: 2020,
-    userGain: 4300,
-    userLost: 234,
-  },
-];
 
 /* const top5StudentIds = Array.from(
   studentRecords
@@ -384,9 +353,11 @@ const Chart = ({
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <ScrollArea className="flex h-[780px] w-full flex-col items-center justify-center space-y-2 rounded-md border p-4">
-          <div className="flex h-1/2 w-full items-center justify-center">
-            <Bar data={barChart_score} options={barChart_score.options} />
+        <ScrollArea className=" h-[780px] w-full  items-center justify-center space-y-2 rounded-md border p-4">
+          <div className="h-[1%] w-full">
+            <div>
+              <Bar data={barChart_score} options={barChart_score.options} />
+            </div>
           </div>
           <Bar data={barChart_Time} options={barChart_Time.options} />
           <Bar

@@ -36,7 +36,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
   console.log("Selected quiz:", selectedQuizObject);
   return (
     <>
-      <Card className="w-2/3">
+      <Card className="h-full w-2/3 max-sm:w-[85%]">
         <CardHeader>
           <CardTitle>Quiz Status</CardTitle>
           <CardDescription>
@@ -66,7 +66,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
                 <TabsContent key={index} value={section}>
                   <Card>
                     <CardContent className="space-y-2">
-                      <ScrollArea className="w-auto h-[390px]">
+                      <ScrollArea className="h-[390px] w-auto">
                         <List_Students
                           quizId={selectedQuizObject.id}
                           section={section}

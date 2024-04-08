@@ -14,10 +14,10 @@ const Analytics_tabs = async () => {
       <TabsList>
         <TabsTrigger value="records">Student Records</TabsTrigger>
         <TabsTrigger value="feedback">Feedback</TabsTrigger>
-        <TabsTrigger value="charts">Charts</TabsTrigger>
+        {/* <TabsTrigger value="charts">Charts</TabsTrigger> */}
       </TabsList>
       <TabsContent className="w-[100%]" value="records">
-        <div className="flex flex-row w-full">
+        <div className="flex w-full flex-row">
           <div className="flex h-full w-[100%] space-x-2">
             <Analytics_Table />
           </div>

@@ -15,8 +15,8 @@ const Charts = ({ quizzes, quizId }: any) => {
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true);
   const [data, setData] = useState("");
-  const [xvalue, setXValue] = useState<string>("");
-  const [yvalue, setYValue] = useState<string>("");
+  const [xvalue, setXValue] = useState<string>("score");
+  const [yvalue, setYValue] = useState<string>("time");
   const [selectedDistanceMethod, setSelectedDistanceMethod] =
     useState<string>("");
 
@@ -29,6 +29,8 @@ const Charts = ({ quizzes, quizId }: any) => {
     setYValue(value);
   }, []);
 
+  console.log("X:", xvalue);
+  console.log("Y:", yvalue);
   /*  useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizzes.find(
@@ -46,7 +48,7 @@ const Charts = ({ quizzes, quizId }: any) => {
     setLoading(true);
     if (quizId) {
       const fetchChart = async () => {
-        const getChart = await getClusterChart(quizId);
+        const getChart = await getClusterChart(quizId, xvalue, yvalue);
         return getChart;
       };
 
@@ -58,7 +60,7 @@ const Charts = ({ quizzes, quizId }: any) => {
         });
       }, 1000);
     }
-  }, [quizId]);
+  }, [quizId, xvalue, yvalue]);
 
   console.log(selectedQuiz, selectedQuizId);
   console.log(xvalue);
@@ -76,11 +78,17 @@ const Charts = ({ quizzes, quizId }: any) => {
                 />
                 <div>
                   <Label>X Value: </Label>
-                  <ValuesPicker setSelectedValue={handleSetXValue} />
+                  <ValuesPicker
+                    defaultValue={"score"}
+                    setSelectedValue={handleSetXValue}
+                  />
                 </div>
                 <div>
                   <Label>Y Value: </Label>
-                  <ValuesPicker setSelectedValue={handleSetYValue} />
+                  <ValuesPicker
+                    defaultValue={"time"}
+                    setSelectedValue={handleSetYValue}
+                  />
                 </div>
               </div>
 

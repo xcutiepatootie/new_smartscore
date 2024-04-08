@@ -39,7 +39,7 @@ const Feedback_Input = ({ quizzes }: any) => {
   useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizzes.find(
-      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz
+      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz,
     );
 
     if (selectedQuizObject) {
@@ -82,15 +82,15 @@ const Feedback_Input = ({ quizzes }: any) => {
   console.log(prevFeedback);
   return (
     <>
-      <div className="flex flex-col h-full">
+      <div className="flex h-full flex-col">
         <div className="flex-row space-x-4">
           <Quiz_section_Popover
             quizzes={quizzes}
             setSelectedQuiz={setSelectedQuiz}
           />
-          {selectedQuiz && (
+          {/*  {selectedQuiz && (
             <Dialog>
-              <DialogTrigger className="bg-white rounded-lg outline-none p-2 text-sm outline-slate-100">
+              <DialogTrigger className="rounded-lg bg-white p-2 text-sm outline-none outline-slate-100">
                 Show Cluster Values
               </DialogTrigger>
               <DialogContent>
@@ -102,21 +102,24 @@ const Feedback_Input = ({ quizzes }: any) => {
                 </DialogHeader>
               </DialogContent>
             </Dialog>
-          )}
+          )} */}
         </div>
 
         {clusterData && selectedQuiz && (
           <div className="h-full space-y-2">
-            <div className="flex flex-row gap-4 justify-around p-2">
+            <div className="flex flex-row justify-around gap-4 p-2">
               <ClusterValues quizId={selectedQuizId} />
             </div>
 
-            <div className="flex flex-row w-full items-center justify-center">
+            <div className="flex w-full flex-row items-center justify-center">
               <Charts quizId={selectedQuizId} />
             </div>
 
-            <div className="border rounded-md shadow-lg p-4">
-              <Label className="text-2xl underline"> Provide Feedback here.</Label>
+            <div className="rounded-md border p-4 shadow-lg">
+              <Label className="text-2xl underline">
+                {" "}
+                Provide Feedback here.
+              </Label>
               <Input_Form
                 prevfeedbacks={prevFeedback}
                 quizId={selectedQuizId}

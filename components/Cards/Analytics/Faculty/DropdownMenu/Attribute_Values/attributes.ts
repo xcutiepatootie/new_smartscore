@@ -12,11 +12,11 @@ export const xy_values = [
     label: "Out of Focus",
   },
   {
-    value: "anwers_clicked",
+    value: "answers_clicked",
     label: "Answers Clicked",
   },
   {
-    value: "retriesLeft",
+    value: "retries left",
     label: "Retries Left",
   },
 ];

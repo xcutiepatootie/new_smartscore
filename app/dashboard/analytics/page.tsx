@@ -22,11 +22,11 @@ export default async function page() {
   return (
     <>
       {getUserSession?.user.role === "faculty" ? (
-        <div className="w-full">
+        <div className="w-full p-4">
           <Analytics_tabs />
         </div>
       ) : (
-        <div className="grid h-full w-full grid-cols-2 grid-rows-2 gap-2">
+        <div className="grid h-full w-full grid-cols-1 grid-rows-2 gap-2 pt-2 lg:grid-cols-2">
           {/*     <StudentAnalytics_Tabs /> */}
           {quizNames && <Student_Analytics quizNames={quizNames} />}
         </div>
