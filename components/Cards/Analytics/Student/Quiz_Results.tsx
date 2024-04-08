@@ -36,8 +36,8 @@ const Quiz_Results = ({ results }: any) => {
               <Label className="text-xl">
                 Posted By: {results.facultyName}
               </Label>
-              {results.QuizTaken.map((quiz: any) => (
-                <div className="flex w-full flex-col">
+              {results.QuizTaken.map((quiz: any, index:number) => (
+                <div className="flex w-full flex-col" key={index}>
                   <Label className="text-center text-xl">
                     Is Perfect? {quiz.isPerfect ? "Perfect" : "Not Perfect"}
                   </Label>
