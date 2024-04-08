@@ -19,7 +19,7 @@ export async function ProfileCards({ user }: any) {
   }
 
   return (
-    <div className="grid h-screen w-full grid-cols-3 gap-4 p-12">
+    <div className="grid h-screen w-full grid-cols-1 gap-4 p-12 lg:grid-cols-3">
       <Card className="h-full w-full">
         <CardContent className="flex h-full flex-col items-center justify-evenly">
           <Avatar className="h-[40%] w-auto">
