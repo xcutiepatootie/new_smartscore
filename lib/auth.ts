@@ -48,7 +48,7 @@ export const config: NextAuthOptions = {
         //const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
         try {
           const response = await axios.post(
-            "http://localhost:3000/api/signin-user",
+            `${process.env.API_TS_URL}/api/signin-user`,
             {
               email: credentials?.email,
               password: credentials?.password,
