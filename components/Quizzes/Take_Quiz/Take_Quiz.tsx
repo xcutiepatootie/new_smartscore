@@ -266,27 +266,30 @@ export const Take_Quiz = ({
               </form>
             </>
           ) : (
-            <div className="flex h-full flex-col items-center justify-center gap-8 bg-[#f8f1a6]">
+            <div className="flex h-full flex-col items-center justify-center gap-8 bg-[#f8f1a6] p-8">
               <Label className={`${poppins.className} text-5xl`}>
                 DISCLAIMER
               </Label>
-              <p className="w-1/2 text-wrap rounded-2xl bg-white p-12 text-xl shadow-2xl drop-shadow-2xl">
-                Before you start the quiz, please note that your clicks will be
-                tracked each time you change your answer. Additionally, opening
-                new tabs while answering will also be monitored. If you don't
-                achieve a perfect score on your first attempt, you'll have 5
-                retries to perfect the quiz. However, if you manage to get a
-                perfect score, the quiz will be considered completed. Make sure
-                you're ready to take the quiz, as the timer will start
-                automatically once you press the start button.
-                <br />
-                <br />
-                If you have any concerns or questions, please reach out to your
-                teacher. Good luck!
-              </p>
+              <div className="flex max-h-[50vh] items-center justify-center rounded-2xl bg-white p-12 shadow-2xl drop-shadow-2xl ">
+                <p className="w-full text-wrap text-sm md:text-xl">
+                  Before you start the quiz, please note that your clicks will
+                  be tracked each time you change your answer. Additionally,
+                  opening new tabs while answering will also be monitored. If
+                  you don't achieve a perfect score on your first attempt,
+                  you'll have 5 retries to perfect the quiz. However, if you
+                  manage to get a perfect score, the quiz will be considered
+                  completed. Make sure you're ready to take the quiz, as the
+                  timer will start automatically once you press the start
+                  button.
+                  <br />
+                  <br />
+                  If you have any concerns or questions, please reach out to
+                  your teacher. Good luck!
+                </p>
+              </div>
 
               <Button
-                className="h-[10%] w-1/3 rounded-full bg-yellow-600 text-3xl hover:bg-lime-500"
+                className="h-16 w-2/3 rounded-full bg-yellow-600 text-3xl hover:bg-lime-500"
                 onClick={() => {
                   setStartQuiz(true);
                   setTimerStopped(false);
