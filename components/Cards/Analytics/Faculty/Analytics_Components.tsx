@@ -4,11 +4,7 @@ import {
   quizSection_Card,
 } from "@/lib/server_actions/actions";
 import { Student } from "@prisma/client";
-import { Card } from "../../../ui/card";
 import Client_table from "../../../Table/Analytics/Client_table";
-import { columns } from "../../../Table/Analytics/columns";
-import { DataTable } from "../../../Table/Analytics/data-table";
-import ClusterValues from "./ClusterValues";
 
 async function getData(sectionsHandled: string[]): Promise<Student[]> {
   // Fetch data from your API here.
