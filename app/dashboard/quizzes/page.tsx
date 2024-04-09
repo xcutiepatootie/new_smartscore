@@ -28,15 +28,17 @@ const Quizzes = async () => {
 
   return (
     <div className="flex items-center justify-center">
-      <Add_List_Quiz
-        quizList={
-          getSession?.user.role === "faculty"
-            ? allQuiz?.getAllQuizzes
-            : allQuiz?.quizzesBasedOnSection
-        }
-        quizTaken={allQuiz?.getAllTakenQuiz}
-        studentSection={allSection}
-      />
+      <div className="">
+        <Add_List_Quiz
+          quizList={
+            getSession?.user.role === "faculty"
+              ? allQuiz?.getAllQuizzes
+              : allQuiz?.quizzesBasedOnSection
+          }
+          quizTaken={allQuiz?.getAllTakenQuiz}
+          studentSection={allSection}
+        />
+      </div>
     </div>
   );
 };

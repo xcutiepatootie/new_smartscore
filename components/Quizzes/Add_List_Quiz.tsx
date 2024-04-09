@@ -19,8 +19,8 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
 
   return (
     <div className="flex items-center justify-center p-6">
-      <div className="flex flex-col">
-        <div className="flex flex-row items-center justify-start px-4">
+      <div className="flex flex-col ">
+        <div className="flex flex-row items-center justify-start px-4 ">
           <Button
             className={`rounded bg-yellow-500 px-4 py-2 font-bold text-black transition-all duration-200 hover:bg-yellow-600 hover:text-white ${
               showViewQuiz ? "bg-opacity-100" : "bg-opacity-50"

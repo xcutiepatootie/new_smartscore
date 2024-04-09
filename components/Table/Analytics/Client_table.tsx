@@ -18,7 +18,7 @@ import { DataTable } from "./data-table";
 const studentRecords = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/student_records?quizId=${quizId}`,
+      `${process.env.API_URL}/api/student_records?quizId=${quizId}`,
 
       {
         method: "GET",
@@ -37,7 +37,7 @@ const studentRecords = async (quizId: string) => {
 const studentClusterAssignments = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/assignments?quizId=${quizId}`,
+      `${process.env.API_URL}/api/assignments?quizId=${quizId}`,
 
       {
         method: "GET",

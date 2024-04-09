@@ -26,7 +26,7 @@ const quizResultByUser = async (selectedQuizId: string) => {
 const studentClusterAssignments = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/assignments?quizId=${quizId}`,
+      `${process.env.API_URL}/api/assignments?quizId=${quizId}`,
 
       {
         method: "GET",
@@ -55,7 +55,7 @@ const chartValues = async (quizId: string) => {
   try {
     const userSession = await getUserSession();
     const response = await fetch(
-      `http://localhost:8080/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
+      `${process.env.API_URL}/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
       { method: "GET" },
     );
     if (response) {

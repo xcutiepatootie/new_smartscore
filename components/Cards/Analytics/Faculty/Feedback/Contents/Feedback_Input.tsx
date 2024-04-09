@@ -30,7 +30,7 @@ export type FeedbackItem = {
 const clusterValues = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
+      `${process.env.API_URL}/api/cluster/average-values?quizId=${quizId}`,
 
       {
         method: "GET",
@@ -49,7 +49,7 @@ const clusterValues = async (quizId: string) => {
 const studentClusterAssignments = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/assignments?quizId=${quizId}`,
+      `${process.env.API_URL}/api/assignments?quizId=${quizId}`,
 
       {
         method: "GET",
