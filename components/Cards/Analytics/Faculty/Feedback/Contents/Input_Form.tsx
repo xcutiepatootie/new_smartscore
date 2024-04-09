@@ -16,11 +16,13 @@ const Input_Form = ({
   quizName,
   quizId,
   prevfeedbacks,
+  clusterAssignments,
 }: {
   clusterData: clusterType;
   quizName: string;
   quizId: string;
   prevfeedbacks: string[];
+  clusterAssignments: any;
 }) => {
   const { toast } = useToast();
   const [defaultValuesSet, setDefaultValuesSet] = useState(false);
@@ -56,7 +58,12 @@ const Input_Form = ({
     console.log(quizName);
     console.log(data);
 
-    const updateData = await setFeedback(quizId, quizName, data);
+    const updateData = await setFeedback(
+      quizId,
+      quizName,
+      data,
+      clusterAssignments,
+    );
     console.log(updateData);
     if (updateData === "Error") {
       toast({

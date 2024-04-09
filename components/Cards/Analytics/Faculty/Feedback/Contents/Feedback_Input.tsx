@@ -46,6 +46,25 @@ const clusterValues = async (quizId: string) => {
   }
 };
 
+const studentClusterAssignments = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/assignments?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Feedback_Input = ({ quizzes }: any) => {
   const [prevFeedback, setPrevFeedback] = useState<string[]>([]);
   const [jprevFeedback, setJPrevFeedback] = useState<any>();
@@ -53,7 +72,8 @@ const Feedback_Input = ({ quizzes }: any) => {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [clusterData, setClusterData] = useState<clusterType>([]);
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // State to store the selected quiz id
+  const [loading, setLoading] = useState<boolean>(true);
+  const [clusterAssignments, setClusterAssignments] = useState<any>();
 
   useEffect(() => {
     // Find the selected quiz and set its id
@@ -93,8 +113,14 @@ const Feedback_Input = ({ quizzes }: any) => {
         setClusterData(fetchData);
       };
 
+      const fetchClusterAssignment = async () => {
+        const fetchData = await studentClusterAssignments(selectedQuizId);
+        setClusterAssignments(fetchData);
+      };
+
       //method
       fetchClusterValues();
+      fetchClusterAssignment();
     }
   }, [selectedQuizId]);
   console.log(clusterData);
@@ -144,6 +170,7 @@ const Feedback_Input = ({ quizzes }: any) => {
                 quizId={selectedQuizId}
                 quizName={selectedQuiz}
                 clusterData={clusterData}
+                clusterAssignments={clusterAssignments}
               />
             </div>
           </div>

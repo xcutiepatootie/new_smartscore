@@ -478,10 +478,11 @@ export async function setFeedback(
   quizId: string,
   quizName: string,
   feedbacks: feedbackSchemaType,
+  clusterAssignments: any,
 ) {
   const session = await getUserSession();
   try {
-    const getClusterAssignments = await getStudentClusterAssignments(quizId);
+    const getClusterAssignments = clusterAssignments;
 
     const updateFacultyFeedback = await prisma.feedbacksPosted.upsert({
       where: {
