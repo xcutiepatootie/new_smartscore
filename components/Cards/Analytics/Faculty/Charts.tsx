@@ -8,10 +8,13 @@ import ValuesPicker from "./DropdownMenu/ValuesPicker";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 
+const apiurl = process.env.API_URL as string;
+console.log(apiurl);
+
 const clusterChart = async (quizId: string, xvalue: string, yvalue: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
 
       {
         method: "GET",

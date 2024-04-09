@@ -29,7 +29,7 @@ import { lexend, poppins } from "@/utils/fonts";
 const studentRankingByQuiz = async (selectedQuizId: string) => {
   try {
     const response = await fetch(
-      `${process.env.API_URL}/api/student_records?quizId=${selectedQuizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/student_records?quizId=${selectedQuizId}`,
       { method: "GET" },
     );
 

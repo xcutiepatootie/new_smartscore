@@ -13,7 +13,7 @@ import { clusterType } from "@/types/types";
 const clusterValues = async (quizId: string) => {
   try {
     const response = await fetch(
-      `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values?quizId=${quizId}`,
 
       {
         method: "GET",
