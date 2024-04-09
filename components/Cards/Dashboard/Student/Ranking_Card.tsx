@@ -27,8 +27,30 @@ import { Separator } from "@/components/ui/separator";
 import { lexend, poppins } from "@/utils/fonts";
 
 const studentRankingByQuiz = async (selectedQuizId: string) => {
-  const getRanking = await getStudentRankingByQuiz(selectedQuizId);
-  if (getRanking) return getRanking;
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/student_records?quizId=${selectedQuizId}`,
+      { method: "GET" },
+    );
+
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentRankingByQuizMapping = async (selectedQuizId: string) => {
+  try {
+    const apiData = await studentRankingByQuiz(selectedQuizId);
+    const mappingData = await getStudentRankingByQuiz(apiData);
+    if (mappingData) {
+      return mappingData;
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 const Ranking_Card = ({
@@ -67,7 +89,7 @@ const Ranking_Card = ({
   useEffect(() => {
     if (selectedQuizId !== "") {
       const fetchRanking = async () => {
-        const getRanking = await studentRankingByQuiz(selectedQuizId);
+        const getRanking = await studentRankingByQuizMapping(selectedQuizId);
         console.log(getRanking);
         setTop5Object(getRanking);
       };

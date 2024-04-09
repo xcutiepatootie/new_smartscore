@@ -987,8 +987,8 @@ export async function getUserUnfinishedQuizzesCount() {
 }
 
 // Get Student ranking
-export async function getStudentRankingByQuiz(quizId: string) {
-  const apiData = await getStudentRecords(quizId);
+export async function getStudentRankingByQuiz(apiData: any) {
+  /* const apiData = await getStudentRecords(quizId); */
   const newData = apiData.map((info: any) => ({
     studentId: info.studentId,
     score: info.averageScore,

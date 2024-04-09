@@ -124,7 +124,7 @@ const Feedback_Input = ({ quizzes }: any) => {
           )} */}
         </div>
 
-        {clusterData && selectedQuiz && (
+        {clusterData && selectedQuiz ? (
           <div className="h-full space-y-2">
             <div className="flex flex-row justify-around gap-4 p-2">
               <ClusterValues quizId={selectedQuizId} />
@@ -146,6 +146,12 @@ const Feedback_Input = ({ quizzes }: any) => {
                 clusterData={clusterData}
               />
             </div>
+          </div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Label className="mt-12 text-center text-3xl">
+              Please Select A Quiz
+            </Label>
           </div>
         )}
       </div>
