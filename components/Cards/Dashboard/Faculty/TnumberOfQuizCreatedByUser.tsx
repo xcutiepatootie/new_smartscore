@@ -50,7 +50,7 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
             ))}
           </>
         ) : (
-          <Label>The user doesn`&apos;`t have an existing quiz.</Label>
+          <Label>The user doesn&apos;t have an existing quiz.</Label>
         )}
       </CardContent>
       {/* <CardFooter>
