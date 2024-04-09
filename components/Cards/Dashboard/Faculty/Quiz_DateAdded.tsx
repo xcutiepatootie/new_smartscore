@@ -19,6 +19,31 @@ import { config } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import { FaCalendarCheck, FaClock } from "react-icons/fa";
 
+const dateOptions: Intl.DateTimeFormatOptions = {
+  year: "numeric",
+  month: "2-digit",
+  day: "2-digit",
+};
+
+const timeOptions: Intl.DateTimeFormatOptions = {
+  hour: "2-digit",
+  minute: "2-digit",
+  second: "2-digit",
+  hour12: true, // Use 24-hour format
+};
+
+const timezone: string = "Asia/Manila"; // GMT+8 (Philippine Standard Time)
+
+const dateFormatter = new Intl.DateTimeFormat("en-US", {
+  ...dateOptions,
+  timeZone: timezone,
+});
+
+const timeFormatter = new Intl.DateTimeFormat("en-US", {
+  ...timeOptions,
+  timeZone: timezone,
+});
+
 const Quiz_DateAdded = async () => {
   const userSession = await getServerSession(config);
   const quizHistory = await getQuizTakenHistory();
@@ -32,7 +57,7 @@ const Quiz_DateAdded = async () => {
   }
   return (
     <>
-      <Card className="w-1/3 h-full max-sm:w-[398px]">
+      <Card className="h-full w-1/3 max-sm:w-[398px]">
         <CardHeader>
           <CardTitle>Submission History</CardTitle>
           {userSession?.user.role === "faculty" ? (
@@ -77,11 +102,11 @@ const Quiz_DateAdded = async () => {
                             <div className="ml-6 flex w-full flex-row space-x-8 p-2">
                               <Label className="flex w-full items-center gap-2">
                                 <FaClock size={20} />
-                                {history.dateTaken.toLocaleTimeString()}
+                                {timeFormatter.format(history.dateTaken)}
                               </Label>
                               <Label className="flex w-full items-center gap-2">
                                 <FaCalendarCheck size={20} />
-                                {history.dateTaken.toLocaleDateString()}
+                                {dateFormatter.format(history.dateTaken)}
                               </Label>
                             </div>
                           </CardContent>
@@ -114,11 +139,11 @@ const Quiz_DateAdded = async () => {
                         <div className="ml-6 flex w-full flex-row space-x-8 p-2">
                           <Label className="flex w-full items-center gap-2">
                             <FaClock size={20} />
-                            {quiz.dateTaken.toLocaleTimeString()}
+                            {timeFormatter.format(quiz.dateTaken)}
                           </Label>
                           <Label className="flex w-full items-center gap-2">
                             <FaCalendarCheck size={20} />
-                            {quiz.dateTaken.toLocaleDateString()}
+                            {dateFormatter.format(quiz.dateTaken)}
                           </Label>
                         </div>
                       </CardContent>

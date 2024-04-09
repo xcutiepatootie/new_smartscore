@@ -14,7 +14,7 @@ import { config } from "../auth";
 import prisma from "../prisma";
 import { redirect } from "next/navigation";
 
-async function getUserSession() {
+export async function getUserSession() {
   const getSession = await getServerSession(config);
   return getSession;
 }
