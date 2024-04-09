@@ -16,88 +16,6 @@ async function getData(sectionsHandled: string[]): Promise<Student[]> {
 
   return studentsBySection;
 }
-/* [
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "ma@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "a@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "b@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-    {
-      id: "728ed52f",
-      amount: 100,
-      status: "pending",
-      email: "m@example.com",
-    },
-
-    // ...
-  ]; */
 
 const Analytics_Table = async () => {
   const sectionsHandled = await getSectionHandled();
@@ -111,13 +29,7 @@ const Analytics_Table = async () => {
     <>
       <div className="w-full">
         <Client_table data={data} quizzes={quizzes} />
-        {/* <DataTable columns={columns} data={data} quizzes={quizzes} /> */}
       </div>
-      {/* <div className="w-[20%]">
-        <Card className="w-auto h-[800px] p-4">
-          <ClusterValues />
-        </Card>
-      </div> */}
     </>
   );
 };
