@@ -17,6 +17,44 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+const studentRecords = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/student_records?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentClusterAssignments = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/assignments?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 function Client_table({ data, quizzes }: any) {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [selectedQuizId, setSelectedQuizId] = useState<string>(""); // State to store the selected quiz id
@@ -26,7 +64,7 @@ function Client_table({ data, quizzes }: any) {
   useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizzes.find(
-      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz
+      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz,
     );
 
     if (selectedQuizObject) {
@@ -41,10 +79,9 @@ function Client_table({ data, quizzes }: any) {
     if (selectedQuizId) {
       const fetchQuizTaken = async () => {
         const fetchData = await getQuizTaken(selectedQuizId);
-        const fetchData_CO = await getStudentRecords(selectedQuizId);
-        const fetchClusterAssignment = await getStudentClusterAssignments(
-          selectedQuizId
-        );
+        const fetchData_CO = await studentRecords(selectedQuizId);
+        const fetchClusterAssignment =
+          await studentClusterAssignments(selectedQuizId);
         console.log(fetchData);
         console.log(fetchData_CO);
 
@@ -67,7 +104,7 @@ function Client_table({ data, quizzes }: any) {
         const combinedData = finalData
           .map((data) => {
             const matchingData_CO = finalData_CO.find(
-              (coData: any) => coData.studentId === data.studentId
+              (coData: any) => coData.studentId === data.studentId,
             );
             if (matchingData_CO) {
               return {
@@ -87,7 +124,7 @@ function Client_table({ data, quizzes }: any) {
 
         const studentRecord = combinedData.map((data) => {
           const matchingClusterData = fetchClusterAssignment.find(
-            (clusterData: any) => clusterData.studentId === data?.studentId
+            (clusterData: any) => clusterData.studentId === data?.studentId,
           );
           if (matchingClusterData) {
             return {
@@ -122,9 +159,9 @@ function Client_table({ data, quizzes }: any) {
 
   return (
     <>
-      <div className="flex flex-row w-full space-x-2">
+      <div className="flex w-full flex-row space-x-2">
         <div className="w-[80%]">
-          <Card className="w-auto h-[800px] p-4">
+          <Card className="h-[800px] w-auto p-4">
             <Quiz_section_Popover
               quizzes={quizzes}
               setSelectedQuiz={setSelectedQuiz}
@@ -143,7 +180,7 @@ function Client_table({ data, quizzes }: any) {
           </Card>
         </div>
         <div>
-          <Card className="w-auto h-[800px] p-4 ">
+          <Card className="h-[800px] w-auto p-4 ">
             <CardTitle className="py-2">Cluster Values</CardTitle>
             <CardDescription className="py-2">
               shows the average value of each attribute for each cluster
