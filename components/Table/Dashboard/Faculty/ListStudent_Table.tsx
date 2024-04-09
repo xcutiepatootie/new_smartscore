@@ -24,7 +24,7 @@ function ListStudent_Table({
     setData();
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 3000);
   }, [section]);
 
   console.log(students);

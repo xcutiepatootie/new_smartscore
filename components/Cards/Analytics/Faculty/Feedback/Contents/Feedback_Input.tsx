@@ -27,6 +27,25 @@ export type FeedbackItem = {
   feedback: string;
 };
 
+const clusterValues = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Feedback_Input = ({ quizzes }: any) => {
   const [prevFeedback, setPrevFeedback] = useState<string[]>([]);
   const [jprevFeedback, setJPrevFeedback] = useState<any>();
@@ -69,7 +88,7 @@ const Feedback_Input = ({ quizzes }: any) => {
     if (selectedQuiz !== "") {
       const fetchClusterValues = async () => {
         console.log("quizid", selectedQuizId);
-        const fetchData = await getClusterValues(selectedQuizId);
+        const fetchData = await clusterValues(selectedQuizId);
         console.log("Fetched Clustered Data", fetchData);
         setClusterData(fetchData);
       };

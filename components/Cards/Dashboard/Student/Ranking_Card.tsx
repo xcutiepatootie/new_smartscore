@@ -26,33 +26,10 @@ import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { lexend, poppins } from "@/utils/fonts";
 
-const sample = [
-  {
-    name: "Test1",
-    section: "10-FC",
-    points: 100,
-  },
-  {
-    name: "Test2",
-    section: "10-FC",
-    points: 90,
-  },
-  {
-    name: "Test3",
-    section: "10-FC",
-    points: 95,
-  },
-  {
-    name: "Test4",
-    section: "10-Reg",
-    points: 80,
-  },
-  {
-    name: "Test5",
-    section: "10-Reg",
-    points: 85,
-  },
-];
+const studentRankingByQuiz = async (selectedQuizId: string) => {
+  const getRanking = await getStudentRankingByQuiz(selectedQuizId);
+  if (getRanking) return getRanking;
+};
 
 const Ranking_Card = ({
   quizNames,
@@ -90,7 +67,7 @@ const Ranking_Card = ({
   useEffect(() => {
     if (selectedQuizId !== "") {
       const fetchRanking = async () => {
-        const getRanking = await getStudentRankingByQuiz(selectedQuizId);
+        const getRanking = await studentRankingByQuiz(selectedQuizId);
         console.log(getRanking);
         setTop5Object(getRanking);
       };

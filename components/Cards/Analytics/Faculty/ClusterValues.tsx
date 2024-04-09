@@ -10,6 +10,25 @@ import {
 import { getClusterValues } from "@/lib/server_actions/actions";
 import { clusterType } from "@/types/types";
 
+const clusterValues = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `http://localhost:8080/api/cluster/average-values?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const ClusterValues = ({ quizId }: { quizId: string }) => {
   console.log(quizId);
   const [clusterData, setClusterData] = useState<clusterType>([]);
@@ -17,7 +36,7 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
   useEffect(() => {
     if (quizId !== "") {
       const fetchClusterValues = async () => {
-        const fetchData = await getClusterValues(quizId);
+        const fetchData = await clusterValues(quizId);
         console.log("Fetched Clustered Data", fetchData);
         setClusterData(fetchData);
       };

@@ -1,21 +1,19 @@
 "use client";
-import Quiz_section_Popover from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_section_Popover/Quiz_section_Popover";
-import {
-  getQuizTaken,
-  getStudentClusterAssignments,
-  getStudentRecords,
-} from "@/lib/server_actions/actions";
-import { tableData_faculty } from "@/types/types";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import ClusterValues from "@/components/Cards/Analytics/Faculty/ClusterValues";
+import Quiz_section_Popover from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_section_Popover/Quiz_section_Popover";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  getQuizTaken
+} from "@/lib/server_actions/actions";
+import { tableData_faculty } from "@/types/types";
+import { useEffect, useState } from "react";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
 
 const studentRecords = async (quizId: string) => {
   try {
