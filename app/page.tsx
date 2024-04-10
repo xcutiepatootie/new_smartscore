@@ -33,7 +33,7 @@ export default async function Home() {
           </h1>
           <Label className="p-4 px-10 text-center text-xl">
             <span className={poppins.className}>
-              Welcome to SmartScore! We`&apos;`re here to help educators
+              Welcome to SmartScore! We&apos;re here to help educators
               understand student performance and empower them to shine brighter
               by building on strengths and tackling weaknesses.
             </span>

@@ -7,9 +7,7 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  getQuizTaken
-} from "@/lib/server_actions/actions";
+import { getQuizTaken } from "@/lib/server_actions/actions";
 import { tableData_faculty } from "@/types/types";
 import { useEffect, useState } from "react";
 import { columns } from "./columns";
@@ -184,9 +182,6 @@ function Client_table({ data, quizzes }: any) {
               shows the average value of each attribute for each cluster
             </CardDescription>
             <ClusterValues quizId={selectedQuizId} />
-            <CardFooter className="mt-4">
-              <p>Card Footer</p>
-            </CardFooter>
           </Card>
         </div>
       </div>

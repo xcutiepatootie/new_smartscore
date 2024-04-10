@@ -977,7 +977,15 @@ export async function getUserUnfinishedQuizzesCount() {
   const test = quiz.map((item) => item.id);
 
   const finishedQuizzes = await prisma.quizTaken.count({
-    where: { AND: [{ quizId: { in: test }, studentId: userSession?.user.id }] },
+    where: {
+      AND: [
+        {
+          quizId: { in: test },
+          studentId: userSession?.user.id,
+          isDone: true,
+        },
+      ],
+    },
   });
 
   console.log(quiz.length - finishedQuizzes);
