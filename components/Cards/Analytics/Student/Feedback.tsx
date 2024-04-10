@@ -17,15 +17,25 @@ const Feedback = ({ feedback }: any) => {
         <CardDescription>Card Description</CardDescription>
       </CardHeader>
       <CardContent>
-        <Label>
-          You belong to Cluster:
-          {feedback ? feedback.cluster + 1 : "(Not yet Available / Not Ready)"}
-        </Label>
-        <br />
-        <Label>
-          Your teacher&apos;s feedback:
-          {feedback ? feedback.feedback : "(Not yet Available / Not Ready)"}
-        </Label>
+        {feedback.length < 1 ? (
+          <Label>Please Select a Quiz</Label>
+        ) : (
+          <>
+            <Label>
+              You belong to Cluster:
+              {feedback
+                ? feedback.cluster + 1
+                : "The Cluster is not yet ready. Please wait until your other classmates answered the quiz."}
+            </Label>
+            <br />
+            <Label>
+              Your teacher&apos;s feedback:
+              {feedback
+                ? feedback.feedback
+                : "The Teacher does not posted a feedback yet."}
+            </Label>
+          </>
+        )}
       </CardContent>
     </Card>
   );
