@@ -229,11 +229,11 @@ const Ranking_Card = ({
                         loop: true,
                       }}
                     >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
+                      <div className="m-4 grid grid-cols-6 justify-center gap-2 p-4">
                         <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
                           <Label>{`#${index + 1}`}</Label>
                         </div>
-                        <div className="col-span-11">
+                        <div className="col-span-5">
                           <CarouselContent>
                             {top5Object[
                               `top${index + 1}` as keyof Top5Object
@@ -244,14 +244,16 @@ const Ranking_Card = ({
                                 `top${index + 1}` as keyof Top5Object
                               ].map((student: any, studentIndex: number) => (
                                 <CarouselItem key={studentIndex} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
+                                  <div className="grid h-14 grid-cols-4 place-content-center content-center rounded-lg border-2 bg-[#FFE697]">
                                     <Avatar>
                                       <AvatarImage src="https://github.com/shadcn.png" />
                                       <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <Label>{student.name}</Label>
                                     <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
+                                    <Label className="overflow-hidden text-ellipsis">
+                                      {student.score}
+                                    </Label>
                                   </div>
                                 </CarouselItem>
                               ))}
