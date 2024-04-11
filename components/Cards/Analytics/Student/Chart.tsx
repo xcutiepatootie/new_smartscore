@@ -350,7 +350,7 @@ const Chart = ({
           Chart for{" "}
           <span className="capitalize">{!quizTitle ? "" : quizTitle}</span>
         </CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>displays the charts with your score and the top five quiz takers.</CardDescription>
       </CardHeader>
       <CardContent>
         <ScrollArea className=" h-[780px] w-full  items-center justify-center space-y-2 rounded-md border p-4">

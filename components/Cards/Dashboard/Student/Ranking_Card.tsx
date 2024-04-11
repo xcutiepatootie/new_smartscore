@@ -103,7 +103,7 @@ const Ranking_Card = ({
       fetchRanking();
       setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 3000);
     } else {
       setTop5Object(undefined);
       setLoading(true);
@@ -219,9 +219,7 @@ const Ranking_Card = ({
             </>
           ) : (
             <>
-              {!top5Object ? (
-                <>Error</>
-              ) : (
+              {top5Object ? (
                 <>
                   {Array.from(Array(5).keys()).map((index) => (
                     <Carousel
@@ -263,6 +261,8 @@ const Ranking_Card = ({
                     </Carousel>
                   ))}
                 </>
+              ) : (
+                <>Error</>
               )}
             </>
           )}
