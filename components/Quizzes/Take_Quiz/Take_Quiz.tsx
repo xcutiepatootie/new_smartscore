@@ -20,6 +20,7 @@ import { MdQuiz } from "react-icons/md";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
+import { useToast } from "@/components/ui/use-toast";
 
 export const Take_Quiz = ({
   selectedQuiz,
@@ -32,6 +33,8 @@ export const Take_Quiz = ({
   const [answerChanges, setAnswerChanges] = useState(0);
   const [isPageFocused, setIsPageFocused] = useState(true);
   const [focusCount, setFocusCount] = useState(0);
+
+  const { toast } = useToast();
 
   const {
     control,
@@ -172,6 +175,21 @@ export const Take_Quiz = ({
     console.log(formattedValues);
     const submitAnswer = await submitStudentAnswers(quizId, formattedValues);
 
+    if (submitAnswer === "Success") {
+      toast({
+        className: "bg-green-600 text-neutral-100",
+        title: "SmartScore",
+        description: "Successfully Submitted the Quiz.",
+      });
+      router.push("/dashboard/quizzes");
+    } else {
+      toast({
+        title: "SmartScore",
+        description: "Error submitting the quiz please try again.",
+        variant: "destructive",
+      });
+    }
+
     // Construct the URL with query parameters
     // Navigate to the other page
     //router.push(url);
@@ -280,7 +298,8 @@ export const Take_Quiz = ({
                   you manage to get a perfect score, the quiz will be considered
                   completed. Make sure you&apos;re ready to take the quiz, as
                   the timer will start automatically once you press the start
-                  button.
+                  button. If you submitted the quiz, the system will show a
+                  notification that you submitted the quiz.
                   <br />
                   <br />
                   If you have any concerns or questions, please reach out to

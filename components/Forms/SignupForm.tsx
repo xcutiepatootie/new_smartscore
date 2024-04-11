@@ -44,27 +44,27 @@ const SignupForm = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center h-screen w-full">
+    <div className="flex h-screen w-full items-center justify-center">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-2xl drop-shadow-2xl rounded px-8 max-sm:px-4 pt-6 pb-8 mb-4 sm:w-1/2"
+        className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-2xl drop-shadow-2xl max-sm:px-4 sm:w-1/2"
       >
         <Label
-          className="block text-gray-700 text-sm font-bold mb-4 border-b-2 border-zinc-300"
+          className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700"
           htmlFor="SignupTag"
         >
           Sign-Up
         </Label>
         <div className="mb-4">
           <Label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="name"
           >
             Name
           </Label>
           <Input
             {...register("name", { required: true })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="name"
             type="text"
             placeholder="Enter your Name"
@@ -76,14 +76,14 @@ const SignupForm = () => {
 
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="username"
           >
             Username
           </label>
           <Input
             {...register("username", { required: true })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="username"
             type="text"
             placeholder="Enter your username"
@@ -95,14 +95,14 @@ const SignupForm = () => {
 
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="email"
           >
             Email
           </label>
           <Input
             {...register("email", { required: true })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="email"
             type="email"
             placeholder="Enter your email"
@@ -113,7 +113,7 @@ const SignupForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="block text-gray-700 text-sm font-bold mb-2">
+          <label className="mb-2 block text-sm font-bold text-gray-700">
             Role
           </label>
           <div className="flex items-center justify-around">
@@ -148,14 +148,14 @@ const SignupForm = () => {
         {selectedRole === "student" && (
           <div className="mb-4">
             <label
-              className="block text-gray-700 text-sm font-bold mb-2"
+              className="mb-2 block text-sm font-bold text-gray-700"
               htmlFor="classSection"
             >
-              Section
+              Section (Pattern - BSCS-4IS1 / BSCS-1A )
             </label>
             <Input
               {...register("classSection", { required: true })}
-              className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
               id="classSection"
               type="classSection"
               placeholder="Enter your Class Section"
@@ -168,20 +168,20 @@ const SignupForm = () => {
 
         <div className="mb-6">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="password"
           >
             Password
           </label>
           <Input
             {...register("password", { required: true })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="password"
             type="password"
             placeholder="Enter your password"
           />
           {errors.password && (
-            <div className="text-red-500 text-xs">
+            <div className="text-xs text-red-500">
               Password must be at least 8 characters long
               <br /> Password must contain at least one uppercase letter
               <br /> Password must contain at least one symbol
@@ -190,15 +190,23 @@ const SignupForm = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105"
+            className="focus:shadow-outline transform rounded bg-blue-500 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-700 focus:outline-none"
             type="submit"
           >
             Sign Up
           </button>
         </div>
-        <Label className="text-sm mt-4 text-balance">
+        <Label className="mt-4 text-balance text-sm">
           Already have an account?
-          <span onClick={()=>{router.push("/")}} className="text-lsblue hover:text-blue-800"> Click Here </span>
+          <span
+            onClick={() => {
+              router.push("/");
+            }}
+            className="text-lsblue hover:text-blue-800"
+          >
+            {" "}
+            Click Here{" "}
+          </span>
           to Login
         </Label>
       </form>

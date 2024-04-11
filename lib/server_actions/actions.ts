@@ -698,95 +698,100 @@ export async function submitStudentAnswers(
   });
 
   console.log("Existing", existingQuiz);
-
-  if (existingQuiz) {
-    const updateStudentTakenQuiz = await prisma.quizTaken.update({
-      where: {
-        id: existingQuiz?.id,
-      },
-      data: {
-        isPerfect: studentResult.isPerfect,
-        retriesLeft: {
-          decrement: 1,
-        },
-      },
-    });
-
-    if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect === true) {
-      console.log("pasok HAHAHA");
-      const updateStudentDone = await prisma.quizTaken.update({
+  try {
+    if (existingQuiz) {
+      const updateStudentTakenQuiz = await prisma.quizTaken.update({
         where: {
           id: existingQuiz?.id,
         },
         data: {
-          isDone: true,
+          isPerfect: studentResult.isPerfect,
+          retriesLeft: {
+            decrement: 1,
+          },
         },
       });
-    }
 
-    const saveResult = await prisma.quiz_Result.create({
-      data: {
-        score: studentResult.studentScore,
-        time: studentResult.finalTime,
-        timeStr: studentResult.finalTime_str,
-        out_of_focus: studentResult.focusCount,
-        answers_clicked: studentResult.numberOfAnswerClicks,
-        dateTaken: dateString,
-        quizTaken: { connect: { id: updateStudentTakenQuiz.id } },
-        student: { connect: { studentId: userSession?.user.id as string } },
-      },
-      include: { quizTaken: true },
-    });
+      if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect === true) {
+        console.log("pasok HAHAHA");
+        const updateStudentDone = await prisma.quizTaken.update({
+          where: {
+            id: existingQuiz?.id,
+          },
+          data: {
+            isDone: true,
+          },
+        });
+      }
 
-    console.log(updateStudentTakenQuiz, saveResult);
-    revalidatePath("/dashboard/");
-    revalidatePath("/dashboard/quizzes");
-    redirect("/dashboard/quizzes");
-  } else {
-    const saveToStudentTakenQuiz = await prisma.quizTaken.create({
-      data: {
-        quiz: { connect: { id: quizId } },
-        student: { connect: { studentId: userSession?.user.id } },
-        dateTaken: dateString,
-        isPerfect: studentResult.isPerfect,
-        retriesLeft: 5,
-      },
-      include: {
-        quiz: true,
-        student: true,
-      },
-    });
-
-    if (studentResult.isPerfect === true) {
-      console.log("pasok HAHAHA");
-      const updateStudentDone = await prisma.quizTaken.update({
-        where: {
-          id: saveToStudentTakenQuiz?.id,
-        },
+      const saveResult = await prisma.quiz_Result.create({
         data: {
-          isDone: true,
+          score: studentResult.studentScore,
+          time: studentResult.finalTime,
+          timeStr: studentResult.finalTime_str,
+          out_of_focus: studentResult.focusCount,
+          answers_clicked: studentResult.numberOfAnswerClicks,
+          dateTaken: dateString,
+          quizTaken: { connect: { id: updateStudentTakenQuiz.id } },
+          student: { connect: { studentId: userSession?.user.id as string } },
+        },
+        include: { quizTaken: true },
+      });
+
+      console.log(updateStudentTakenQuiz, saveResult);
+      revalidatePath("/dashboard/");
+      revalidatePath("/dashboard/quizzes");
+      return "Success";
+      /*  redirect("/dashboard/quizzes"); */
+    } else {
+      const saveToStudentTakenQuiz = await prisma.quizTaken.create({
+        data: {
+          quiz: { connect: { id: quizId } },
+          student: { connect: { studentId: userSession?.user.id } },
+          dateTaken: dateString,
+          isPerfect: studentResult.isPerfect,
+          retriesLeft: 5,
+        },
+        include: {
+          quiz: true,
+          student: true,
         },
       });
+
+      if (studentResult.isPerfect === true) {
+        console.log("pasok HAHAHA");
+        const updateStudentDone = await prisma.quizTaken.update({
+          where: {
+            id: saveToStudentTakenQuiz?.id,
+          },
+          data: {
+            isDone: true,
+          },
+        });
+      }
+
+      const saveResult = await prisma.quiz_Result.create({
+        data: {
+          score: studentResult.studentScore,
+          time: studentResult.finalTime,
+          timeStr: studentResult.finalTime_str,
+          out_of_focus: studentResult.focusCount,
+          answers_clicked: studentResult.numberOfAnswerClicks,
+          dateTaken: dateString,
+          quizTaken: { connect: { id: saveToStudentTakenQuiz.id } },
+          student: { connect: { studentId: userSession?.user.id as string } },
+        },
+        include: { quizTaken: true },
+      });
+
+      console.log(saveToStudentTakenQuiz, saveResult);
+      revalidatePath("/dashboard/");
+      revalidatePath("/dashboard/quizzes");
+      return "Success";
+      /*  redirect("/dashboard/quizzes"); */
     }
-
-    const saveResult = await prisma.quiz_Result.create({
-      data: {
-        score: studentResult.studentScore,
-        time: studentResult.finalTime,
-        timeStr: studentResult.finalTime_str,
-        out_of_focus: studentResult.focusCount,
-        answers_clicked: studentResult.numberOfAnswerClicks,
-        dateTaken: dateString,
-        quizTaken: { connect: { id: saveToStudentTakenQuiz.id } },
-        student: { connect: { studentId: userSession?.user.id as string } },
-      },
-      include: { quizTaken: true },
-    });
-
-    console.log(saveToStudentTakenQuiz, saveResult);
-    revalidatePath("/dashboard/");
-    revalidatePath("/dashboard/quizzes");
-    redirect("/dashboard/quizzes");
+  } catch (error) {
+    return "Error";
   }
 }
 //  Take Quiz Using code
