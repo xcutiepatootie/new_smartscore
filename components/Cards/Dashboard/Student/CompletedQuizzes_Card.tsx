@@ -22,11 +22,11 @@ const CompletedQuizzes_Card = async () => {
   const getQuizzes = await getUserCompletedQuizzes();
   console.log(getQuizzes);
   return (
-    <Card className="h-full w-[375px] max-sm:w-[85%]">
+    <Card className="flex h-full w-full flex-col max-sm:w-[85%]">
       <CardHeader>
         <CardTitle>Completed Quizzes</CardTitle>
         <CardDescription>
-          shows the quizzes that yoo already finished!
+          shows the quizzes that you already finished!
         </CardDescription>
       </CardHeader>
       <CardContent>

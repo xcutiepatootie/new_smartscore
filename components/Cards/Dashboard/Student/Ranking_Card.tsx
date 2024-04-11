@@ -189,7 +189,7 @@ const Ranking_Card = ({
 
   return (
     <>
-      <Card className="h-full w-2/3 max-sm:w-[85%]">
+      <Card className="flex h-auto w-full flex-col max-sm:w-[85%] lg:h-full">
         <CardHeader className="flex items-center justify-center">
           <CardTitle>Ranking</CardTitle>
           <CardDescription>
@@ -206,7 +206,7 @@ const Ranking_Card = ({
           {loading ? (
             <>
               {!top5Object ? (
-                <div className="mt-48 flex items-center justify-center">
+                <div className="flex items-center justify-center md:mt-24">
                   <Label
                     className={`${poppins.className} text-center text-2xl`}
                   >

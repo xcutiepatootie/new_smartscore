@@ -30,7 +30,7 @@ const TnumberOfQuizCreatedByUser = async (userSession: any) => {
   console.log(data);
 
   return (
-    <Card className="h-full w-[375px] max-sm:w-[85%]">
+    <Card className="flex h-full w-full flex-col max-sm:w-[85%]">
       <CardHeader className="">
         <CardTitle className="line-clamp-2 flex flex-row text-lg">
           <div className="flex w-full flex-row justify-between">
