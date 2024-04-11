@@ -29,7 +29,7 @@ const TnumberOfQuiz = async ({ userSession }: any) => {
 
   return (
     <>
-      <Card className="h-full">
+      <Card className="flex h-full w-full flex-col max-sm:w-[85%]">
         <CardHeader>
           <CardTitle>Total Number of Quiz</CardTitle>
           <CardDescription>

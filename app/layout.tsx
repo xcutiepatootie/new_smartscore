@@ -27,7 +27,7 @@ export default function RootLayout({
           <div className="md:hidden">
             <Navbar />
           </div>
-          <div className="flex flex-col max-sm:pt-16">{children}</div>
+          <div className="flex flex-col max-md:pt-24">{children}</div>
           <Toaster />
         </NextAuthProvider>
       </body>
