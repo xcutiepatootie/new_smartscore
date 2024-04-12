@@ -162,6 +162,7 @@ export async function createUser(userData: SignUpFormFields) {
           name: userData.name,
           username: userData.username,
           email: userData.email,
+          department: userData.department,
           password: hashedPassword,
           role: userData.role,
         },
@@ -172,7 +173,6 @@ export async function createUser(userData: SignUpFormFields) {
             data: {
               name: userData.name,
               username: userData.username,
-              department: userData.department,
               email: userData.email,
               section: userData.classSection,
               user: { connect: { email: userData.email } },
@@ -183,7 +183,6 @@ export async function createUser(userData: SignUpFormFields) {
             data: {
               name: userData.name,
               username: userData.username,
-              department: userData.department,
               email: userData.email,
               user: { connect: { email: userData.email } },
             },
