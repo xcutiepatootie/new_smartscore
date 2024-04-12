@@ -9,6 +9,7 @@ import {
 } from "@/components/ui/card";
 import { getClusterValues } from "@/lib/server_actions/actions";
 import { clusterType } from "@/types/types";
+import { Label } from "@/components/ui/label";
 
 const clusterValues = async (quizId: string) => {
   try {
@@ -23,6 +24,8 @@ const clusterValues = async (quizId: string) => {
     if (response.ok) {
       console.log(response);
       return response.json();
+    } else {
+      return "Not Enough Instances to Cluster";
     }
   } catch (error) {
     console.log(error);
@@ -50,20 +53,34 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
 
   return (
     <>
-      {clusterData.map((data: any) => (
-        <Card key={data.clusterNumber}>
-          <CardHeader>
-            <CardTitle>Cluster {data.clusterNumber}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p>Score: {parseFloat(data.attributeAverages.score).toFixed(2)}</p>
-            <p>Time: {data.attributeAverages.time}</p>
-            <p>Out of Focus: {data.attributeAverages.out_of_focus}</p>
-            <p>Answers Clicked: {data.attributeAverages.answers_clicked}</p>
-            <p>Retries Left: {data.attributeAverages.retriesLeft}</p>
-          </CardContent>
-        </Card>
-      ))}
+      {Array.isArray(clusterData) ? (
+        <>
+          {clusterData.map((data: any) => (
+            <Card key={data.clusterNumber}>
+              <CardHeader>
+                <CardTitle>Cluster {data.clusterNumber}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p>
+                  Score: {parseFloat(data.attributeAverages.score).toFixed(2)}
+                </p>
+                <p>Time: {data.attributeAverages.time}</p>
+                <p>Out of Focus: {data.attributeAverages.out_of_focus}</p>
+                <p>Answers Clicked: {data.attributeAverages.answers_clicked}</p>
+                <p>Retries Left: {data.attributeAverages.retriesLeft}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </>
+      ) : (
+        <>
+          <Label className="text-xl text-center w-full">{clusterData}</Label>
+          <br />
+          <Label className="text-xl">
+            Please wait until some students submitted the quiz
+          </Label>
+        </>
+      )}
     </>
   );
 };
