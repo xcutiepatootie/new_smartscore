@@ -281,14 +281,15 @@ const SignupForm = () => {
           </button>
         </div>
         <Label className="mt-4 text-balance text-sm">
-          Already have an account?
+          Already have an account?{" "}
           <span
             onClick={() => {
               router.push("/");
             }}
             className="text-lsblue hover:text-blue-800"
           >
-            Click Here
+            {" "}
+            Click Here{" "}
           </span>
           to Login
         </Label>
