@@ -14,7 +14,7 @@ import { useRouter } from "next/navigation";
 import { department } from "./Section_Component/department";
 import {
   sections_CAS,
-  sections_CSS,
+  sections_CCS,
   sections_SHS,
 } from "./Section_Component/sections";
 import {
@@ -43,7 +43,7 @@ const SignupForm = () => {
   let setSection: { value: string }[];
   switch (selectedDepartment) {
     case "College of Computer Studies":
-      setSection = sections_CSS;
+      setSection = sections_CCS;
       break;
     case "College of Arts and Science":
       setSection = sections_CAS;

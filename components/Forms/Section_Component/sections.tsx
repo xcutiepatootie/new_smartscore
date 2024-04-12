@@ -1,4 +1,4 @@
-export const sections_CSS = [
+export const sections_CCS = [
   // InfoTech
   { value: "INFO1A" },
   { value: "INFO1B" },

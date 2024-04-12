@@ -1,6 +1,6 @@
 import {
   sections_CAS,
-  sections_CSS,
+  sections_CCS,
   sections_SHS,
 } from "@/components/Forms/Section_Component/sections";
 import { Button } from "@/components/ui/button";
@@ -22,7 +22,7 @@ const Section_Popover = ({ control }: any) => {
   if (status === "authenticated") {
     switch (department) {
       case "College of Computer Studies":
-        setSection = sections_CSS;
+        setSection = sections_CCS;
         break;
       case "College of Arts and Science":
         setSection = sections_CAS;
