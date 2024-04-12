@@ -144,10 +144,14 @@ function Client_table({ data, quizzes }: any) {
       setTimeout(() => {
         fetchQuizTaken().then((fetchedData) => {
           console.log(fetchedData);
+          /*    if (fetchedData.length === 0) {
+            setFinData([]);
+          } else { */
           setFinData(fetchedData as []);
+          /*  } */
           setLoading(false);
         });
-      }, 1000);
+      }, 2000);
     }
   }, [selectedQuizId]);
 
