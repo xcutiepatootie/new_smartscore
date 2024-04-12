@@ -2,7 +2,7 @@
 
 import { SignUpFormFields, SignUpFormSchema } from "@/types/types";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { fromZodError } from "zod-validation-error";
 import { createUser } from "@/lib/server_actions/actions";
 import { useToast } from "../ui/use-toast";
@@ -11,6 +11,20 @@ import { watch } from "fs";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
 import { useRouter } from "next/navigation";
+import { department } from "./Section_Component/department";
+import {
+  sections_CAS,
+  sections_CSS,
+  sections_SHS,
+} from "./Section_Component/sections";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { DevTool } from "@hookform/devtools";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -20,10 +34,24 @@ const SignupForm = () => {
     handleSubmit,
     setError,
     watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<SignUpFormFields>({ resolver: zodResolver(SignUpFormSchema) });
 
   const selectedRole = watch("role");
+  const selectedDepartment = watch("department");
+  let setSection: typeof sections_CSS;
+  switch (selectedDepartment) {
+    case "College of Computer Studies":
+      setSection = sections_CSS;
+      break;
+    case "College of Arts and Science":
+      setSection = sections_CAS;
+      break;
+    case "Senior High School":
+      setSection = sections_SHS;
+      break;
+  }
 
   const onSubmit: SubmitHandler<SignUpFormFields> = async (data) => {
     console.log(data);
@@ -145,26 +173,82 @@ const SignupForm = () => {
           )}
         </div>
 
-        {selectedRole === "student" && (
-          <div className="mb-4">
-            <label
-              className="mb-2 block text-sm font-bold text-gray-700"
-              htmlFor="classSection"
-            >
-              Section (Pattern - BSCS-4IS1 / BSCS-1A )
-            </label>
-            <Input
-              {...register("classSection", { required: true })}
-              className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-              id="classSection"
-              type="classSection"
-              placeholder="Enter your Class Section"
-            />
-            {errors.classSection && (
-              <div className="text-red-500">{errors.classSection.message}</div>
-            )}
-          </div>
-        )}
+        <div className="grid grid-cols-2 gap-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="department"
+          >
+            Department:
+          </label>
+          <Controller
+            control={control}
+            name="department"
+            render={({ field }) => {
+              return (
+                <Select onValueChange={field.onChange}>
+                  <SelectTrigger className="w-auto">
+                    <SelectValue placeholder="Select Department" />
+                  </SelectTrigger>
+                  <SelectContent
+                    {...register("department", { required: true })}
+                  >
+                    {department.map((dept, index) => (
+                      <div key={index}>
+                        <SelectItem value={dept.value}>{dept.value}</SelectItem>
+                      </div>
+                    ))}
+                  </SelectContent>
+                </Select>
+              );
+            }}
+          />
+
+          {selectedRole === "student" && (
+            <>
+              <label
+                className="mb-2 block text-sm font-bold text-gray-700"
+                htmlFor="classSection"
+              >
+                Section
+              </label>
+              <Controller
+                control={control}
+                name="classSection"
+                render={({ field }) => {
+                  return (
+                    <Select onValueChange={field.onChange}>
+                      <SelectTrigger className="w-auto">
+                        <SelectValue placeholder="Select Section" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {setSection?.map((section: any, index: number) => (
+                          <div key={index}>
+                            <SelectItem value={section.value}>
+                              {section.value}
+                            </SelectItem>
+                          </div>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  );
+                }}
+              />
+
+              {/*  <Input
+                {...register("classSection", { required: true })}
+                className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+                id="classSection"
+                type="classSection"
+                placeholder="Enter your Class Section"
+              /> */}
+              {errors.classSection && (
+                <div className="text-red-500">
+                  {errors.classSection.message}
+                </div>
+              )}
+            </>
+          )}
+        </div>
 
         <div className="mb-6">
           <label
@@ -204,12 +288,12 @@ const SignupForm = () => {
             }}
             className="text-lsblue hover:text-blue-800"
           >
-            {" "}
-            Click Here{" "}
+            Click Here
           </span>
           to Login
         </Label>
       </form>
+      {/*   <DevTool control={control} /> */}
     </div>
   );
 };

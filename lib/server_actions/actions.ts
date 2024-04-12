@@ -172,6 +172,7 @@ export async function createUser(userData: SignUpFormFields) {
             data: {
               name: userData.name,
               username: userData.username,
+              department: userData.department,
               email: userData.email,
               section: userData.classSection,
               user: { connect: { email: userData.email } },
@@ -182,6 +183,7 @@ export async function createUser(userData: SignUpFormFields) {
             data: {
               name: userData.name,
               username: userData.username,
+              department: userData.department,
               email: userData.email,
               user: { connect: { email: userData.email } },
             },
