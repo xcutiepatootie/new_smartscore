@@ -13,6 +13,7 @@ model User {
   username     String  @unique
   email        String  @unique
   password     String
+  department   String
   role         Role
   initialLogin Boolean @default(true)
 
@@ -30,7 +31,6 @@ model Student {
   studentId         String?       @unique @db.ObjectId
   name              String
   section           String?
-  department        String
   username          String
   email             String
   quizzesTaken      QuizTaken[]
@@ -41,13 +41,12 @@ model Student {
 }
 
 model Faculty {
-  id         String  @id @default(auto()) @map("_id") @db.ObjectId
-  facultyId  String? @unique @db.ObjectId
-  name       String
-  username   String
-  department String
-  email      String
-  user       User?   @relation(fields: [facultyId], references: [id])
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  facultyId String? @unique @db.ObjectId
+  name      String
+  username  String
+  email     String
+  user      User?   @relation(fields: [facultyId], references: [id])
 
   Quiz Quiz[]
 }
