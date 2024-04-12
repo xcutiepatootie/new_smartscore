@@ -40,7 +40,7 @@ const SignupForm = () => {
 
   const selectedRole = watch("role");
   const selectedDepartment = watch("department");
-  let setSection: typeof sections_CSS;
+  let setSection: { value: string }[];
   switch (selectedDepartment) {
     case "College of Computer Studies":
       setSection = sections_CSS;

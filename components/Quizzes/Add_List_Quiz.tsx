@@ -9,7 +9,7 @@ import { Button } from "../ui/button";
 import { IoCreate } from "react-icons/io5";
 import { IoList } from "react-icons/io5";
 
-export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
+export const Add_List_Quiz = ({ quizList, quizTaken }: any) => {
   const [showViewQuiz, setShowViewQuiz] = useState(true);
   const { data: session, status } = useSession();
 
@@ -65,7 +65,7 @@ export const Add_List_Quiz = ({ quizList, quizTaken, studentSection }: any) => {
           {showViewQuiz ? (
             <ListQuiz quizList={quizList} quizTaken={quizTaken} />
           ) : (
-            <AddQuiz studentSection={studentSection} />
+            <AddQuiz />
           )}
         </div>
       </div>

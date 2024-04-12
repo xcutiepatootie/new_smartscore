@@ -8,8 +8,10 @@ import { createQuiz } from "@/lib/server_actions/actions";
 import { Session } from "next-auth";
 import Section_Popover from "./Section_Popover/Section_Popover";
 
-const AddQuiz = ({ studentSection }: any) => {
+const AddQuiz = () => {
   const { toast } = useToast();
+
+  
 
   const {
     control,
@@ -135,10 +137,7 @@ const AddQuiz = ({ studentSection }: any) => {
                 type="text"
                 id="subject"
               /> */}
-              <Section_Popover
-                control={control}
-                studentSection={studentSection}
-              />
+              <Section_Popover control={control} />
             </div>
           </div>
 
@@ -167,7 +166,7 @@ const AddQuiz = ({ studentSection }: any) => {
                   type="text"
                 />
               </div>
-              <div className="flex gap-4 border-b-2 pb-6">
+              <div className="flex flex-col md:flex-row gap-4 border-b-2 pb-6">
                 <label className="px-2">Answers:</label>
                 <div>
                   <label>a.</label>
@@ -226,7 +225,7 @@ const AddQuiz = ({ studentSection }: any) => {
             <div className="text-red-500">{errors.root.message}</div>
           )}
         </form>
-       {/*  <DevTool control={control} /> */}
+        {/*  <DevTool control={control} /> */}
       </div>
     </div>
   );

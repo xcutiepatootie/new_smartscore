@@ -21,7 +21,7 @@ const Quizzes = async () => {
     allQuiz = await getQuizzesList_student();
   }
 
-  const allSection = await getSections();
+  //const allSection = await getSections();
   //console.log(allSection)
 
   console.log(JSON.stringify(allQuiz.quizzesBasedOnSection, null, 2));
@@ -36,7 +36,6 @@ const Quizzes = async () => {
               : allQuiz?.quizzesBasedOnSection
           }
           quizTaken={allQuiz?.getAllTakenQuiz}
-          studentSection={allSection}
         />
       </div>
     </div>
