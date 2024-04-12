@@ -11,8 +11,6 @@ import Section_Popover from "./Section_Popover/Section_Popover";
 const AddQuiz = () => {
   const { toast } = useToast();
 
-  
-
   const {
     control,
     register,
@@ -166,7 +164,7 @@ const AddQuiz = () => {
                   type="text"
                 />
               </div>
-              <div className="flex flex-col md:flex-row gap-4 border-b-2 pb-6">
+              <div className="flex flex-col gap-4 border-b-2 pb-6 md:flex-row">
                 <label className="px-2">Answers:</label>
                 <div>
                   <label>a.</label>
