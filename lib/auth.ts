@@ -102,6 +102,7 @@ export const config: NextAuthOptions = {
         token.role = user.role;
         token.username = user.username;
         token.initialLogin = user.initialLogin;
+        token.department = user.department;
         // console.log("token: ", user, token);
       }
 
@@ -116,6 +117,7 @@ export const config: NextAuthOptions = {
       session.user.username = token.username;
       session.user.userSection = token.userSection;
       session.user.initialLogin = token.initialLogin;
+      session.user.department = token.department;
       console.log(session);
 
       return session;

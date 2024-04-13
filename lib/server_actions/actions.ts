@@ -162,6 +162,7 @@ export async function createUser(userData: SignUpFormFields) {
           name: userData.name,
           username: userData.username,
           email: userData.email,
+          department: userData.department,
           password: hashedPassword,
           role: userData.role,
         },
