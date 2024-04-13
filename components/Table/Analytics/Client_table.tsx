@@ -1,21 +1,55 @@
 "use client";
-import Quiz_section_Popover from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_section_Popover/Quiz_section_Popover";
-import {
-  getQuizTaken,
-  getStudentClusterAssignments,
-  getStudentRecords,
-} from "@/lib/server_actions/actions";
-import { tableData_faculty } from "@/types/types";
-import { useEffect, useState } from "react";
-import { columns } from "./columns";
-import { DataTable } from "./data-table";
 import ClusterValues from "@/components/Cards/Analytics/Faculty/ClusterValues";
+import Quiz_section_Popover from "@/components/Cards/Dashboard/Faculty/Quiz_Section/Quiz_section_Popover/Quiz_section_Popover";
 import {
   Card,
   CardDescription,
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
+import { getQuizTaken } from "@/lib/server_actions/actions";
+import { tableData_faculty } from "@/types/types";
+import { useEffect, useState } from "react";
+import { columns } from "./columns";
+import { DataTable } from "./data-table";
+
+const studentRecords = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/student_records?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentClusterAssignments = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 function Client_table({ data, quizzes }: any) {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
@@ -26,7 +60,7 @@ function Client_table({ data, quizzes }: any) {
   useEffect(() => {
     // Find the selected quiz and set its id
     const selectedQuizObject = quizzes.find(
-      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz
+      (quiz: any) => quiz.quizName.toLowerCase() === selectedQuiz,
     );
 
     if (selectedQuizObject) {
@@ -41,10 +75,9 @@ function Client_table({ data, quizzes }: any) {
     if (selectedQuizId) {
       const fetchQuizTaken = async () => {
         const fetchData = await getQuizTaken(selectedQuizId);
-        const fetchData_CO = await getStudentRecords(selectedQuizId);
-        const fetchClusterAssignment = await getStudentClusterAssignments(
-          selectedQuizId
-        );
+        const fetchData_CO = await studentRecords(selectedQuizId);
+        const fetchClusterAssignment =
+          await studentClusterAssignments(selectedQuizId);
         console.log(fetchData);
         console.log(fetchData_CO);
 
@@ -67,7 +100,7 @@ function Client_table({ data, quizzes }: any) {
         const combinedData = finalData
           .map((data) => {
             const matchingData_CO = finalData_CO.find(
-              (coData: any) => coData.studentId === data.studentId
+              (coData: any) => coData.studentId === data.studentId,
             );
             if (matchingData_CO) {
               return {
@@ -87,7 +120,7 @@ function Client_table({ data, quizzes }: any) {
 
         const studentRecord = combinedData.map((data) => {
           const matchingClusterData = fetchClusterAssignment.find(
-            (clusterData: any) => clusterData.studentId === data?.studentId
+            (clusterData: any) => clusterData.studentId === data?.studentId,
           );
           if (matchingClusterData) {
             return {
@@ -111,10 +144,14 @@ function Client_table({ data, quizzes }: any) {
       setTimeout(() => {
         fetchQuizTaken().then((fetchedData) => {
           console.log(fetchedData);
+          /*    if (fetchedData.length === 0) {
+            setFinData([]);
+          } else { */
           setFinData(fetchedData as []);
+          /*  } */
           setLoading(false);
         });
-      }, 1000);
+      }, 2000);
     }
   }, [selectedQuizId]);
 
@@ -122,9 +159,9 @@ function Client_table({ data, quizzes }: any) {
 
   return (
     <>
-      <div className="flex flex-row w-full space-x-2">
+      <div className="flex w-full flex-row space-x-2">
         <div className="w-[80%]">
-          <Card className="w-auto h-[800px] p-4">
+          <Card className="h-[800px] w-auto p-4">
             <Quiz_section_Popover
               quizzes={quizzes}
               setSelectedQuiz={setSelectedQuiz}
@@ -143,15 +180,12 @@ function Client_table({ data, quizzes }: any) {
           </Card>
         </div>
         <div>
-          <Card className="w-auto h-[800px] p-4 ">
+          <Card className="h-[800px] w-auto p-4 ">
             <CardTitle className="py-2">Cluster Values</CardTitle>
             <CardDescription className="py-2">
               shows the average value of each attribute for each cluster
             </CardDescription>
             <ClusterValues quizId={selectedQuizId} />
-            <CardFooter className="mt-4">
-              <p>Card Footer</p>
-            </CardFooter>
           </Card>
         </div>
       </div>

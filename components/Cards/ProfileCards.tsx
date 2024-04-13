@@ -55,7 +55,8 @@ export async function ProfileCards({ user }: any) {
             <Separator className="my-2  bg-yellow-800" />
             <p>Username</p>
             <Separator className="my-2  bg-yellow-800" />
-
+            <p>Department</p>
+            <Separator className="my-2  bg-yellow-800" />
             {user.role === "student" && <p>Section</p>}
             <p>TBA: </p>
           </div>
@@ -67,6 +68,9 @@ export async function ProfileCards({ user }: any) {
             <Separator className="my-2  bg-yellow-800" />
 
             <p>{user.username}</p>
+            <Separator className="my-2  bg-yellow-800" />
+
+            <p>{user.department}</p>
             <Separator className="my-2  bg-yellow-800" />
 
             {user.role === "student" && <p>{user.userSection}</p>}

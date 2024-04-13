@@ -10,8 +10,62 @@ import {
   getFeedback,
   getQuizResultByUser,
   getStudentClusterAssignments,
+  getUserSession,
 } from "@/lib/server_actions/actions";
 import { useToast } from "@/components/ui/use-toast";
+
+const quizResultByUser = async (selectedQuizId: string) => {
+  try {
+    const fetchResults = await getQuizResultByUser(selectedQuizId);
+    return fetchResults;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentClusterAssignments = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const fetchFeedbackData = async (selectedQuizId: string) => {
+  try {
+    const fetchData = await getFeedback(selectedQuizId);
+    if (fetchData) {
+      return fetchData;
+    }
+  } catch (error) {}
+};
+
+const chartValues = async (quizId: string) => {
+  try {
+    const userSession = await getUserSession();
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/student_records_charts?quizId=${quizId}&studentId=${userSession?.user.id}`,
+      { method: "GET" },
+    );
+    if (response) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Student_Analytics = ({
   quizNames,
 }: {
@@ -47,16 +101,17 @@ const Student_Analytics = ({
   useEffect(() => {
     if (selectedQuizId !== "") {
       const getQuizResult = async () => {
-        const fetchResults = await getQuizResultByUser(selectedQuizId);
+        const fetchResults = await quizResultByUser(selectedQuizId);
         console.log("Results ", fetchResults);
         setResult(fetchResults);
       };
+
       const getQuizFeedbacks = async () => {
-        const fetchFeedback = await getFeedback(selectedQuizId);
+        const fetchFeedback = await fetchFeedbackData(selectedQuizId);
         setFeedback(fetchFeedback);
 
         const fetchAssignments =
-          await getStudentClusterAssignments(selectedQuizId);
+          await studentClusterAssignments(selectedQuizId);
         if (fetchAssignments === "Not Enough Instances to cluster") {
           toast({
             title: "Not enough instances to show the cluster",
@@ -70,7 +125,7 @@ const Student_Analytics = ({
       };
 
       const getChartValue = async () => {
-        const fetchChartValue = await getChartValues(selectedQuizId);
+        const fetchChartValue = await chartValues(selectedQuizId);
         console.log(fetchChartValue);
         if (fetchChartValue === "No Quiz Found") {
           toast({

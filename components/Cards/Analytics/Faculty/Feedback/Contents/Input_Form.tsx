@@ -16,11 +16,13 @@ const Input_Form = ({
   quizName,
   quizId,
   prevfeedbacks,
+  clusterAssignments,
 }: {
   clusterData: clusterType;
   quizName: string;
   quizId: string;
   prevfeedbacks: string[];
+  clusterAssignments: any;
 }) => {
   const { toast } = useToast();
   const [defaultValuesSet, setDefaultValuesSet] = useState(false);
@@ -56,7 +58,12 @@ const Input_Form = ({
     console.log(quizName);
     console.log(data);
 
-    const updateData = await setFeedback(quizId, quizName, data);
+    const updateData = await setFeedback(
+      quizId,
+      quizName,
+      data,
+      clusterAssignments,
+    );
     console.log(updateData);
     if (updateData === "Error") {
       toast({
@@ -80,7 +87,9 @@ const Input_Form = ({
         <div className="space-y-4">
           {clusterData.map((cluster, index) => (
             <div key={cluster.clusterNumber}>
-              <Label className="text-xl italic ">Cluster {cluster.clusterNumber}</Label>
+              <Label className="text-xl italic ">
+                Cluster {cluster.clusterNumber}
+              </Label>
               <Input
                 {...register(`postedFeedbacks.${index}`, {})}
                 placeholder="Enter Feedback Here"
@@ -89,11 +98,11 @@ const Input_Form = ({
           ))}
         </div>
 
-        <Button type="submit" variant="outline" className="bg-green-300 mt-4">
+        <Button type="submit" variant="outline" className="mt-4 bg-green-300">
           Submit
         </Button>
       </form>
-      <DevTool control={control} />
+      {/* <DevTool control={control} /> */}
     </>
   );
 };

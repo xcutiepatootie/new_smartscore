@@ -15,7 +15,7 @@ const Quiz_Results = ({ results }: any) => {
     <Card className="h-full">
       <CardHeader>
         <CardTitle>Quiz Result</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardDescription>shows the records of your results per take.</CardDescription>
       </CardHeader>
       <CardContent>
         {!results ? (

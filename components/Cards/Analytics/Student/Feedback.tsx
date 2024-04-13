@@ -11,21 +11,37 @@ import { useState } from "react";
 
 const Feedback = ({ feedback }: any) => {
   return (
-    <Card className="h-full">
+    <Card className="h-full ">
       <CardHeader>
-        <CardTitle>Teacher`&apos;`s Feedback</CardTitle>
-        <CardDescription>Card Description</CardDescription>
+        <CardTitle>Teacher&apos;s Feedback</CardTitle>
+        <CardDescription>shows the feedback given by the instructor and your cluster assignment.</CardDescription>
       </CardHeader>
-      <CardContent>
-        <Label>
-          You belong to Cluster:
-          {feedback ? feedback.cluster + 1 : "(Not yet Available / Not Ready)"}
-        </Label>
-        <br />
-        <Label>
-          Your teacher`&apos;`s feedback:
-          {feedback ? feedback.feedback : "(Not yet Available / Not Ready)"}
-        </Label>
+      <CardContent className="flex flex-col items-center justify-center">
+        {!feedback ? (
+          <div className="mt-2 flex items-center justify-center md:mt-28">
+            <Label className="text-2xl">Please Select A Quiz</Label>
+          </div>
+        ) : (
+          <>
+            <Label>
+              You belong to Cluster:
+              <span className="text-lg italic">
+                {feedback
+                  ? ` Cluster - ${feedback.cluster + 1}`
+                  : " The Cluster isn't prepared just yet. Kindly wait until many of your classmates have completed the quiz."}
+              </span>
+            </Label>
+            <br />
+            <Label>
+              Your teacher&apos;s feedback:
+              <span className="text-lg italic">
+                {feedback.feedback
+                  ? feedback.feedback
+                  : " The instructor hasn't yet posted any feedback."}
+              </span>
+            </Label>
+          </>
+        )}
       </CardContent>
     </Card>
   );

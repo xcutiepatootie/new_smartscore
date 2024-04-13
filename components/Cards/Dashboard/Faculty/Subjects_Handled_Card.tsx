@@ -39,7 +39,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
   console.log(data);
 
   return (
-    <Card className="h-full w-[375px] max-sm:w-[85%]">
+    <Card className="flex flex-col h-full w-full max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">
           <div className="flex w-full flex-row justify-between">
@@ -54,7 +54,7 @@ const Subjects_Handled_Card = async ({ userSession }: any) => {
       <CardContent>
         {data.length < 1 ? (
           <Label className="text-center">
-            The user doesn`&apos;`t have an existing quiz.
+            The user doesn&apos;t have an existing quiz.
           </Label>
         ) : (
           <>

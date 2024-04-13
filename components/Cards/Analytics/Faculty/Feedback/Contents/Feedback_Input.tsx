@@ -27,6 +27,45 @@ export type FeedbackItem = {
   feedback: string;
 };
 
+const clusterValues = async (quizId: string) => {
+  console.log("Test", process.env.API_URL);
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentClusterAssignments = async (quizId: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments?quizId=${quizId}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Feedback_Input = ({ quizzes }: any) => {
   const [prevFeedback, setPrevFeedback] = useState<string[]>([]);
   const [jprevFeedback, setJPrevFeedback] = useState<any>();
@@ -34,7 +73,8 @@ const Feedback_Input = ({ quizzes }: any) => {
   const [selectedQuiz, setSelectedQuiz] = useState<string>("");
   const [clusterData, setClusterData] = useState<clusterType>([]);
   const [selectedQuizId, setSelectedQuizId] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // State to store the selected quiz id
+  const [loading, setLoading] = useState<boolean>(true);
+  const [clusterAssignments, setClusterAssignments] = useState<any>();
 
   useEffect(() => {
     // Find the selected quiz and set its id
@@ -69,13 +109,19 @@ const Feedback_Input = ({ quizzes }: any) => {
     if (selectedQuiz !== "") {
       const fetchClusterValues = async () => {
         console.log("quizid", selectedQuizId);
-        const fetchData = await getClusterValues(selectedQuizId);
+        const fetchData = await clusterValues(selectedQuizId);
         console.log("Fetched Clustered Data", fetchData);
         setClusterData(fetchData);
       };
 
+      const fetchClusterAssignment = async () => {
+        const fetchData = await studentClusterAssignments(selectedQuizId);
+        setClusterAssignments(fetchData);
+      };
+
       //method
       fetchClusterValues();
+      fetchClusterAssignment();
     }
   }, [selectedQuizId]);
   console.log(clusterData);
@@ -105,7 +151,7 @@ const Feedback_Input = ({ quizzes }: any) => {
           )} */}
         </div>
 
-        {clusterData && selectedQuiz && (
+        {clusterData && selectedQuiz ? (
           <div className="h-full space-y-2">
             <div className="flex flex-row justify-around gap-4 p-2">
               <ClusterValues quizId={selectedQuizId} />
@@ -125,8 +171,15 @@ const Feedback_Input = ({ quizzes }: any) => {
                 quizId={selectedQuizId}
                 quizName={selectedQuiz}
                 clusterData={clusterData}
+                clusterAssignments={clusterAssignments}
               />
             </div>
+          </div>
+        ) : (
+          <div className="flex h-full w-full items-center justify-center">
+            <Label className="mt-12 text-center text-3xl">
+              Please Select A Quiz
+            </Label>
           </div>
         )}
       </div>

@@ -74,22 +74,59 @@ export const Update_Quiz = ({
   }, [watchLength, reset]);
 
   const onSubmit: SubmitHandler<QuizFields> = async (data) => {
+    let isValid = true;
     console.log("heloo");
     // Handle form submission logic here
-    console.log("Submitted data:", data);
-    const updateQuizData = await updateQuiz(
-      data,
-      selectedQuiz.id as string,
-      questionIds as unknown as [],
+    const index = data.questions.findIndex(
+      (question, index) =>
+        question.correctAnswer !== `options.${index}.0` &&
+        question.correctAnswer !== `options.${index}.1` &&
+        question.correctAnswer !== `options.${index}.2` &&
+        question.correctAnswer !== `options.${index}.3`,
     );
 
-    if (updateQuizData) {
-      toast({
-        className: "bg-green-600 text-neutral-100",
-        title: "SmartScore",
-        description: "Successfully Updated a Quiz.",
-      });
-      router.push("/dashboard/quizzes");
+    data.questions.forEach((question, index) => {
+      // Ensure correct answer is within options
+      if (
+        !data.questions[index].options.includes(
+          data.questions[index].correctAnswer,
+        )
+      ) {
+        isValid = false;
+        // Set error for the incorrect question
+        setError(`questions.${index}.correctAnswer`, {
+          type: "manual",
+          message: "Correct answer must be one of the options.",
+        });
+
+        toast({
+          className: "bg-red-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Correct answer is not found in the choices.",
+        });
+      }
+    });
+
+    if (isValid) {
+      console.log("Submitted data:", data);
+      const updateQuizData = await updateQuiz(
+        data,
+        selectedQuiz.id as string,
+        questionIds as unknown as [],
+      );
+
+      if (updateQuizData) {
+        toast({
+          className: "bg-green-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Successfully Updated a Quiz.",
+        });
+        router.push("/dashboard/quizzes");
+      }
+    } else {
+      // Correct answer not found within options
+      console.log("Correct answer is not within options");
+      // You can also display an error message or handle it as needed
     }
 
     const res = QuizSchema.safeParse(data);
@@ -245,7 +282,7 @@ export const Update_Quiz = ({
           {errors.root && (
             <div className="text-red-500">{errors.root.message}</div>
           )}
-         {/*  <DevTool control={control} /> */}
+          {/*  <DevTool control={control} /> */}
         </form>
       </div>
     </div>

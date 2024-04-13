@@ -14,7 +14,7 @@ import { config } from "../auth";
 import prisma from "../prisma";
 import { redirect } from "next/navigation";
 
-async function getUserSession() {
+export async function getUserSession() {
   const getSession = await getServerSession(config);
   return getSession;
 }
@@ -162,6 +162,7 @@ export async function createUser(userData: SignUpFormFields) {
           name: userData.name,
           username: userData.username,
           email: userData.email,
+          department: userData.department,
           password: hashedPassword,
           role: userData.role,
         },
@@ -478,10 +479,11 @@ export async function setFeedback(
   quizId: string,
   quizName: string,
   feedbacks: feedbackSchemaType,
+  clusterAssignments: any,
 ) {
   const session = await getUserSession();
   try {
-    const getClusterAssignments = await getStudentClusterAssignments(quizId);
+    const getClusterAssignments = clusterAssignments;
 
     const updateFacultyFeedback = await prisma.feedbacksPosted.upsert({
       where: {
@@ -697,95 +699,100 @@ export async function submitStudentAnswers(
   });
 
   console.log("Existing", existingQuiz);
-
-  if (existingQuiz) {
-    const updateStudentTakenQuiz = await prisma.quizTaken.update({
-      where: {
-        id: existingQuiz?.id,
-      },
-      data: {
-        isPerfect: studentResult.isPerfect,
-        retriesLeft: {
-          decrement: 1,
-        },
-      },
-    });
-
-    if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect === true) {
-      console.log("pasok HAHAHA");
-      const updateStudentDone = await prisma.quizTaken.update({
+  try {
+    if (existingQuiz) {
+      const updateStudentTakenQuiz = await prisma.quizTaken.update({
         where: {
           id: existingQuiz?.id,
         },
         data: {
-          isDone: true,
+          isPerfect: studentResult.isPerfect,
+          retriesLeft: {
+            decrement: 1,
+          },
         },
       });
-    }
 
-    const saveResult = await prisma.quiz_Result.create({
-      data: {
-        score: studentResult.studentScore,
-        time: studentResult.finalTime,
-        timeStr: studentResult.finalTime_str,
-        out_of_focus: studentResult.focusCount,
-        answers_clicked: studentResult.numberOfAnswerClicks,
-        dateTaken: dateString,
-        quizTaken: { connect: { id: updateStudentTakenQuiz.id } },
-        student: { connect: { studentId: userSession?.user.id as string } },
-      },
-      include: { quizTaken: true },
-    });
+      if (existingQuiz.retriesLeft <= 1 || studentResult.isPerfect === true) {
+        console.log("pasok HAHAHA");
+        const updateStudentDone = await prisma.quizTaken.update({
+          where: {
+            id: existingQuiz?.id,
+          },
+          data: {
+            isDone: true,
+          },
+        });
+      }
 
-    console.log(updateStudentTakenQuiz, saveResult);
-    revalidatePath("/dashboard/");
-    revalidatePath("/dashboard/quizzes");
-    redirect("/dashboard/quizzes");
-  } else {
-    const saveToStudentTakenQuiz = await prisma.quizTaken.create({
-      data: {
-        quiz: { connect: { id: quizId } },
-        student: { connect: { studentId: userSession?.user.id } },
-        dateTaken: dateString,
-        isPerfect: studentResult.isPerfect,
-        retriesLeft: 5,
-      },
-      include: {
-        quiz: true,
-        student: true,
-      },
-    });
-
-    if (studentResult.isPerfect === true) {
-      console.log("pasok HAHAHA");
-      const updateStudentDone = await prisma.quizTaken.update({
-        where: {
-          id: saveToStudentTakenQuiz?.id,
-        },
+      const saveResult = await prisma.quiz_Result.create({
         data: {
-          isDone: true,
+          score: studentResult.studentScore,
+          time: studentResult.finalTime,
+          timeStr: studentResult.finalTime_str,
+          out_of_focus: studentResult.focusCount,
+          answers_clicked: studentResult.numberOfAnswerClicks,
+          dateTaken: dateString,
+          quizTaken: { connect: { id: updateStudentTakenQuiz.id } },
+          student: { connect: { studentId: userSession?.user.id as string } },
+        },
+        include: { quizTaken: true },
+      });
+
+      console.log(updateStudentTakenQuiz, saveResult);
+      revalidatePath("/dashboard/");
+      revalidatePath("/dashboard/quizzes");
+      return "Success";
+      /*  redirect("/dashboard/quizzes"); */
+    } else {
+      const saveToStudentTakenQuiz = await prisma.quizTaken.create({
+        data: {
+          quiz: { connect: { id: quizId } },
+          student: { connect: { studentId: userSession?.user.id } },
+          dateTaken: dateString,
+          isPerfect: studentResult.isPerfect,
+          retriesLeft: 5,
+        },
+        include: {
+          quiz: true,
+          student: true,
         },
       });
+
+      if (studentResult.isPerfect === true) {
+        console.log("pasok HAHAHA");
+        const updateStudentDone = await prisma.quizTaken.update({
+          where: {
+            id: saveToStudentTakenQuiz?.id,
+          },
+          data: {
+            isDone: true,
+          },
+        });
+      }
+
+      const saveResult = await prisma.quiz_Result.create({
+        data: {
+          score: studentResult.studentScore,
+          time: studentResult.finalTime,
+          timeStr: studentResult.finalTime_str,
+          out_of_focus: studentResult.focusCount,
+          answers_clicked: studentResult.numberOfAnswerClicks,
+          dateTaken: dateString,
+          quizTaken: { connect: { id: saveToStudentTakenQuiz.id } },
+          student: { connect: { studentId: userSession?.user.id as string } },
+        },
+        include: { quizTaken: true },
+      });
+
+      console.log(saveToStudentTakenQuiz, saveResult);
+      revalidatePath("/dashboard/");
+      revalidatePath("/dashboard/quizzes");
+      return "Success";
+      /*  redirect("/dashboard/quizzes"); */
     }
-
-    const saveResult = await prisma.quiz_Result.create({
-      data: {
-        score: studentResult.studentScore,
-        time: studentResult.finalTime,
-        timeStr: studentResult.finalTime_str,
-        out_of_focus: studentResult.focusCount,
-        answers_clicked: studentResult.numberOfAnswerClicks,
-        dateTaken: dateString,
-        quizTaken: { connect: { id: saveToStudentTakenQuiz.id } },
-        student: { connect: { studentId: userSession?.user.id as string } },
-      },
-      include: { quizTaken: true },
-    });
-
-    console.log(saveToStudentTakenQuiz, saveResult);
-    revalidatePath("/dashboard/");
-    revalidatePath("/dashboard/quizzes");
-    redirect("/dashboard/quizzes");
+  } catch (error) {
+    return "Error";
   }
 }
 //  Take Quiz Using code
@@ -976,7 +983,15 @@ export async function getUserUnfinishedQuizzesCount() {
   const test = quiz.map((item) => item.id);
 
   const finishedQuizzes = await prisma.quizTaken.count({
-    where: { AND: [{ quizId: { in: test }, studentId: userSession?.user.id }] },
+    where: {
+      AND: [
+        {
+          quizId: { in: test },
+          studentId: userSession?.user.id,
+          isDone: true,
+        },
+      ],
+    },
   });
 
   console.log(quiz.length - finishedQuizzes);
@@ -987,8 +1002,8 @@ export async function getUserUnfinishedQuizzesCount() {
 }
 
 // Get Student ranking
-export async function getStudentRankingByQuiz(quizId: string) {
-  const apiData = await getStudentRecords(quizId);
+export async function getStudentRankingByQuiz(apiData: any) {
+  /* const apiData = await getStudentRecords(quizId); */
   const newData = apiData.map((info: any) => ({
     studentId: info.studentId,
     score: info.averageScore,

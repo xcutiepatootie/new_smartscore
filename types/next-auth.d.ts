@@ -16,6 +16,7 @@ declare module "next-auth" {
       name: string;
       email: string;
       username: string;
+      department: string;
       role: string;
       userSection: string?;
       initialLogin: boolean;
@@ -27,6 +28,7 @@ declare module "next-auth" {
     name: string;
     email: string;
     username: string;
+    department: string;
     role: string;
     userSection: string?;
     initialLogin: boolean;
@@ -39,6 +41,7 @@ declare module "next-auth/jwt" {
     id: string;
     name: string;
     username: string;
+    department: string;
     email: string;
     role: string;
     userSection: string?;

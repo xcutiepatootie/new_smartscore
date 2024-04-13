@@ -8,6 +8,28 @@ import ValuesPicker from "./DropdownMenu/ValuesPicker";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
 
+const apiurl = process.env.API_URL as string;
+console.log(apiurl);
+
+const clusterChart = async (quizId: string, xvalue: string, yvalue: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
+
+      {
+        method: "GET",
+      },
+    );
+
+    if (response.ok) {
+      console.log(response);
+      return response.text();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 const Charts = ({ quizzes, quizId }: any) => {
   console.log(quizzes);
 
@@ -48,7 +70,7 @@ const Charts = ({ quizzes, quizId }: any) => {
     setLoading(true);
     if (quizId) {
       const fetchChart = async () => {
-        const getChart = await getClusterChart(quizId, xvalue, yvalue);
+        const getChart = await clusterChart(quizId, xvalue, yvalue);
         return getChart;
       };
 
@@ -73,9 +95,9 @@ const Charts = ({ quizzes, quizId }: any) => {
           {data && (
             <>
               <div className="flex flex-row space-x-4">
-                <DistancePicker
+                {/* <DistancePicker
                   setSelectedDistanceMethod={setSelectedDistanceMethod}
-                />
+                /> */}
                 <div>
                   <Label>X Value: </Label>
                   <ValuesPicker

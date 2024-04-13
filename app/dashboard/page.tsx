@@ -45,18 +45,18 @@ export default async function Dashboard() {
   return (
     <>
       {session?.user.role === "faculty" ? (
-        <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-4 md:p-4">
-          <div className="flex flex-col items-center justify-center space-y-2 md:flex-row md:space-x-4">
+        <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-2 md:p-4 lg:grid-rows-4">
+          <div className="flex flex-col items-center justify-center space-y-2 max-md:p-4 max-sm:pt-4 md:space-x-4 xl:flex-row">
             {session?.user.initialLogin ? (
               <Label
-                className={`${margarine.className} mt-12 text-center text-5xl md:text-6xl`}
+                className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
                 Welcome, <br />
                 <span className="capitalize">{session?.user.name}!</span>
               </Label>
             ) : (
               <Label
-                className={`${margarine.className} mt-12 text-center text-5xl md:text-6xl`}
+                className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
                 Welcome back, <br />
                 <span className="capitalize">{session?.user.name}!</span>
@@ -66,17 +66,17 @@ export default async function Dashboard() {
             <TnumberOfQuizCreatedByUser userSession={session?.user} />
             <SectionsHandled_Card />
           </div>
-          <div className="flex flex-col items-center justify-center space-y-2 md:row-span-4 md:w-full md:flex-row md:space-x-2">
+          <div className="flex flex-col items-center justify-center max-md:p-4 max-md:space-y-4 md:w-full md:space-x-2 lg:row-span-4 lg:grid lg:grid-cols-2">
             <Quiz_Section quizzes={quizzes} />
             <Quiz_DateAdded />
           </div>
         </div>
       ) : (
-        <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-4 md:p-4">
-          <div className="flex flex-col items-center justify-center space-y-2 md:flex-row md:space-x-4">
+        <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-2 md:p-4 lg:grid-rows-4">
+          <div className="flex flex-col items-center justify-center space-y-2 max-md:p-4 max-sm:pt-4 md:space-x-4 xl:flex-row">
             {session?.user.initialLogin ? (
               <Label
-                className={`${margarine.className} mt-12 text-center text-5xl md:text-6xl`}
+                className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
                 {" "}
                 Welcome, <br />
@@ -84,7 +84,7 @@ export default async function Dashboard() {
               </Label>
             ) : (
               <Label
-                className={`${margarine.className} mt-12 text-center text-5xl md:text-6xl`}
+                className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
                 {" "}
                 Welcome back, <br />
@@ -96,7 +96,7 @@ export default async function Dashboard() {
             <CompletedQuizzes_Card />
           </div>
 
-          <div className="flex flex-col items-center justify-center space-y-2 md:row-span-4 md:w-full md:flex-row md:space-x-2">
+          <div className="flex flex-col items-center justify-center max-md:p-4 md:w-full md:space-x-2 lg:row-span-4 lg:grid lg:grid-cols-2">
             {quizNames ? (
               <Ranking_Card quizNames={quizNames} />
             ) : (

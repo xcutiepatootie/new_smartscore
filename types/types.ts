@@ -16,9 +16,10 @@ export const SignUpFormSchema = FormSchema.merge(
   z.object({
     name: z.string().min(1, "Name should not be Empty"),
     username: z.string().min(1, "Username should not be Empty"),
+    department: z.string().min(1),
     classSection: z.string().min(1, "Section should not be Empty").optional(),
     role: z.enum(["faculty", "student"]),
-  })
+  }),
 );
 
 export type FormFields = z.infer<typeof FormSchema>;
@@ -38,7 +39,7 @@ export const QuizSchema = z.object({
       questionText: z.string().min(1),
       correctAnswer: z.string().min(1),
       options: z.array(z.string().min(1)),
-    })
+    }),
   ),
 });
 
@@ -104,7 +105,7 @@ export const clusterValuesType = z.array(
       time: z.number(),
     }),
     clusterNumber: z.number(),
-  })
+  }),
 );
 
 export type clusterType = z.infer<typeof clusterValuesType>;

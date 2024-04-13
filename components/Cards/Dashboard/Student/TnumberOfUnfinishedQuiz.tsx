@@ -13,7 +13,7 @@ import { Label } from "@/components/ui/label";
 const TnumberOfUnfinishedQuiz = async () => {
   const data = await getUserUnfinishedQuizzesCount();
   return (
-    <Card className="h-full">
+    <Card className="flex h-full w-full flex-col max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="text-xl">
           Total Number of Unfinished Quiz

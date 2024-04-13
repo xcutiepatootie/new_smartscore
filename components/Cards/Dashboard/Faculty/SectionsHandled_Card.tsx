@@ -30,7 +30,7 @@ const SectionsHandled_Card = async () => {
   const count = await getStudentBySectionCount(sectionHandled);
   console.log("SectionCount", count);
   return (
-    <Card className="h-full w-[375px] max-sm:w-[85%]">
+    <Card className="flex h-full w-full flex-col max-sm:w-[85%]">
       <CardHeader>
         <CardTitle className="line-clamp-2 text-lg">
           <div className="flex w-full flex-row justify-between">
@@ -51,7 +51,7 @@ const SectionsHandled_Card = async () => {
         >
           {count.length < 1 ? (
             <Label className="text-center">
-              The user doesn`&apos;`t have an existing quiz.
+              The user doesn&apos;t have an existing quiz.
             </Label>
           ) : (
             <CarouselContent className="h-full">

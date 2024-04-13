@@ -8,7 +8,7 @@ import { createQuiz } from "@/lib/server_actions/actions";
 import { Session } from "next-auth";
 import Section_Popover from "./Section_Popover/Section_Popover";
 
-const AddQuiz = ({ studentSection }: any) => {
+const AddQuiz = () => {
   const { toast } = useToast();
 
   const {
@@ -25,16 +25,56 @@ const AddQuiz = ({ studentSection }: any) => {
   const watchLength = watch("numberOfItems");
 
   const onSubmit: SubmitHandler<QuizFields> = async (data) => {
+    let isValid = true;
     console.log("heloo");
     // Handle form submission logic here
     console.log(data);
-    const createQuizData = await createQuiz(data);
-    if(createQuizData){
-      toast({
-        className: "bg-green-600 text-neutral-100",
-        title: "SmartScore",
-        description: "Successfully Created a Quiz.",
-      });
+    const index = data.questions.findIndex(
+      (question, index) =>
+        question.correctAnswer !== `options.${index}.0` &&
+        question.correctAnswer !== `options.${index}.1` &&
+        question.correctAnswer !== `options.${index}.2` &&
+        question.correctAnswer !== `options.${index}.3`,
+    );
+
+    data.questions.forEach((question, index) => {
+      // Ensure correct answer is within options
+      if (
+        !data.questions[index].options.includes(
+          data.questions[index].correctAnswer,
+        )
+      ) {
+        isValid = false;
+        // Set error for the incorrect question
+        setError(`questions.${index}.correctAnswer`, {
+          type: "manual",
+          message: "Correct answer must be one of the options.",
+        });
+
+        toast({
+          className: "bg-red-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Correct answer is not found in the choices.",
+        });
+      }
+    });
+
+    if (isValid) {
+      // All correct answers are within options
+      // Proceed with form submission
+      console.log("Form data:", data);
+      const createQuizData = await createQuiz(data);
+      if (createQuizData) {
+        toast({
+          className: "bg-green-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Successfully Created a Quiz.",
+        });
+      }
+    } else {
+      // Correct answer not found within options
+      console.log("Correct answer is not within options");
+      // You can also display an error message or handle it as needed
     }
 
     const res = QuizSchema.safeParse(data);
@@ -49,12 +89,12 @@ const AddQuiz = ({ studentSection }: any) => {
       <h1 className="pb-4">Create Quiz</h1>
       <div className="border-t-2">
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-wrap py-4 border-b-2">
+          <div className="flex flex-wrap border-b-2 py-4">
             <div>
               <label className="px-2">Quiz Name:</label>
               <input
                 {...register("quizName", { required: true })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="text"
                 id="quizName"
               />
@@ -67,7 +107,7 @@ const AddQuiz = ({ studentSection }: any) => {
                 {...register("numberOfItems", {
                   valueAsNumber: true,
                 })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="number"
                 id="numberOfItems"
               />
@@ -80,7 +120,7 @@ const AddQuiz = ({ studentSection }: any) => {
               </label>
               <input
                 {...register("subject", { required: true })}
-                className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                 type="text"
                 id="subject"
               />
@@ -95,10 +135,7 @@ const AddQuiz = ({ studentSection }: any) => {
                 type="text"
                 id="subject"
               /> */}
-              <Section_Popover
-                control={control}
-                studentSection={studentSection}
-              />
+              <Section_Popover control={control} />
             </div>
           </div>
 
@@ -111,7 +148,7 @@ const AddQuiz = ({ studentSection }: any) => {
                     {...register(`questions.${index}.questionText`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 w-3/4"
+                    className="w-3/4 rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -123,11 +160,11 @@ const AddQuiz = ({ studentSection }: any) => {
                   {...register(`questions.${index}.correctAnswer`, {
                     required: true,
                   })}
-                  className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                  className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                   type="text"
                 />
               </div>
-              <div className="flex gap-4 pb-6 border-b-2">
+              <div className="flex flex-col gap-4 border-b-2 pb-6 md:flex-row">
                 <label className="px-2">Answers:</label>
                 <div>
                   <label>a.</label>
@@ -135,7 +172,7 @@ const AddQuiz = ({ studentSection }: any) => {
                     {...register(`questions.${index}.options.0`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -145,7 +182,7 @@ const AddQuiz = ({ studentSection }: any) => {
                     {...register(`questions.${index}.options.1`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -155,7 +192,7 @@ const AddQuiz = ({ studentSection }: any) => {
                     {...register(`questions.${index}.options.2`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -165,7 +202,7 @@ const AddQuiz = ({ studentSection }: any) => {
                     {...register(`questions.${index}.options.3`, {
                       required: true,
                     })}
-                    className="px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500"
+                    className="rounded-md border border-gray-300 px-4 py-2 focus:border-indigo-500 focus:outline-none focus:ring-1 focus:ring-indigo-500"
                     type="text"
                   />
                 </div>
@@ -175,17 +212,18 @@ const AddQuiz = ({ studentSection }: any) => {
 
           <div className="py-4">
             <button
-              className="px-6 py-2 bg-blue-500 hover:bg-blue-700 text-white rounded-md focus:outline-none"
+              className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
               type="submit"
             >
               Submit
             </button>
           </div>
+
           {errors.root && (
             <div className="text-red-500">{errors.root.message}</div>
           )}
         </form>
-        <DevTool control={control} />
+        {/*  <DevTool control={control} /> */}
       </div>
     </div>
   );

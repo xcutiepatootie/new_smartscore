@@ -26,33 +26,39 @@ import { useEffect, useState } from "react";
 import { Separator } from "@/components/ui/separator";
 import { lexend, poppins } from "@/utils/fonts";
 
-const sample = [
-  {
-    name: "Test1",
-    section: "10-FC",
-    points: 100,
-  },
-  {
-    name: "Test2",
-    section: "10-FC",
-    points: 90,
-  },
-  {
-    name: "Test3",
-    section: "10-FC",
-    points: 95,
-  },
-  {
-    name: "Test4",
-    section: "10-Reg",
-    points: 80,
-  },
-  {
-    name: "Test5",
-    section: "10-Reg",
-    points: 85,
-  },
-];
+type Top5Object = {
+  top1: any[];
+  top2: any[];
+  top3: any[];
+  top4: any[];
+  top5: any[];
+};
+const studentRankingByQuiz = async (selectedQuizId: string) => {
+  try {
+    const response = await fetch(
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/student_records?quizId=${selectedQuizId}`,
+      { method: "GET" },
+    );
+
+    if (response.ok) {
+      return response.json();
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const studentRankingByQuizMapping = async (selectedQuizId: string) => {
+  try {
+    const apiData = await studentRankingByQuiz(selectedQuizId);
+    const mappingData = await getStudentRankingByQuiz(apiData);
+    if (mappingData) {
+      return mappingData;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 const Ranking_Card = ({
   quizNames,
@@ -90,14 +96,14 @@ const Ranking_Card = ({
   useEffect(() => {
     if (selectedQuizId !== "") {
       const fetchRanking = async () => {
-        const getRanking = await getStudentRankingByQuiz(selectedQuizId);
+        const getRanking = await studentRankingByQuizMapping(selectedQuizId);
         console.log(getRanking);
         setTop5Object(getRanking);
       };
       fetchRanking();
       setTimeout(() => {
         setLoading(false);
-      }, 2000);
+      }, 3000);
     } else {
       setTop5Object(undefined);
       setLoading(true);
@@ -183,7 +189,7 @@ const Ranking_Card = ({
 
   return (
     <>
-      <Card className="h-full w-2/3 max-sm:w-[85%]">
+      <Card className="flex h-auto w-full flex-col max-sm:w-[85%] lg:h-full">
         <CardHeader className="flex items-center justify-center">
           <CardTitle>Ranking</CardTitle>
           <CardDescription>
@@ -196,203 +202,66 @@ const Ranking_Card = ({
         </CardHeader>
         <CardContent className="">
           <Separator className=" my-2 h-1 bg-amber-200" />
-          {/* {sample.map((items, index) => (
-            <div
-              className="m-4 flex w-full flex-row items-center justify-center gap-2 p-4"
-              key={index}
-            >
-              <div className="flex h-14 w-full basis-16 items-center justify-center rounded-lg border-2 text-center">
-                <Label>#{index + 1}</Label>
-              </div>
-              <div className="flex h-14 w-full flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
-                <Avatar>
-                  <AvatarImage src="https://github.com/shadcn.png" />
-                  <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
 
-                <Label>{items.name}</Label>
-                <Label>{items.section}</Label>
-                <Label>{items.points}</Label>
-              </div>
-            </div>
-          ))} */}
-          {loading && !top5Object ? (
-            <div className="mt-48 flex items-center justify-center">
-              <Label className={`${poppins.className} text-center text-2xl`}>
-                Choose a quiz from above to see student rankings.
-              </Label>
-            </div>
-          ) : loading && top5Object ? (
-            <>loading...</>
+          {loading ? (
+            <>
+              {!top5Object ? (
+                <div className="flex items-center justify-center md:mt-24">
+                  <Label
+                    className={`${poppins.className} text-center text-2xl`}
+                  >
+                    Choose a quiz from above to see student rankings.
+                  </Label>
+                </div>
+              ) : (
+                <>loading...</>
+              )}
+            </>
           ) : (
             <>
-              {!loading && top5Object ? (
+              {top5Object ? (
                 <>
-                  {top5Object.top1 && top5Object.top1.length > 0 && (
+                  {Array.from(Array(5).keys()).map((index) => (
                     <Carousel
+                      key={index}
                       opts={{
                         align: "start",
                         loop: true,
                       }}
                     >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
+                      <div className="m-4 grid grid-cols-6 justify-center gap-2 p-4">
                         <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>#1</Label>
+                          <Label>{`#${index + 1}`}</Label>
                         </div>
-                        <div className="col-span-11">
+                        <div className="col-span-5">
                           <CarouselContent>
-                            {top5Object.top1.map(
-                              (student: any, index: number) => (
-                                <CarouselItem key={index} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
+                            {top5Object[
+                              `top${index + 1}` as keyof Top5Object
+                            ] &&
+                              top5Object[`top${index + 1}` as keyof Top5Object]
+                                .length > 0 &&
+                              top5Object[
+                                `top${index + 1}` as keyof Top5Object
+                              ].map((student: any, studentIndex: number) => (
+                                <CarouselItem key={studentIndex} className="">
+                                  <div className="grid h-14 grid-cols-4 place-content-center content-center rounded-lg border-2 bg-[#FFE697]">
                                     <Avatar>
                                       <AvatarImage src="https://github.com/shadcn.png" />
                                       <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <Label>{student.name}</Label>
                                     <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
+                                    <Label className="overflow-hidden text-ellipsis">
+                                      {student.score}
+                                    </Label>
                                   </div>
                                 </CarouselItem>
-                              ),
-                            )}
+                              ))}
                           </CarouselContent>
                         </div>
                       </div>
                     </Carousel>
-                  )}
-                  {top5Object.top2 && top5Object.top2.length > 0 && (
-                    <Carousel
-                      opts={{
-                        align: "start",
-                        loop: true,
-                      }}
-                    >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
-                        <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>#2</Label>
-                        </div>
-                        <div className="col-span-11">
-                          <CarouselContent>
-                            {top5Object.top2.map(
-                              (student: any, index: number) => (
-                                <CarouselItem key={index} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
-                                    <Avatar>
-                                      <AvatarImage src="https://github.com/shadcn.png" />
-                                      <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <Label>{student.name}</Label>
-                                    <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
-                                  </div>
-                                </CarouselItem>
-                              ),
-                            )}
-                          </CarouselContent>
-                        </div>
-                      </div>
-                    </Carousel>
-                  )}
-                  {top5Object.top3 && top5Object.top3.length > 0 && (
-                    <Carousel
-                      opts={{
-                        align: "start",
-                        loop: true,
-                      }}
-                    >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
-                        <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>#3</Label>
-                        </div>
-                        <div className="col-span-11">
-                          <CarouselContent>
-                            {top5Object.top3.map(
-                              (student: any, index: number) => (
-                                <CarouselItem key={index} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
-                                    <Avatar>
-                                      <AvatarImage src="https://github.com/shadcn.png" />
-                                      <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <Label>{student.name}</Label>
-                                    <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
-                                  </div>
-                                </CarouselItem>
-                              ),
-                            )}
-                          </CarouselContent>
-                        </div>
-                      </div>
-                    </Carousel>
-                  )}
-                  {top5Object.top4 && top5Object.top4.length > 0 && (
-                    <Carousel
-                      opts={{
-                        align: "start",
-                        loop: true,
-                      }}
-                    >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
-                        <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>#4</Label>
-                        </div>
-                        <div className="col-span-11">
-                          <CarouselContent>
-                            {top5Object.top4.map(
-                              (student: any, index: number) => (
-                                <CarouselItem key={index} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
-                                    <Avatar>
-                                      <AvatarImage src="https://github.com/shadcn.png" />
-                                      <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <Label>{student.name}</Label>
-                                    <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
-                                  </div>
-                                </CarouselItem>
-                              ),
-                            )}
-                          </CarouselContent>
-                        </div>
-                      </div>
-                    </Carousel>
-                  )}
-                  {top5Object.top5 && top5Object.top5.length > 0 && (
-                    <Carousel
-                      opts={{
-                        align: "start",
-                        loop: true,
-                      }}
-                    >
-                      <div className="m-4 grid grid-cols-12 justify-center gap-2 p-4">
-                        <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>#5</Label>
-                        </div>
-                        <div className="col-span-11">
-                          <CarouselContent>
-                            {top5Object.top5.map(
-                              (student: any, index: number) => (
-                                <CarouselItem key={index} className="">
-                                  <div className="flex h-14 flex-row items-center justify-around rounded-lg border-2 bg-[#FFE697]">
-                                    <Avatar>
-                                      <AvatarImage src="https://github.com/shadcn.png" />
-                                      <AvatarFallback>CN</AvatarFallback>
-                                    </Avatar>
-                                    <Label>{student.name}</Label>
-                                    <Label>{student.section}</Label>
-                                    <Label>{student.score}</Label>
-                                  </div>
-                                </CarouselItem>
-                              ),
-                            )}
-                          </CarouselContent>
-                        </div>
-                      </div>
-                    </Carousel>
-                  )}
+                  ))}
                 </>
               ) : (
                 <>Error</>

@@ -36,7 +36,7 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
   console.log("Selected quiz:", selectedQuizObject);
   return (
     <>
-      <Card className="h-full w-2/3 max-sm:w-[85%]">
+      <Card className="h-full w-full max-sm:w-[85%]">
         <CardHeader>
           <CardTitle>Quiz Status</CardTitle>
           <CardDescription>
