@@ -159,8 +159,8 @@ function Client_table({ data, quizzes }: any) {
 
   return (
     <>
-      <div className="flex w-full flex-row space-x-2">
-        <div className="w-[80%]">
+      <div className="flex w-full flex-col max-lg:space-y-2 lg:flex-row lg:space-x-2">
+        <div className="w-full lg:w-[80%]">
           <Card className="h-[800px] w-auto p-4">
             <Quiz_section_Popover
               quizzes={quizzes}

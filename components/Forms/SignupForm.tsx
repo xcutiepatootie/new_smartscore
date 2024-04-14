@@ -58,12 +58,20 @@ const SignupForm = () => {
     const signUpUser = await createUser(data);
 
     if (signUpUser) {
-      toast({
-        className: "bg-green-600 text-neutral-100",
-        title: "SmartScore",
-        description: "Successfully Created the User.",
-      });
-      console.log(signUpUser);
+      if (signUpUser === "Email is already registered.") {
+        toast({
+          title: "Account Creation Failed",
+          description: "Email or Username is already taken.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          className: "bg-green-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Successfully Created the User.",
+        });
+        console.log(signUpUser);
+      }
     }
 
     const res = SignUpFormSchema.safeParse(data);
