@@ -134,26 +134,11 @@ const Feedback_Input = ({ quizzes }: any) => {
             quizzes={quizzes}
             setSelectedQuiz={setSelectedQuiz}
           />
-          {/*  {selectedQuiz && (
-            <Dialog>
-              <DialogTrigger className="rounded-lg bg-white p-2 text-sm outline-none outline-slate-100">
-                Show Cluster Values
-              </DialogTrigger>
-              <DialogContent>
-                <DialogHeader>
-                  <DialogTitle>Cluster Values</DialogTitle>
-                  <div className="flex flex-row">
-                    <ClusterValues quizId={selectedQuizId} />
-                  </div>
-                </DialogHeader>
-              </DialogContent>
-            </Dialog>
-          )} */}
         </div>
 
         {clusterData && selectedQuiz ? (
           <div className="h-full space-y-2">
-            <div className="flex flex-row justify-around gap-4 p-2">
+            <div className="flex flex-col lg:flex-row justify-around gap-4 p-2">
               <ClusterValues quizId={selectedQuizId} />
             </div>
 
