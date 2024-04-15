@@ -63,12 +63,14 @@ export default function QuizName_Popover({
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="w-[300px] justify-start overflow-hidden"
           >
-            {value
-              ? popoverValues.find((quiz: any) => quiz.value === value)?.label
-              : "Select Quiz..."}
             <RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <span className="inline-block w-[290px] overflow-hidden text-ellipsis whitespace-nowrap">
+              {value
+                ? popoverValues.find((quiz: any) => quiz.value === value)?.label
+                : "Select Quiz..."}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
