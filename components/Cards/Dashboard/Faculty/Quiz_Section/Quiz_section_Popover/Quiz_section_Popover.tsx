@@ -66,9 +66,7 @@ const Quiz_section_Popover = ({ quizzes, setSelectedQuiz }: any) => {
             className="w-[300px] justify-start overflow-hidden"
           >
             <RxCaretSort className="h-4 w-4 shrink-0 opacity-50" />
-            <span className="max-w-[250px] text-ellipsis">
-              {" "}
-              {/* Example max width */}
+            <span className="inline-block w-[290px] overflow-hidden text-ellipsis whitespace-nowrap">
               {value
                 ? flattenedQuizzes.find((quiz: any) => quiz.value === value)
                     ?.label

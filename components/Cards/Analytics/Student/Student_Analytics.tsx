@@ -164,7 +164,7 @@ const Student_Analytics = ({
         <Quiz_Results results={result} />
       </div>
       <div className="h-full p-2">
-        <Feedback feedback={feedback} />
+        <Feedback feedback={feedback} selectedQuizId={selectedQuizId} />
       </div>
     </>
   );
