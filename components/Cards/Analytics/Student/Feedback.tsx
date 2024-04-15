@@ -9,15 +9,18 @@ import {
 import { Label } from "@/components/ui/label";
 import { useState } from "react";
 
-const Feedback = ({ feedback }: any) => {
+const Feedback = ({ feedback, selectedQuizId }: any) => {
   return (
     <Card className="h-full ">
       <CardHeader>
         <CardTitle>Teacher&apos;s Feedback</CardTitle>
-        <CardDescription>shows the feedback given by the instructor and your cluster assignment.</CardDescription>
+        <CardDescription>
+          shows the feedback given by the instructor and your cluster
+          assignment.
+        </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center">
-        {!feedback ? (
+        {!feedback && !selectedQuizId ? (
           <div className="mt-2 flex items-center justify-center md:mt-28">
             <Label className="text-2xl">Please Select A Quiz</Label>
           </div>
@@ -35,7 +38,7 @@ const Feedback = ({ feedback }: any) => {
             <Label>
               Your teacher&apos;s feedback:
               <span className="text-lg italic">
-                {feedback.feedback
+                {feedback
                   ? feedback.feedback
                   : " The instructor hasn't yet posted any feedback."}
               </span>

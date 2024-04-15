@@ -21,6 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/components/ui/use-toast";
+import { FaSpinner } from "react-icons/fa";
 
 export const Take_Quiz = ({
   selectedQuiz,
@@ -42,7 +43,7 @@ export const Take_Quiz = ({
     handleSubmit,
     watch,
     setError,
-    formState: { errors, isLoading, isDirty },
+    formState: { errors, isLoading, isDirty, isSubmitting },
   } = useForm<QuizAnswerFields>({ resolver: zodResolver(QuizAnswersSchema) });
 
   const [timerStopped, setTimerStopped] = useState<boolean>(true);
@@ -275,10 +276,20 @@ export const Take_Quiz = ({
                 </ul>
                 <div className="py-4">
                   <button
+                    disabled={isSubmitting}
                     className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
                     type="submit"
                   >
-                    Submit
+                    {isSubmitting ? (
+                      <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                        <FaSpinner className="mr-4 animate-spin" />
+                        {"Submitting..."}
+                      </Label>
+                    ) : (
+                      <Label className="flex flex-row space-x-2 text-lg">
+                        Submit
+                      </Label>
+                    )}
                   </button>
                 </div>
               </form>

@@ -31,13 +31,13 @@ export default async function Home() {
           <h1 className="text-3xl">
             <span className={margarine.className}>Smartscore</span>
           </h1>
-          <Label className="p-4 px-10 text-center text-xl">
+          <h1 className="p-4 px-10 text-center text-xl">
             <span className={poppins.className}>
               Welcome to SmartScore! We&apos;re here to help educators
               understand student performance and empower them to shine brighter
               by building on strengths and tackling weaknesses.
             </span>
-          </Label>
+          </h1>
         </div>
         <div className="relative col-span-2">
           <div className="absolute inset-0 bg-signin-background-image bg-cover bg-center"></div>
@@ -59,12 +59,12 @@ export default async function Home() {
                 </span>
               </h1>
 
-              <Label className="px-10 text-center text-xl">
+              <h1 className="px-10 text-center text-xl">
                 <span className={poppins.className}>
                   Empowering Students, Enlightening Educators: Assessing
                   Strengths, Addressing Weaknesses
                 </span>
-              </Label>
+              </h1>
             </div>
             <div className="mt-4 h-auto w-full">
               <SigininForm />

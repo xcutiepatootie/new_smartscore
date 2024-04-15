@@ -155,6 +155,15 @@ export async function createUser(userData: SignUpFormFields) {
   console.log(userData);
   const hashedPassword = await bcrypt.hash(userData.password, 12);
 
+  const findEmailIfExisting = await prisma.user.findUnique({
+    where: {
+      email: userData.email,
+    },
+  });
+  if (findEmailIfExisting) {
+    return "Email is already registered.";
+  }
+
   const [res_CreateUser, res_Faculty_Student]: [User, Student | Faculty] =
     await prisma.$transaction([
       prisma.user.create({

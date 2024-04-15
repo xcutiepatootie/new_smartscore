@@ -66,7 +66,7 @@ export default async function Dashboard() {
             <TnumberOfQuizCreatedByUser userSession={session?.user} />
             <SectionsHandled_Card />
           </div>
-          <div className="flex flex-col items-center justify-center max-md:p-4 max-md:space-y-4 md:w-full md:space-x-2 lg:row-span-4 lg:grid lg:grid-cols-2">
+          <div className="flex flex-col items-center justify-center max-md:space-y-4 max-md:p-4 md:w-full md:space-x-2 lg:row-span-4 lg:grid lg:grid-cols-2">
             <Quiz_Section quizzes={quizzes} />
             <Quiz_DateAdded />
           </div>
@@ -96,7 +96,7 @@ export default async function Dashboard() {
             <CompletedQuizzes_Card />
           </div>
 
-          <div className="flex flex-col items-center justify-center max-md:p-4 md:w-full md:space-x-2 lg:row-span-4 lg:grid lg:grid-cols-2">
+          <div className="flex flex-col items-center justify-center max-lg:space-y-2 max-md:p-4 md:w-full lg:row-span-4 xl:grid xl:grid-cols-2 xl:gap-2">
             {quizNames ? (
               <Ranking_Card quizNames={quizNames} />
             ) : (

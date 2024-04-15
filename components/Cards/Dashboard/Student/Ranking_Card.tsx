@@ -110,83 +110,6 @@ const Ranking_Card = ({
     }
   }, [selectedQuizId]);
 
-  /*  const apiData = await getStudentRecords("65e5d5b825d258c080b78f63");
-  const newData = apiData.map((info: any) => ({
-    studentId: info.studentId,
-    score: info.averageScore,
-  }));
-
-  newData.sort((a: any, b: any) => b.score - a.score);
-
-  console.log(newData);
-
-  const scoreMap = new Map();
-
-  newData.forEach(
-    ({ studentId, score }: { studentId: string; score: number }) => {
-      if (!scoreMap.has(score)) {
-        scoreMap.set(score, []);
-      }
-      scoreMap.get(score).push({ studentId, score });
-    },
-  );
-
-  // Extract the arrays of student objects for each unique score
-  const top5Scores = Array.from(scoreMap.keys())
-    .sort((a, b) => b - a)
-    .slice(0, 5)
-    .map((score) => scoreMap.get(score));
-
-  console.log("Top 5", top5Scores);
-
-  const studentIds = top5Scores.flatMap((scores) =>
-    scores.map((student: { studentId: string }) => student.studentId),
-  );
-
-  console.log(studentIds);
-
-  const students = await prisma.student.findMany({
-    where: { studentId: { in: studentIds } },
-    select: { studentId: true, name: true, section: true },
-  });
-
-  console.log(students);
-
-  console.log("Length: ", studentIds.length, students.length);
-
-  const studentIdMap = new Map();
-
-  students.forEach((student) => {
-    studentIdMap.set(student.studentId, {
-      name: student.name,
-      section: student.section,
-    });
-  });
-
-  const result = top5Scores.map((scores) =>
-    scores.map(
-      ({ studentId, score }: { studentId: string; score: number }) => ({
-        ...studentIdMap.get(studentId),
-        score,
-      }),
-    ),
-  );
-
-  console.log(result);
-
-  const resultArray = result.map((array, index) => ({
-    [`top${index + 1}`]: array,
-  }));
-
-  const top5Object: any = {};
-
-  resultArray.forEach((obj) => {
-    const key = Object.keys(obj)[0]; // Get the key (top1, top2, etc.)
-    top5Object[key] = obj[key]; // Assign the value to the key in the top5Object
-  });
-
-  console.log(top5Object); */
-
   return (
     <>
       <Card className="flex h-auto w-full flex-col max-sm:w-[85%] lg:h-full">
@@ -229,12 +152,12 @@ const Ranking_Card = ({
                         loop: true,
                       }}
                     >
-                      <div className="m-4 grid grid-cols-6 justify-center gap-2 p-4">
-                        <div className="flex h-14 items-center justify-center rounded-lg border-2 text-center">
-                          <Label>{`#${index + 1}`}</Label>
+                      <div className="m-4 grid grid-cols-1 justify-center gap-2 p-4 md:grid-cols-6">
+                        <div className="flex h-14 w-full items-center justify-center rounded-lg border-2 text-center">
+                          <Label className="w-full">{`#${index + 1}`}</Label>
                         </div>
-                        <div className="col-span-5">
-                          <CarouselContent>
+                        <div className="col-span-5 ">
+                          <CarouselContent className="">
                             {top5Object[
                               `top${index + 1}` as keyof Top5Object
                             ] &&
@@ -243,15 +166,22 @@ const Ranking_Card = ({
                               top5Object[
                                 `top${index + 1}` as keyof Top5Object
                               ].map((student: any, studentIndex: number) => (
-                                <CarouselItem key={studentIndex} className="">
-                                  <div className="grid h-14 grid-cols-4 place-content-center content-center rounded-lg border-2 bg-[#FFE697]">
+                                <CarouselItem
+                                  key={studentIndex}
+                                  className=" w-max "
+                                >
+                                  <div className="grid h-auto grid-rows-4 place-content-center content-center rounded-lg border-2 bg-[#FFE697] md:h-14 md:grid-cols-4 ">
                                     <Avatar>
                                       <AvatarImage src="https://github.com/shadcn.png" />
                                       <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
-                                    <Label>{student.name}</Label>
-                                    <Label>{student.section}</Label>
-                                    <Label className="overflow-hidden text-ellipsis">
+                                    <Label className="text-center">
+                                      {student.name}
+                                    </Label>
+                                    <Label className="text-center">
+                                      {student.section}
+                                    </Label>
+                                    <Label className="overflow-hidden text-ellipsis text-center">
                                       {student.score}
                                     </Label>
                                   </div>

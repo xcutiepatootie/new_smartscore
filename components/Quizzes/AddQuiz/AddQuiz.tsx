@@ -7,6 +7,8 @@ import { useToast } from "../../ui/use-toast";
 import { createQuiz } from "@/lib/server_actions/actions";
 import { Session } from "next-auth";
 import Section_Popover from "./Section_Popover/Section_Popover";
+import { Label } from "@/components/ui/label";
+import { FaSpinner } from "react-icons/fa";
 
 const AddQuiz = () => {
   const { toast } = useToast();
@@ -17,7 +19,7 @@ const AddQuiz = () => {
     handleSubmit,
     watch,
     setError,
-    formState: { errors, isLoading },
+    formState: { errors, isLoading, isSubmitting },
   } = useForm<QuizFields>({
     resolver: zodResolver(QuizSchema),
   });
@@ -212,10 +214,20 @@ const AddQuiz = () => {
 
           <div className="py-4">
             <button
+              disabled={isSubmitting}
               className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
               type="submit"
             >
-              Submit
+              {isSubmitting ? (
+                <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                  <FaSpinner className="mr-4 animate-spin" />
+                  {"Submitting..."}
+                </Label>
+              ) : (
+                <Label className="flex flex-row space-x-2 text-lg">
+                  Submit
+                </Label>
+              )}
             </button>
           </div>
 

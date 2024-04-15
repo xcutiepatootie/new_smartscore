@@ -63,13 +63,15 @@ const Quiz_section_Popover = ({ quizzes, setSelectedQuiz }: any) => {
             variant="outline"
             role="combobox"
             aria-expanded={open}
-            className="w-[200px] justify-between"
+            className="w-[300px] justify-start overflow-hidden"
           >
-            {value
-              ? flattenedQuizzes.find((quiz: any) => quiz.value === value)
-                  ?.label
-              : "Select Quiz..."}
-            <RxCaretSort className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+            <RxCaretSort className="h-4 w-4 shrink-0 opacity-50" />
+            <span className="inline-block w-[290px] overflow-hidden text-ellipsis whitespace-nowrap">
+              {value
+                ? flattenedQuizzes.find((quiz: any) => quiz.value === value)
+                    ?.label
+                : "Select Quiz..."}
+            </span>
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-[200px] p-0">
@@ -87,7 +89,7 @@ const Quiz_section_Popover = ({ quizzes, setSelectedQuiz }: any) => {
                   <CheckIcon
                     className={cn(
                       "ml-auto h-4 w-4",
-                      value === quiz.value ? "opacity-100" : "opacity-0"
+                      value === quiz.value ? "opacity-100" : "opacity-0",
                     )}
                   />
                 </CommandItem>

@@ -50,17 +50,19 @@ const Quiz_Section = ({ quizzes }: { quizzes: QuizData_Cards[] }) => {
           />
           {/* Render Here The Quiz And Section */}
           <Tabs className="w-auto py-2">
-            <TabsList className="flex w-full flex-row justify-around">
-              {selectedQuizObject &&
-                selectedQuizObject.sectionAssigned.map((section, index) => (
-                  <TabsTrigger
-                    key={index}
-                    value={selectedQuizObject.sectionAssigned[index]}
-                  >
-                    {section}
-                  </TabsTrigger>
-                ))}
-            </TabsList>
+            <div className="overflow-x-auto">
+              <TabsList className="flex w-max flex-row justify-around">
+                {selectedQuizObject &&
+                  selectedQuizObject.sectionAssigned.map((section, index) => (
+                    <TabsTrigger
+                      key={index}
+                      value={selectedQuizObject.sectionAssigned[index]}
+                    >
+                      {section}
+                    </TabsTrigger>
+                  ))}
+              </TabsList>
+            </div>
             {selectedQuizObject &&
               selectedQuizObject.sectionAssigned.map((section, index) => (
                 <TabsContent key={index} value={section}>

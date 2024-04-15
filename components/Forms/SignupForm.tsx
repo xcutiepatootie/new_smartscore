@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DevTool } from "@hookform/devtools";
+import { FaSpinner } from "react-icons/fa";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -58,12 +59,20 @@ const SignupForm = () => {
     const signUpUser = await createUser(data);
 
     if (signUpUser) {
-      toast({
-        className: "bg-green-600 text-neutral-100",
-        title: "SmartScore",
-        description: "Successfully Created the User.",
-      });
-      console.log(signUpUser);
+      if (signUpUser === "Email is already registered.") {
+        toast({
+          title: "Account Creation Failed",
+          description: "Email or Username is already taken.",
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          className: "bg-green-600 text-neutral-100",
+          title: "SmartScore",
+          description: "Successfully Created the User.",
+        });
+        console.log(signUpUser);
+      }
     }
 
     const res = SignUpFormSchema.safeParse(data);
@@ -77,12 +86,9 @@ const SignupForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-2xl drop-shadow-2xl max-sm:px-4 sm:w-1/2"
       >
-        <Label
-          className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700"
-          htmlFor="SignupTag"
-        >
+        <h1 className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700">
           Sign-Up
-        </Label>
+        </h1>
         <div className="mb-4">
           <Label
             className="mb-2 block text-sm font-bold text-gray-700"
@@ -95,6 +101,7 @@ const SignupForm = () => {
             className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="name"
             type="text"
+            autoComplete="off"
             placeholder="Enter your Name"
           />
           {errors.name && (
@@ -113,6 +120,7 @@ const SignupForm = () => {
             {...register("username", { required: true })}
             className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="username"
+            autoComplete="off"
             type="text"
             placeholder="Enter your username"
           />
@@ -141,9 +149,7 @@ const SignupForm = () => {
         </div>
 
         <div className="mb-4">
-          <label className="mb-2 block text-sm font-bold text-gray-700">
-            Role
-          </label>
+          <h1 className="mb-2 block text-sm font-bold text-gray-700">Role</h1>
           <div className="flex items-center justify-around">
             <div>
               <Input
@@ -174,10 +180,7 @@ const SignupForm = () => {
         </div>
 
         <div className="grid grid-cols-2 gap-4">
-          <label
-            className="mb-2 block text-sm font-bold text-gray-700"
-            htmlFor="department"
-          >
+          <label className="mb-2 block text-sm font-bold text-gray-700">
             Department:
           </label>
           <Controller
@@ -194,7 +197,9 @@ const SignupForm = () => {
                   >
                     {department.map((dept, index) => (
                       <div key={index}>
-                        <SelectItem value={dept.value}>{dept.value}</SelectItem>
+                        <SelectItem id="department" value={dept.value}>
+                          {dept.value}
+                        </SelectItem>
                       </div>
                     ))}
                   </SelectContent>
@@ -274,10 +279,18 @@ const SignupForm = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
+            disabled={isSubmitting}
             className="focus:shadow-outline transform rounded bg-blue-500 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-700 focus:outline-none"
             type="submit"
           >
-            Sign Up
+            {isSubmitting ? (
+              <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                <FaSpinner className="mr-4 animate-spin" />
+                {"Creating..."}
+              </Label>
+            ) : (
+              <Label className="flex flex-row space-x-2 text-lg">Sign Up</Label>
+            )}
           </button>
         </div>
         <Label className="mt-4 text-balance text-sm">
