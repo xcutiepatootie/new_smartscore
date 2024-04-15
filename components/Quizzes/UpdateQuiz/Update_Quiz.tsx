@@ -9,6 +9,8 @@ import Section_Popover from "../AddQuiz/Section_Popover/Section_Popover";
 import { DevTool } from "@hookform/devtools";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
+import { Label } from "@/components/ui/label";
+import { FaSpinner } from "react-icons/fa";
 
 export const Update_Quiz = ({
   selectedQuiz,
@@ -38,7 +40,7 @@ export const Update_Quiz = ({
     watch,
     reset,
     setError,
-    formState: { errors, isLoading },
+    formState: { errors, isLoading, isSubmitting },
   } = useForm<QuizFields>({
     defaultValues: {
       quizName: selectedQuiz.quizName,
@@ -273,10 +275,20 @@ export const Update_Quiz = ({
 
           <div className="py-4">
             <button
+              disabled={isSubmitting}
               className="rounded-md bg-blue-500 px-6 py-2 text-white hover:bg-blue-700 focus:outline-none"
               type="submit"
             >
-              Submit
+              {isSubmitting ? (
+                <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                  <FaSpinner className="mr-4 animate-spin" />
+                  {"Submitting..."}
+                </Label>
+              ) : (
+                <Label className="flex flex-row space-x-2 text-lg">
+                  Submit
+                </Label>
+              )}
             </button>
           </div>
           {errors.root && (

@@ -25,6 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { DevTool } from "@hookform/devtools";
+import { FaSpinner } from "react-icons/fa";
 
 const SignupForm = () => {
   const router = useRouter();
@@ -282,10 +283,18 @@ const SignupForm = () => {
         </div>
         <div className="flex items-center justify-between">
           <button
+            disabled={isSubmitting}
             className="focus:shadow-outline transform rounded bg-blue-500 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-700 focus:outline-none"
             type="submit"
           >
-            Sign Up
+            {isSubmitting ? (
+              <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                <FaSpinner className="mr-4 animate-spin" />
+                {"Creating..."}
+              </Label>
+            ) : (
+              <Label className="flex flex-row space-x-2 text-lg">Sign Up</Label>
+            )}
           </button>
         </div>
         <Label className="mt-4 text-balance text-sm">
