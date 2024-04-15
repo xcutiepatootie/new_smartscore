@@ -299,25 +299,25 @@ export const Take_Quiz = ({
               <Label className={`${poppins.className} text-5xl`}>
                 DISCLAIMER
               </Label>
-              <div className="flex max-h-[50vh] items-center justify-center rounded-2xl bg-white p-12 shadow-2xl drop-shadow-2xl ">
-                <p className="w-full text-wrap text-sm md:text-xl">
-                  Before you start the quiz, please note that your clicks will
-                  be tracked each time you change your answer. Additionally,
-                  opening new tabs while answering will also be monitored. If
-                  you don&apos;t achieve a perfect score on your first attempt,
-                  you&apos;ll have 5 retries to perfect the quiz. However, if
-                  you manage to get a perfect score, the quiz will be considered
-                  completed. Make sure you&apos;re ready to take the quiz, as
-                  the timer will start automatically once you press the start
-                  button. If you submitted the quiz, the system will show a
-                  notification that you submitted the quiz.
-                  <br />
-                  <br />
-                  If you have any concerns or questions, please reach out to
-                  your teacher. Good luck!
-                </p>
+              <div className="max-h-[50vh] overflow-y-auto">
+                <div className="flex items-center justify-center rounded-2xl bg-white p-4 shadow-2xl drop-shadow-2xl md:p-12">
+                  <p className="w-full text-sm md:text-xl ">
+                    {/* Your long text goes here */}
+                    Before you start the quiz, please note that your clicks will
+                    be tracked each time you change your answer. Additionally,
+                    opening new tabs while answering will also be monitored. If
+                    you don&apos;t achieve a perfect score on your first
+                    attempt, you&apos;ll have 5 retries to perfect the quiz.
+                    However, if you manage to get a perfect score, the quiz will
+                    be considered completed. Make sure you&apos;re ready to take
+                    the quiz, as the timer will start automatically once you
+                    press the start button. If you submitted the quiz, the
+                    system will show a notification that you submitted the quiz.
+                    If you have any concerns or questions, please reach out to
+                    your teacher. Good luck!
+                  </p>
+                </div>
               </div>
-
               <Button
                 className="h-16 w-2/3 rounded-full bg-yellow-600 text-3xl hover:bg-lime-500"
                 onClick={() => {
