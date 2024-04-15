@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "../ui/use-toast";
 import { Label } from "../ui/label";
 import { Input } from "../ui/input";
+import { FaSpinner } from "react-icons/fa";
 
 const SigininForm = () => {
   const router = useRouter();
@@ -18,6 +19,7 @@ const SigininForm = () => {
     setError,
     formState: { errors, isSubmitting },
   } = useForm<FormFields>({ resolver: zodResolver(FormSchema) });
+  console.log({ isSubmitting });
 
   const onSubmit: SubmitHandler<FormFields> = async (data) => {
     console.log(data);
@@ -52,27 +54,27 @@ const SigininForm = () => {
     }
   };
   return (
-    <div className="flex justify-center items-center h-auto px-4 w-full">
+    <div className="flex h-auto w-full items-center justify-center px-4">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white shadow-2xl drop-shadow-2xl w-[50%] h-full rounded px-4 pt-6 pb-8 max-sm:px-8 max-sm:w-full"
+        className="h-full w-[50%] rounded bg-white px-4 pb-8 pt-6 shadow-2xl drop-shadow-2xl max-sm:w-full max-sm:px-8"
       >
         <label
-          className="block text-gray-700 text-sm font-bold mb-4 border-b-2 border-zinc-300"
+          className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700"
           htmlFor="SigninTag"
         >
           Sign-In
         </label>
         <div className="mb-4">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="email"
           >
             Email
           </label>
           <Input
             {...register("email")}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="email"
             placeholder="Enter your email"
           />
@@ -82,14 +84,14 @@ const SigininForm = () => {
         </div>
         <div className="mb-6">
           <label
-            className="block text-gray-700 text-sm font-bold mb-2"
+            className="mb-2 block text-sm font-bold text-gray-700"
             htmlFor="password"
           >
             Password
           </label>
           <Input
             {...register("password", { required: true })}
-            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
+            className="focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="password"
             type="password"
             placeholder="Enter your password"
@@ -127,13 +129,20 @@ const SigininForm = () => {
                     </div>
                     {errors.role && (<div className='text-red-500'>{errors.role.message}</div>)}
                 </div> */}
-        <div className="flex items-center justify-between mb-5">
+        <div className="mb-5 flex items-center justify-between">
           <button
             disabled={isSubmitting}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105"
+            className="focus:shadow-outline transform rounded bg-blue-500 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-700 focus:outline-none"
             type="submit"
           >
-            Sign In
+            {isSubmitting ? (
+              <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+                <FaSpinner className="mr-4 animate-spin" />
+                {"Signing In..."}
+              </Label>
+            ) : (
+              <Label className="flex flex-row space-x-2 text-lg">Sign In</Label>
+            )}
           </button>
         </div>
         <Label className="text-md mt-8">
@@ -142,7 +151,7 @@ const SigininForm = () => {
             onClick={() => {
               router.push("/signup");
             }}
-            className="text-blue-600 hover:text-blue-800 hover:scale-150"
+            className="text-blue-600 hover:scale-150 hover:text-blue-800"
           >
             Click Here{" "}
           </span>
