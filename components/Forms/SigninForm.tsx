@@ -59,12 +59,9 @@ const SigininForm = () => {
         onSubmit={handleSubmit(onSubmit)}
         className="h-full w-[50%] rounded bg-white px-4 pb-8 pt-6 shadow-2xl drop-shadow-2xl max-sm:w-full max-sm:px-8"
       >
-        <label
-          className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700"
-          htmlFor="SigninTag"
-        >
+        <h1 className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700">
           Sign-In
-        </label>
+        </h1>
         <div className="mb-4">
           <label
             className="mb-2 block text-sm font-bold text-gray-700"
@@ -77,6 +74,7 @@ const SigininForm = () => {
             className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
             id="email"
             placeholder="Enter your email"
+            autoComplete="email"
           />
           {errors.email && (
             <div className="text-red-500">{errors.email.message}</div>
@@ -136,27 +134,27 @@ const SigininForm = () => {
             type="submit"
           >
             {isSubmitting ? (
-              <Label className="flex flex-row items-center justify-center space-x-2 text-lg">
+              <h1 className="flex flex-row items-center justify-center space-x-2 text-lg">
                 <FaSpinner className="mr-4 animate-spin" />
                 {"Signing In..."}
-              </Label>
+              </h1>
             ) : (
-              <Label className="flex flex-row space-x-2 text-lg">Sign In</Label>
+              <h1 className="flex flex-row space-x-2 text-lg">Sign In</h1>
             )}
           </button>
         </div>
-        <Label className="text-md mt-8">
+        <p className="text-md mt-8 cursor-default">
           Don&apos;t have an account yet?{" "}
           <span
             onClick={() => {
               router.push("/signup");
             }}
-            className="text-blue-600 hover:scale-150 hover:text-blue-800"
+            className="text-blue-600 hover:scale-150 hover:text-blue-800 "
           >
             Click Here{" "}
           </span>
           to Sign Up
-        </Label>
+        </p>
       </form>
       <div></div>
     </div>

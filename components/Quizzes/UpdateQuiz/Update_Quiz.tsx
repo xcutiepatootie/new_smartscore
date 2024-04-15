@@ -203,7 +203,7 @@ export const Update_Quiz = ({
                     {...register(`questions.${index}.id`)}
                     className="hidden"
                     type="text"
-                    id="id"
+                    id={`id_${index}`}
                   />
                   <label className="px-2">Question {index + 1}:</label>
 
