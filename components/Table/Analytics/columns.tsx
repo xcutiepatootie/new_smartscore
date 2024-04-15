@@ -11,7 +11,6 @@ import { tableData_faculty } from "@/types/types";
 // You can use a Zod schema here if you want.
 
 export const columns: ColumnDef<tableData_faculty>[] = [
- 
   {
     accessorKey: "email",
     header: ({ column }) => {
@@ -30,7 +29,7 @@ export const columns: ColumnDef<tableData_faculty>[] = [
     accessorKey: "name",
     header: "Name",
   },
- /*  {
+  /*  {
     accessorKey: "studentId",
     header: "Student Id",
   }, */
@@ -67,6 +66,14 @@ export const columns: ColumnDef<tableData_faculty>[] = [
   {
     accessorKey: "retriesLeft",
     header: "Retries Left",
+    cell: ({ row }) => {
+      const format: number = row.getValue("retriesLeft");
+      return (
+        <div className="text-right font-medium">
+          {format < 1 ? "No Retries Left" : format}
+        </div>
+      );
+    },
   },
   {
     accessorKey: "clusterAssignment",
