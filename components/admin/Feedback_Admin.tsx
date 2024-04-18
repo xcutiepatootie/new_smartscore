@@ -38,7 +38,7 @@ const Feedback_Admin = ({ feedback }: any) => {
               Teacher&apos;s feedback:
               <span className="text-lg italic">
                 {feedback
-                  ? feedback.PostedFeedback.map(
+                  ? feedback.PostedFeedbacks.map(
                       (feedbacks: any, index: number) => (
                         <>
                           Cluster{index + 1}:{feedbacks}

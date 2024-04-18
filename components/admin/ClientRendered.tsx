@@ -6,6 +6,7 @@ import Charts from "../Cards/Analytics/Faculty/Charts";
 import Feedback_Admin from "./Feedback_Admin";
 import { getFeedback_Admin } from "@/lib/server_actions/actions";
 import { useToast } from "../ui/use-toast";
+import ClusterValues from "../Cards/Analytics/Faculty/ClusterValues";
 
 const fetchFeedbackData = async (selectedQuizId: string) => {
   try {
@@ -95,6 +96,7 @@ const ClientRendered = ({
       />
 
       <Charts quizzes={quizzes} quizId={selectedQuizId} />
+      <ClusterValues quizId={selectedQuizId} />
       <Feedback_Admin feedback={feedback} />
     </div>
   );
