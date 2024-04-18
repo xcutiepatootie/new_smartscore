@@ -15,8 +15,7 @@ const Feedback_Admin = ({ feedback }: any) => {
       <CardHeader>
         <CardTitle>Teacher&apos;s Feedback</CardTitle>
         <CardDescription>
-          shows the feedback given by the instructor and your cluster
-          assignment.
+          shows the feedback given by the instructor.
         </CardDescription>
       </CardHeader>
       <CardContent className="flex flex-col items-center justify-center">
@@ -26,20 +25,26 @@ const Feedback_Admin = ({ feedback }: any) => {
           </div>
         ) : (
           <>
-            <Label>
+            {/*  <Label>
               You belong to Cluster:
               <span className="text-lg italic">
                 {feedback
                   ? ` Cluster - ${feedback.cluster + 1}`
                   : " The Cluster isn't prepared just yet. Kindly wait until many of your classmates have completed the quiz."}
               </span>
-            </Label>
+            </Label> */}
             <br />
             <Label>
-              Your teacher&apos;s feedback:
+              Teacher&apos;s feedback:
               <span className="text-lg italic">
                 {feedback
-                  ? feedback.feedback
+                  ? feedback.PostedFeedback.map(
+                      (feedbacks: any, index: number) => (
+                        <>
+                          Cluster{index + 1}:{feedbacks}
+                        </>
+                      ),
+                    )
                   : " The instructor hasn't yet posted any feedback."}
               </span>
             </Label>
