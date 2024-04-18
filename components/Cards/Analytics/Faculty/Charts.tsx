@@ -14,7 +14,7 @@ console.log(apiurl);
 const clusterChart = async (quizId: string, xvalue: string, yvalue: string) => {
   try {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_API_URL}/charts/plot64?quizId=${quizId}&xvalue=${xvalue}&yvalue=${yvalue}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/charts/plot64?quizId=661dcb4079ec01e30714548b&xvalue=${xvalue}&yvalue=${yvalue}`,
 
       {
         method: "GET",

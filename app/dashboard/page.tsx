@@ -21,12 +21,8 @@ import Ranking_Card from "@/components/Cards/Dashboard/Student/Ranking_Card";
 import CompletedQuizzes_Card from "@/components/Cards/Dashboard/Student/CompletedQuizzes_Card";
 import TnumberOfUnfinishedQuiz from "@/components/Cards/Dashboard/Student/TnumberOfUnfinishedQuiz";
 import SectionsHandled_Card from "@/components/Cards/Dashboard/Faculty/SectionsHandled_Card";
+import AdminPanel from "@/components/admin/AdminPanel";
 export default async function Dashboard() {
-  /*  const { data: session, status } = useSession()
-   console.log(status)
-   if (status === "authenticated") {
-     console.log(session)
-   } */
   const session = await getServerSession(config);
   const quizzes = await quizSection_Card();
 
@@ -71,6 +67,11 @@ export default async function Dashboard() {
             <Quiz_DateAdded />
           </div>
         </div>
+      ) : session?.user.role === "admin" ? (
+        <div className="">
+          <AdminPanel />
+          <h1>Test</h1>
+        </div>
       ) : (
         <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-2 md:p-4 lg:grid-rows-4">
           <div className="flex flex-col items-center justify-center space-y-2 max-md:p-4 max-sm:pt-4 md:space-x-4 xl:flex-row">
@@ -78,7 +79,6 @@ export default async function Dashboard() {
               <Label
                 className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
-                {" "}
                 Welcome, <br />
                 <span className="capitalize">{session?.user.name}!</span>
               </Label>
@@ -86,7 +86,6 @@ export default async function Dashboard() {
               <Label
                 className={`${margarine.className} flex h-full w-full flex-col items-center justify-center text-center text-3xl md:text-4xl`}
               >
-                {" "}
                 Welcome back, <br />
                 <span className="capitalize">{session?.user.name}!</span>
               </Label>

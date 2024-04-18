@@ -1111,3 +1111,63 @@ export async function getQuizResultByUser(quizId: string) {
 
   return results;
 }
+
+// Admin
+export async function getQuizNames_Admin() {
+  const userSession = await getUserSession();
+  const quizNames = await prisma.quiz.findMany({
+    select: {
+      id: true,
+      quizName: true,
+    },
+  });
+
+  console.log(quizNames);
+
+  const mappedQuizNames = quizNames.map((quiz) => {
+    const quizNames = {
+      id: quiz.id,
+      value: quiz.quizName.toLowerCase(),
+      label: quiz.quizName,
+    };
+    return quizNames;
+  });
+  console.log(mappedQuizNames);
+  return mappedQuizNames;
+}
+
+export async function getFeedback_Admin(quizId: string) {
+  try {
+    const fetchFeedback = await prisma.feedbacksPosted.findUnique({
+      where: { quizId },
+      include: { StudentClusters: true },
+    });
+
+    console.log(fetchFeedback);
+
+    const postedFeedbacks = fetchFeedback?.PostedFeedbacks;
+    /* const assignment = fetchFeedback?.StudentClusters?.assignment;
+
+    const findAssignment: any = assignment?.find(
+      (testAssignment: any) =>
+        testAssignment.studentId === userSession?.user.id,
+    );
+
+    if (postedFeedbacks && assignment) {
+      const finalData = {
+        ...findAssignment,
+        feedback: postedFeedbacks[findAssignment.cluster],
+      };
+      console.log(finalData); 
+    }*/
+    return fetchFeedback;
+  } catch (error) {
+    console.log(error);
+    return "No Quiz Found";
+  }
+
+  /* console.log(findAssignment);
+  console.log(postedFeedbacks, assignment);
+  console.log(userSession); */
+  //console.log(JSON.stringify(fetchFeedback, null, 2));
+}
