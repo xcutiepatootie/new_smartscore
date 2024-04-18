@@ -6,13 +6,9 @@ import { getQuizNames_Admin } from "@/lib/server_actions/actions";
 const AdminPanel = async () => {
   const quizzes = await getQuizNames_Admin();
   return (
-    <Card>
-      <CardHeader>Admin Panel</CardHeader>
-      <CardDescription>Testingparen</CardDescription>
-      <CardContent>
-        <ClientRendered quizzes={quizzes} />
-      </CardContent>
-    </Card>
+    <div>
+      <ClientRendered quizzes={quizzes} />
+    </div>
   );
 };
 

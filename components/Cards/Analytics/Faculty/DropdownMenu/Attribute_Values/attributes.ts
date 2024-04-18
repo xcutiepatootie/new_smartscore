@@ -16,7 +16,7 @@ export const xy_values = [
     label: "Answers Clicked",
   },
   {
-    value: "retries left",
+    value: "retries_left",
     label: "Retries Left",
   },
 ];

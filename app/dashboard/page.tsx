@@ -68,9 +68,8 @@ export default async function Dashboard() {
           </div>
         </div>
       ) : session?.user.role === "admin" ? (
-        <div className="">
+        <div className="p-4 h-full">
           <AdminPanel />
-          <h1>Test</h1>
         </div>
       ) : (
         <div className="grid h-full grid-cols-1 gap-4 md:grid-rows-2 md:p-4 lg:grid-rows-4">

@@ -7,6 +7,7 @@ import Feedback_Admin from "./Feedback_Admin";
 import { getFeedback_Admin } from "@/lib/server_actions/actions";
 import { useToast } from "../ui/use-toast";
 import ClusterValues from "../Cards/Analytics/Faculty/ClusterValues";
+import { Card } from "../ui/card";
 
 const fetchFeedbackData = async (selectedQuizId: string) => {
   try {
@@ -89,15 +90,29 @@ const ClientRendered = ({
   }, [selectedQuizId]);
 
   return (
-    <div>
+    <div className="h-full">
       <QuizName_Popover
         popoverValues={quizzes}
         setSelectedQuiz={setSelectedQuiz}
       />
 
-      <Charts quizzes={quizzes} quizId={selectedQuizId} />
-      <ClusterValues quizId={selectedQuizId} />
-      <Feedback_Admin feedback={feedback} />
+      <div className="grid h-full grid-cols-3 grid-rows-2 gap-2 p-4">
+        <div className="col-span-2 row-span-2 grid grid-cols-1 grid-rows-2 gap-2">
+          <Card className="">
+            <Charts quizzes={quizzes} quizId={selectedQuizId} />
+          </Card>
+
+          <div>
+            <Feedback_Admin feedback={feedback} />
+          </div>
+        </div>
+
+        <div className="order-3 col-span-1 row-span-3">
+          <Card className="h-full">
+            <ClusterValues quizId={selectedQuizId} />
+          </Card>
+        </div>
+      </div>
     </div>
   );
 };
