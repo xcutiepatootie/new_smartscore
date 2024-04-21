@@ -61,44 +61,62 @@ const Sidebar = async () => {
         )}
       </div>
 
-      <div className="row-span-2  pt-8">
-        <div className=" my-4 h-full w-full border-gray-100 pb-4 pr-5">
-          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
-            <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
-            <Link href={"/dashboard"}>
-              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
-                Dashboard
-              </h3>
-            </Link>
-          </div>
+      {userSession?.user.role === "faculty" ||
+      userSession?.user.role === "student" ? (
+        <>
+          <div className="row-span-2  pt-8">
+            <div className=" my-4 h-full w-full border-gray-100 pb-4 pr-5">
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
+                <MdOutlineSpaceDashboard className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={"/dashboard"}>
+                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
+                    Dashboard
+                  </h3>
+                </Link>
+              </div>
 
-          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
-            <MdQuiz className="text-2xl text-gray-600 group-hover:text-white " />
-            <Link href={"/dashboard/quizzes"}>
-              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
-                Quiz
-              </h3>
-            </Link>
-          </div>
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 hover:bg-gray-900 hover:shadow-lg">
+                <MdQuiz className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={"/dashboard/quizzes"}>
+                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
+                    Quiz
+                  </h3>
+                </Link>
+              </div>
 
-          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
-            <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
-            <Link href={"/dashboard/profile"}>
-              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
-                Profile
-              </h3>
-            </Link>
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
+                <CgProfile className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={"/dashboard/profile"}>
+                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
+                    Profile
+                  </h3>
+                </Link>
+              </div>
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
+                <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
+                <Link href={"/dashboard/analytics"}>
+                  <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
+                    Analytics
+                  </h3>
+                </Link>
+              </div>
+            </div>
           </div>
-          <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 hover:bg-gray-900 hover:shadow-lg">
-            <MdOutlineAnalytics className="text-2xl text-gray-600 group-hover:text-white " />
-            <Link href={"/dashboard/analytics"}>
-              <h3 className="text-base font-semibold text-gray-800 group-hover:text-white ">
-                Analytics
-              </h3>
-            </Link>
+        </>
+      ) : (
+        <>
+          <div className="row-span-2  pt-8">
+            <div className=" my-4 h-full w-full border-gray-100 pb-4 pr-5">
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 "></div>
+
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 px-5 "></div>
+
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 "></div>
+              <div className="group m-auto mb-2 flex cursor-pointer items-center justify-start gap-4 rounded-md p-2 pl-5 "></div>
+            </div>
           </div>
-        </div>
-      </div>
+        </>
+      )}
 
       <div className="row-span-2 flex w-full items-center justify-start">
         <div className="w-full">
