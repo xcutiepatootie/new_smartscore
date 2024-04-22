@@ -58,7 +58,7 @@ const ClusterValues = ({ quizId }: { quizId: string }) => {
           {clusterData.map((data: any) => (
             <Card key={data.clusterNumber}>
               <CardHeader>
-                <CardTitle>Cluster {data.clusterNumber}</CardTitle>
+                <CardTitle>Cluster {data.clusterNumber+1}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p>
