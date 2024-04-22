@@ -88,7 +88,7 @@ const Input_Form = ({
           {clusterData.map((cluster, index) => (
             <div key={cluster.clusterNumber}>
               <Label className="text-xl italic ">
-                Cluster {cluster.clusterNumber}
+                Cluster {cluster.clusterNumber+1}
               </Label>
               <Input
                 {...register(`postedFeedbacks.${index}`, {})}
