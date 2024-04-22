@@ -31,7 +31,7 @@ const clusterValues = async (quizId: string) => {
   console.log("Test", process.env.API_URL);
   try {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values?quizId=${quizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values-hc?quizId=${quizId}`,
 
       {
         method: "GET",
@@ -50,7 +50,7 @@ const clusterValues = async (quizId: string) => {
 const studentClusterAssignments = async (quizId: string) => {
   try {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments?quizId=${quizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments_hc?quizId=${quizId}`,
 
       {
         method: "GET",
