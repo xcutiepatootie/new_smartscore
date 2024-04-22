@@ -35,7 +35,7 @@ const studentRecords = async (quizId: string) => {
 const studentClusterAssignments = async (quizId: string) => {
   try {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments?quizId=${quizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/assignments_hc?quizId=${quizId}`,
 
       {
         method: "GET",

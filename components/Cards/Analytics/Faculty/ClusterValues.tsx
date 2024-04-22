@@ -14,7 +14,7 @@ import { Label } from "@/components/ui/label";
 const clusterValues = async (quizId: string) => {
   try {
     const response = await fetch(
-      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values?quizId=${quizId}`,
+      `https://${process.env.NEXT_PUBLIC_API_URL}/api/cluster/average-values-hc?quizId=${quizId}`,
 
       {
         method: "GET",
