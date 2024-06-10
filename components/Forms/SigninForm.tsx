@@ -1,96 +1,164 @@
-"use client"
-import { signIn } from 'next-auth/react'
-import React, { FormEvent, useRef, useState } from 'react'
-
+"use client";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { FormFields, FormSchema } from "@/types/types";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { fromZodError } from "zod-validation-error";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "../ui/use-toast";
+import { Label } from "../ui/label";
+import { Input } from "../ui/input";
+import { FaSpinner } from "react-icons/fa";
 
 const SigininForm = () => {
-    const emailRef = useRef<HTMLInputElement>(null)
-    const passwordRef = useRef<HTMLInputElement>(null)
-    const [userRole, setUserRole] = useState<'faculty' | 'student' | null>(null);
+  const router = useRouter();
 
-    const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
-        e.preventDefault()
-        const result = await signIn('credentials', {
-            email: emailRef.current?.value,
-            password: passwordRef.current?.value,
-            userRole: userRole,
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors, isSubmitting },
+  } = useForm<FormFields>({ resolver: zodResolver(FormSchema) });
+  console.log({ isSubmitting });
 
-            callbackUrl: '/dashboard'
-        })
+  const onSubmit: SubmitHandler<FormFields> = async (data) => {
+    console.log(data);
+
+    const result = await signIn("credentials", {
+      email: data.email,
+      password: data.password,
+      redirect: false,
+    });
+
+    if (result?.status === 200) {
+      router.push("/dashboard");
+      toast({
+        title: "Redirecting...",
+        description: "Login Successful",
+      });
     }
 
-    return (
-        <div className="flex justify-center items-center h-screen">
+    if (result?.status === 401) {
+      router.push("/dashboard");
+      toast({
+        title: "Login Failed",
+        description: "Invalid Email or Password",
+        variant: "destructive",
+      });
+    }
+    console.log(result);
 
-            <form className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" onSubmit={handleSubmit}>
-                <label className="block text-gray-700 text-sm font-bold mb-4 border-b-2 border-zinc-300" htmlFor="SigninTag">
-                    Sign-In
-                </label>
-                <div className="mb-4">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-                        Email
-                    </label>
-                    <input
-                        className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-                        id="email"
-                        type="email"
-                        placeholder="Enter your email"
-                        ref={emailRef}
-                        required
-                    />
-                </div>
-                <div className="mb-6">
-                    <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
-                        Password
-                    </label>
-                    <input
-                        className="shadow appearance-none border border-red-500 rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline"
-                        id="password"
-                        type="password"
-                        placeholder="Enter your password"
-                        ref={passwordRef}
-                        required
-                    />
-
-                </div>
-                <div className="mb-4">
+    const res = FormSchema.safeParse(data);
+    if (!res.success) {
+      console.log(fromZodError(res.error));
+    }
+  };
+  return (
+    <div className="flex h-auto w-full items-center justify-center px-4">
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className="h-full w-[50%] rounded bg-white px-4 pb-8 pt-6 shadow-2xl drop-shadow-2xl max-sm:w-full max-sm:px-8"
+      >
+        <h1 className="mb-4 block border-b-2 border-zinc-300 text-sm font-bold text-gray-700">
+          Sign-In
+        </h1>
+        <div className="mb-4">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="email"
+          >
+            Email
+          </label>
+          <Input
+            {...register("email")}
+            className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+            id="email"
+            placeholder="Enter your email"
+            autoComplete="email"
+          />
+          {errors.email && (
+            <div className="text-red-500">{errors.email.message}</div>
+          )}
+        </div>
+        <div className="mb-6">
+          <label
+            className="mb-2 block text-sm font-bold text-gray-700"
+            htmlFor="password"
+          >
+            Password
+          </label>
+          <Input
+            {...register("password", { required: true })}
+            className="focus:shadow-outline mb-3 w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
+            id="password"
+            type="password"
+            placeholder="Enter your password"
+          />
+          {errors.password && (
+            <div className="text-red-500">{errors.password.message}</div>
+          )}
+        </div>
+        {/*  <div className="mb-4">
                     <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="userType">
                         Role
                     </label>
-                    <div className="flex items-center">
-                        <label className="mr-4">
+                    <div className="flex items-center justify-around">
+                        <div>
                             <input
+                                {...register('role', { required: true })}
                                 type="radio"
-                                name="userType"
+                                id="faculty"
+                                name="role"
                                 value="faculty"
-                                onChange={() => { setUserRole('faculty') }}
-                                required
                             />
                             <span className="ml-2">Faculty</span>
-                        </label>
-                        <label>
+                        </div>
+                        <div>
                             <input
+                                {...register('role', { required: true })}
                                 type="radio"
-                                name="userType"
+                                id="student"
+                                name="role"
                                 value="student"
-                                onChange={() => { setUserRole('student') }}
-                                required
                             />
                             <span className="ml-2">Student</span>
-                        </label>
-                    </div>
-                </div>
-                <div className="flex items-center justify-between">
-                    <button
-                        className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline transition-transform transform hover:scale-105"
-                        type="submit"
-                    >
-                        Sign In
-                    </button>
-                </div>
-            </form>
-        </div>
-    )
-}
 
-export default SigininForm
+                        </div>
+                    </div>
+                    {errors.role && (<div className='text-red-500'>{errors.role.message}</div>)}
+                </div> */}
+        <div className="mb-5 flex items-center justify-between">
+          <button
+            disabled={isSubmitting}
+            className="focus:shadow-outline transform rounded bg-blue-500 px-4 py-2 font-bold text-white transition-transform hover:scale-105 hover:bg-blue-700 focus:outline-none"
+            type="submit"
+          >
+            {isSubmitting ? (
+              <h1 className="flex flex-row items-center justify-center space-x-2 text-lg">
+                <FaSpinner className="mr-4 animate-spin" />
+                {"Signing In..."}
+              </h1>
+            ) : (
+              <h1 className="flex flex-row space-x-2 text-lg">Sign In</h1>
+            )}
+          </button>
+        </div>
+        <p className="text-md mt-8 cursor-default">
+          Don&apos;t have an account yet?{" "}
+          <span
+            onClick={() => {
+              router.push("/signup");
+            }}
+            className="text-blue-600 hover:scale-150 hover:text-blue-800 "
+          >
+            Click Here{" "}
+          </span>
+          to Sign Up
+        </p>
+      </form>
+      <div></div>
+    </div>
+  );
+};
+
+export default SigininForm;

@@ -1,60 +1,63 @@
-import prisma from '@/lib/prisma';
+import prisma from "@/lib/prisma";
 
 export async function POST(req: Request) {
-    try {
-        //Pass the student score from application
-        const reqBody = await req.json();
-        const { quizId, studentAnswers, time, studentId, studentName, answerChanges } = reqBody;
+  try {
+    //Pass the student score from application
+    const reqBody = await req.json();
+    const {
+      quizId,
+      studentAnswers,
+      time,
+      studentId,
+      studentName,
+      answerChanges,
+    } = reqBody;
 
-        //convert time to hh:mm:ss format
-        const seconds = time % 60;
-        const minutes = Math.floor((time / 60) % 60);
-        const hours = Math.floor(time / 3600);
+    //convert time to hh:mm:ss format
+    const seconds = time % 60;
+    const minutes = Math.floor((time / 60) % 60);
+    const hours = Math.floor(time / 3600);
 
-        const formattedTime = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    const formattedTime = `${hours.toString().padStart(2, "0")}:${minutes
+      .toString()
+      .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
 
+    if (!reqBody) {
+      return new Response("Missing Data", { status: 400 });
+    }
 
+    // Find quiz base from the request body
+    const quiz = await prisma.quiz.findFirst({
+      where: {
+        id: quizId,
+      },
+      include: {
+        questions: true,
+      },
+    });
+    // Check if the quiz is existing
+    if (quiz) {
+      const formattedResponse = {
+        quiz: {
+          id: quiz.id,
+          name: quiz.quizName,
+          subject: quiz.subject,
+          questions: quiz.questions.map((question) => ({
+            id: question.id,
+            questionText: question.questionText,
+            options: question.options,
+            correctAnswers: question.correctAnswer,
+          })),
+        },
+      };
 
+      const newCorrectAnswers = formattedResponse.quiz.questions
+        .map((question) => question.correctAnswers)
+        .flat();
 
-        if (!reqBody) {
-            return new Response('Missing Data', { status: 400 });
-        }
+      const quiz_Name = quiz?.quizName;
 
-        // Find quiz base from the request body
-        const quiz = await prisma.quiz.findFirst({
-            where: {
-                id: quizId,
-            },
-            include: {
-                questions: true,
-            },
-        });
-        // Check if the quiz is existing
-        if (quiz) {
-            const formattedResponse = {
-                quiz: {
-                    id: quiz.id,
-                    name: quiz.name,
-                    subject: quiz.subject,
-                    questions: quiz.questions.map((question) => ({
-                        id: question.id,
-                        questionIndex: question.questionIndex,
-                        questionText: question.questionText,
-                        options: question.options,
-                        correctAnswers: question.correctAnswers.join(),
-                    })),
-                },
-            };
-
-
-
-            const newCorrectAnswers = formattedResponse.quiz.questions.map((question) => question.correctAnswers).flat();
-
-
-
-            const quiz_Name = quiz?.name
-
-            const existingScore = await prisma.score.findFirst({
+      /* const existingScore = await prisma.score.findFirst({
                 where: {
                     studentId: studentId,
                     quizId: quizId,
@@ -112,16 +115,15 @@ export async function POST(req: Request) {
                     },
                 });
 
-            }
-        }
-
-        return new Response('Response Successfully Saved ', {
-            status: 200,
-            statusText: 'Response Successfully Saved',
-        });
-
-    } catch (error: any) {
-        console.error('Error:', error);
-        return new Response('Internal Error', { status: 500 });
+            } */
     }
+
+    return new Response("Response Successfully Saved ", {
+      status: 200,
+      statusText: "Response Successfully Saved",
+    });
+  } catch (error: any) {
+    console.error("Error:", error);
+    return new Response("Internal Error", { status: 500 });
+  }
 }

@@ -18,14 +18,13 @@ export async function POST(req: Request) {
             const formattedResponse = {
                 quiz: {
                     id: quiz.id,
-                    name: quiz.name,
+                    name: quiz.quizName,
                     subject: quiz.subject,
                     questions: quiz.questions.map((question) => ({
                         id: question.id,
-                        questionIndex: question.questionIndex,
                         questionText: question.questionText,
                         options: question.options,
-                        correctAnswers: question.correctAnswers,
+                        correctAnswers: question.correctAnswer,
                     })),
                 },
             };

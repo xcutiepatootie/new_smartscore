@@ -1,21 +1,36 @@
+import Analytics_tabs from "@/components/Cards/Analytics/Faculty/Tabs/Analytics_tabs";
+import Student_Analytics from "@/components/Cards/Analytics/Student/Student_Analytics";
 
-import { useSession } from "next-auth/react"
+import { config } from "@/lib/auth";
+import {
+  getQuizNames,
+  getStudentClusterAssignments,
+  quizSection_Card,
+} from "@/lib/server_actions/actions";
+import { getServerSession } from "next-auth";
 
+export default async function page() {
+  const getAllQuiz = await quizSection_Card();
+  const getUserSession = await getServerSession(config);
 
-const Analytics = () => {
+  let quizNames;
+  if (getUserSession?.user.role === "student") {
+    quizNames = await getQuizNames();
+    console.log(quizNames);
+  }
 
-
-    return (
-        <>
-            <div className="flex">
-
-                <div className=''>
-                    <h1>Analytics</h1>
-
-                </div>
-            </div>
-        </>
-    )
+  return (
+    <>
+      {getUserSession?.user.role === "faculty" ? (
+        <div className="w-full p-4">
+          <Analytics_tabs />
+        </div>
+      ) : (
+        <div className="grid h-full w-full grid-cols-1 grid-rows-2 gap-2 pt-2 lg:grid-cols-2">
+          {/*     <StudentAnalytics_Tabs /> */}
+          {quizNames && <Student_Analytics quizNames={quizNames} />}
+        </div>
+      )}
+    </>
+  );
 }
-
-export default Analytics

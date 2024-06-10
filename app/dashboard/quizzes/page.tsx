@@ -1,75 +1,43 @@
-"use client"
-import AddQuiz from "@/components/AddQuiz/AddQuiz";
-import ListQuiz from "@/components/ListQuiz/ListQuiz";
-import { useSession } from "next-auth/react";
-import { useState } from "react";
+import { Add_List_Quiz } from "@/components/Quizzes/Add_List_Quiz";
+import prisma from "@/lib/prisma";
 
+import { getServerSession } from "next-auth";
+import { config } from "@/lib/auth";
+import {
+  getQuizzesList_faculty,
+  getQuizzesList_student,
+  getSections,
+} from "@/lib/server_actions/actions";
 
-const Quizzes = () => {
+const Quizzes = async () => {
+  const getSession = await getServerSession(config);
+  const userSection = getSession?.user.userSection;
 
-    const [showViewQuiz, setShowViewQuiz] = useState(true);
-    const { data: session, status } = useSession();
+  let allQuiz: any;
+  if (getSession?.user.role === "faculty") {
+    allQuiz = await getQuizzesList_faculty();
+  }
+  if (getSession?.user.role === "student") {
+    allQuiz = await getQuizzesList_student();
+  }
 
-    const handleToggleView = () => {
-        setShowViewQuiz(!showViewQuiz);
-    };
+  //const allSection = await getSections();
+  //console.log(allSection)
 
+  console.log(JSON.stringify(allQuiz.quizzesBasedOnSection, null, 2));
 
+  return (
+    <div className="flex items-center justify-center">
+      <Add_List_Quiz
+        quizList={
+          getSession?.user.role === "faculty"
+            ? allQuiz?.getAllQuizzes
+            : allQuiz?.quizzesBasedOnSection
+        }
+        quizTaken={allQuiz?.getAllTakenQuiz}
+      />
+    </div>
+  );
+};
 
-    return (
-        <>
-            <div className="flex">
-
-                <div className=''>
-
-                    <div className="flex flex-row">
-
-                        <div>
-                            <div className="flex flex-row">
-                                <div className="px-4">
-                                    <button
-                                        className={`bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ${showViewQuiz ? 'bg-opacity-100' : 'bg-opacity-50'
-                                            }`}
-                                        onClick={handleToggleView}
-                                        disabled={showViewQuiz}
-                                    >
-                                        View Quiz
-                                    </button>
-                                </div>
-
-                                {session?.user.role === 'faculty' && (
-
-                                    <div className="px-4">
-                                        <button
-                                            className={`bg-lsblue text-black hover:bg-violet-500 hover:text-white font-bold py-2 px-4 rounded transition-all duration-200 ${!showViewQuiz ? 'bg-opacity-100' : 'bg-opacity-50'
-                                                }`}
-                                            onClick={handleToggleView}
-                                            disabled={!showViewQuiz}
-                                        >
-                                            Create Quiz
-                                        </button>
-                                    </div>
-                                )}
-
-                            </div>
-
-                            <div className="container w-screen h-[80vh] mx-auto mt-4 bg-white p-4 rounded-lg shadow-lg overflow-y-auto">
-                                {showViewQuiz ? (
-                                    <ListQuiz />
-                                ) : (
-                                    <AddQuiz />
-                                )}
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-                </div>
-            </div>
-        </>
-    )
-}
-
-export default Quizzes
+export default Quizzes;

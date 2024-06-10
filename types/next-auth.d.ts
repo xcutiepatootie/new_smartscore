@@ -1,46 +1,50 @@
-import NextAuth, { DefaultSession, DefaultUser, DefaultJWT, Account } from "next-auth"
-import { JWT } from "next-auth/jwt"
+import NextAuth, {
+  DefaultSession,
+  DefaultUser,
+  DefaultJWT,
+  Account,
+} from "next-auth";
+import { JWT } from "next-auth/jwt";
 
 declare module "next-auth" {
-    /**
-     * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
-     */
-    interface Session {
-        user: {
-            id: string,
-            name: string,
-            email: string,
-            username: string,
-            role: string,
+  /**
+   * Returned by `useSession`, `getSession` and received as a prop on the `SessionProvider` React Context
+   */
+  interface Session {
+    user: {
+      id: string;
+      name: string;
+      email: string;
+      username: string;
+      department: string;
+      role: string;
+      userSection: string?;
+      initialLogin: boolean;
+    } & DefaultSession["user"];
+  }
 
-        } & DefaultSession["user"]
-
-    }
-
-
-    interface User {
-        id: string,
-        name: string,
-        email: string,
-        username: string,
-        role: string,
-
-    }
-
-
+  interface User {
+    id: string;
+    name: string;
+    email: string;
+    username: string;
+    department: string;
+    role: string;
+    userSection: string?;
+    initialLogin: boolean;
+  }
 }
 
-
 declare module "next-auth/jwt" {
-    /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
-    interface JWT extends DefaultJWT
-    {
-
-        id: string,
-        name: string,
-        username: string,
-        email: string,
-        role: string,
-
-    } 
+  /** Returned by the `jwt` callback and `getToken`, when using JWT sessions */
+  interface JWT extends DefaultJWT {
+    id: string;
+    name: string;
+    username: string;
+    department: string;
+    email: string;
+    role: string;
+    userSection: string?;
+    initialLogin: boolean;
+  }
 }
